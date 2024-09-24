@@ -46,13 +46,15 @@ class Construcciones:
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
 
-                # Guardar el resultado en un nuevo archivo Excel
+                '''
                 output_file = 'CONSTRUCCIONES_VALIDACION.xlsx'
                 sheet_name = 'CONSTRUCCIONES_VALIDACION'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
 
-                messagebox.showinfo("Éxito", f"Proceso completado. {len(resultados)} registros encontrados.")
+                '''
+                
+                messagebox.showinfo("Éxito", f"No convencionales. {len(resultados)} registros.")
                 
             else:
                 messagebox.showinfo("Información", "No se encontraron registros que cumplan con la condición.")
