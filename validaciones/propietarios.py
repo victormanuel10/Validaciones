@@ -2,12 +2,19 @@ import pandas as pd
 from tkinter import messagebox
 from datetime import datetime
 from validaciones.ficha import Ficha
+from validaciones.construcciones import Construcciones
 
 class Propietarios:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
-
-    def procesar(self):
+        self.resultados_generales = []
+    def agregar_resultados(self, resultados):
+        if resultados:
+            self.resultados_generales.extend(resultados)
+        else:
+            print("No se recibieron resultados para agregar.")
+    '''
+        def procesar(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
 
@@ -49,7 +56,69 @@ class Propietarios:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
 
-    def cedula_mujer(self, df):
+    '''
+    def procesar_errores(self):
+        
+        construcciones = Construcciones(self.archivo_entry)
+        errores_construcciones = construcciones.validar_construcciones_No_convencionales()
+        self.agregar_resultados(errores_construcciones)
+        
+        self.cedula_mujer()
+        self.cedula_hombre()
+        self.primer_apellido_blanco()
+        self.primer_nombre_blanco()
+        self.calidad_propietario_mun()
+        self.nit_diferente_mun()
+        self.derecho_diferente_cien()
+        self.documento_blanco_cod_asig()
+        self.fecha_escritura_inferior()
+        self.fecha_escritura_mayor()
+        
+        
+        
+        ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.matricula_mejora())
+        self.agregar_resultados(ficha.terreno_cero())
+        self.agregar_resultados(ficha.terreno_null())
+        self.agregar_resultados(ficha.informal_matricula())
+        self.agregar_resultados(ficha.circulo_mejora())
+        self.agregar_resultados(ficha.tomo_mejora())
+        self.agregar_resultados(ficha.modo_adquisicion_informal())
+        self.agregar_resultados(ficha.ficha_repetida())
+        
+        
+        
+        if self.resultados_generales:
+            df_resultado = pd.DataFrame(self.resultados_generales)
+            
+            output_file = 'ERRORES_CONSOLIDADOS.xlsx'
+            df_resultado.to_excel(output_file, sheet_name='ERRORES', index=False)
+            print(f"Archivo consolidado guardado: {output_file}")
+            messagebox.showinfo("Éxito",
+                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(self.resultados_generales)} registros.")
+        else:
+            messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
+            
+    def leer_archivo(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return None
+
+        try:
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            return df
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error al leer el archivo: {str(e)}")
+            return None
+    
+    def cedula_mujer(self):
+        df = self.leer_archivo()
+        if df is None:
+            return
         resultados = []
         for index, row in df.iterrows():
             valor_a = str(row['TipoDocumento'])
@@ -69,19 +138,26 @@ class Propietarios:
                     'Observacion': 'Documento no esta en rango de mujeres'
                 }
                 resultados.append(resultado)
+                self.agregar_resultados(resultados)
                 print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
         df_resultado = pd.DataFrame(resultados)
+        ''''
         output_file = 'CEDULA_MUJER.xlsx'
         sheet_name = 'cedula_mujer'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
+        
+        '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
         messagebox.showinfo("Éxito",
-                            f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                            f"Proceso completado Cedula Mujer.con {len(resultados)} registros.")
 
-    def cedula_hombre(self, df):
+    def cedula_hombre(self):
+        df = self.leer_archivo()
+        if df is None:
+            return
         resultados = []
         for index, row in df.iterrows():
             valor_a = str(row['TipoDocumento'])
@@ -101,19 +177,26 @@ class Propietarios:
                     'Observacion': 'Documento no esta en rango de hombre'
                 }
                 resultados.append(resultado)
+                self.agregar_resultados(resultados)
                 print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
         df_resultado = pd.DataFrame(resultados)
+        '''
         output_file = 'CEDULA_HOMBRE.xlsx'
         sheet_name = 'cedula_hombre'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
+
+        '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
         messagebox.showinfo("Éxito",
-                            f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                            f"Proceso completado Cedula Hombre. con {len(resultados)} registros.")
         
-    def primer_apellido_blanco(self, df):
+    def primer_apellido_blanco(self):
+        df = self.leer_archivo()
+        if df is None:
+            return
         resultados = []
         for index, row in df.iterrows():
             valor_a = row['PrimerApellido']
@@ -132,19 +215,26 @@ class Propietarios:
                     'Observacion': 'Primer apellido en blanco'
                 }
                 resultados.append(resultado)
+                self.agregar_resultados(resultados)
                 print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
         df_resultado = pd.DataFrame(resultados)
+        '''
         output_file = 'PRIMER_APELLIDO_BLANCO.xlsx'
         sheet_name = 'PRIMER_APELLIDO'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
+        
+        '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
         messagebox.showinfo("Éxito",
-                            f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                            f"Proceso completado Primer Apellido. con {len(resultados)} registros.")
         
-    def primer_nombre_blanco(self, df):
+    def primer_nombre_blanco(self): 
+        df = self.leer_archivo()
+        if df is None:
+            return
         resultados = []
         for index, row in df.iterrows():
             valor_a = row['PrimerNombre']
@@ -163,19 +253,26 @@ class Propietarios:
                     'Observacion': 'Primer nombre en blanco'
                 }
                 resultados.append(resultado)
+                self.agregar_resultados(resultados)
                 print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
         df_resultado = pd.DataFrame(resultados)
+        '''
         output_file = 'PRIMER_NOMBRE_BLANCO.xlsx'
         sheet_name = 'PRIMER_NOMBRE'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
+        
+        '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
         messagebox.showinfo("Éxito",
-                            f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                            f"Proceso completado PRIMER_NOMBRE. con {len(resultados)} registros.")
         
-    def calidad_propietario_mun(self,df):
+    def calidad_propietario_mun(self):
+        df = self.leer_archivo()
+        if df is None:
+            return
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
 
@@ -210,9 +307,11 @@ class Propietarios:
                         'Documento': row['Documento'],
                         'CalidadPropietario': row['CalidadPropietario'],
                         'RazonSocial': row['RazonSocial'],
-                        'Observacion': 'Calidad del propietario diferente para nit del Municipio'
+                        'Observacion': 'Calidad del propietario diferente para NIT del Municipio'
                     }
                     resultados.append(resultado)
+                    # Solo se agrega el resultado actual, no toda la lista
+                    self.agregar_resultados([resultado])
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
@@ -221,19 +320,25 @@ class Propietarios:
             df_resultado = pd.DataFrame(resultados)
 
             # Guardar el resultado en un nuevo archivo Excel
+            '''
             output_file = 'CALIDAD_PROP_MUN.xlsx'
             sheet_name = 'CALIDAD_PROP_MUN'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
+            '''
+
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            messagebox.showinfo("Éxito", f"Proceso completado Calidad prop mun. con {len(resultados)} registros.")
+
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
-    def nit_diferente_mun(self,df):
+    def nit_diferente_mun(self):
+        df = self.leer_archivo()
+        if df is None:
+            return
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
 
@@ -271,6 +376,7 @@ class Propietarios:
                         'Observacion': 'tipo de documento diferente para nit del municipio'
                     }
                     resultados.append(resultado)
+                    self.agregar_resultados(resultados)
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
@@ -278,15 +384,17 @@ class Propietarios:
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
 
-            # Guardar el resultado en un nuevo archivo Excel
+            '''
             output_file = 'NIT_DIFERENTE_MUN.xlsx'
             sheet_name = 'NIT_DIFERENTE_MUN'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
+            
+            '''
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
             messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                                f"Proceso completado Nit diferente num. con {len(resultados)} registros.")
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -329,22 +437,29 @@ class Propietarios:
                             'Observacion': 'Porcentaje de dominio incompleto diferente a cero, falta: ' + str(100 - valor_b_sum)
                         }
                         resultados.append(resultado)
+                        self.agregar_resultados(resultados)
                         print(f"Fila {_} agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
-
+            if resultados:
+            
+                fila_vacia = {key: '' for key in resultados[0].keys()}
+                resultados.append(fila_vacia)
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
 
             # Guardar el resultado en un nuevo archivo Excel
-            output_file = 'DERECHO_DIFERENTE_CIEN.xlsx'
-            sheet_name = 'DERECHO_DIFERENTE_CIEN'
-            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-            print(f"Archivo guardado: {output_file}")
+            '''
+                output_file = 'DERECHO_DIFERENTE_CIEN.xlsx'
+                sheet_name = 'DERECHO_DIFERENTE_CIEN'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                
+            '''            
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
             messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                                f"Proceso completado Derecho dirente cien. con {len(resultados)} registros.")
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -392,6 +507,8 @@ class Propietarios:
                         'Observacion': 'Documento diferente a blanco para código asignado'
                     }
                     resultados.append(resultado)
+                    # Agregar solo el resultado actual
+                    self.agregar_resultados([resultado])
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
@@ -400,14 +517,17 @@ class Propietarios:
             df_resultado = pd.DataFrame(resultados)
 
             # Guardar el resultado en un nuevo archivo Excel
+            '''
             output_file = 'DOCUMENTO_CODIGO_ASIGNADO.xlsx'
             sheet_name = 'DOCUMENTO_CODIGO_ASIGNADO'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
+            '''
+
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            messagebox.showinfo("Éxito", f"Proceso completado Codigo Asignado. con {len(resultados)} registros.")
+
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -436,25 +556,31 @@ class Propietarios:
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
-                fecha_str = row['FechaEscritura']
+                fecha_escritura = row['FechaEscritura']
 
-                try:
-                    # Convertir la cadena de texto a objeto de fecha
-                    fecha_obj = datetime.strptime(fecha_str, "%d/%m/%Y")
+                # Verificar si 'FechaEscritura' es un string y convertirlo si es necesario
+                if isinstance(fecha_escritura, str):
+                    try:
+                        fecha_obj = datetime.strptime(fecha_escritura, "%d/%m/%Y")
+                    except ValueError:
+                        print(f"Error en el formato de fecha en la fila {index}: '{fecha_escritura}'")
+                        continue  # Saltar a la siguiente fila si la conversión falla
+                elif isinstance(fecha_escritura, datetime):
+                    fecha_obj = fecha_escritura
+                else:
+                    print(f"Tipo no válido en la fila {index}: '{fecha_escritura}'")
+                    continue  # Saltar a la siguiente fila si el tipo es inesperado
 
-                    # Verificar si la fecha es anterior a 1778
-                    if fecha_obj < fecha_umbral:
-                        resultado = {
-                            'NroFicha': row['NroFicha'],
-                            'FechaEscritura': fecha_str,
-                            'Observacion': 'Fecha anterior a 1778'
-                        }
-                        resultados.append(resultado)
-                        print(f"Fila {index}: Fecha '{fecha_str}' es anterior a 1778. Agregado a resultados.")
-
-                except ValueError:
-                    # Manejo de errores si la conversión falla
-                    print(f"Error en el formato de fecha en la fila {index}: '{fecha_str}'")
+                # Verificar si la fecha es anterior a 1778
+                if fecha_obj < fecha_umbral:
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'FechaEscritura': fecha_obj.strftime("%d/%m/%Y"),
+                        'Observacion': 'Fecha anterior a 1778'
+                    }
+                    resultados.append(resultado)
+                    self.agregar_resultados(resultados)
+                    print(f"Fila {index}: Fecha '{fecha_obj}' es anterior a 1778. Agregado a resultados.")
 
             print(f"Total de fechas anteriores a 1778 encontradas: {len(resultados)}")
 
@@ -463,24 +589,28 @@ class Propietarios:
                 df_resultado = pd.DataFrame(resultados)
 
                 # Guardar el resultado en un nuevo archivo Excel
+                '''
                 output_file = 'FECHAS_ESCRITURA_INFERIORES_1778.xlsx'
                 sheet_name = 'fechas_inferiores_1778'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+                '''
 
                 messagebox.showinfo("Éxito",
-                                    f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                                    f"Proceso completado. Fechas inferiores a 1778: {len(resultados)} registros.")
             else:
                 print("No se encontraron fechas anteriores a 1778.")
-                messagebox.showinfo("Información", "No se encontraron fechas anteriores a 1778.")
+                messagebox.showinfo("Información", "No se encontraron registros con fechas anteriores a 1778.")
 
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
             
-    def fecha_registro_inferior(self):
+    
+    
+    def fecha_escritura_mayor(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
 
@@ -499,50 +629,62 @@ class Propietarios:
             # Lista para almacenar los resultados
             resultados = []
 
-            # Umbral de fecha (1 de enero de 1778)
-            fecha_umbral = datetime(1778, 1, 1)
+            # Obtener la fecha actual (sin tiempo para evitar diferencias por horas/minutos)
+            fecha_actual = datetime.now().date()
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
-                fecha_str = row['FechaEscritura']
+                fecha_escritura = row['FechaEscritura']
 
-                try:
-                    # Convertir la cadena de texto a objeto de fecha
-                    fecha_obj = datetime.strptime(fecha_str, "%d/%m/%Y")
+                # Verificar si 'FechaEscritura' es nula o NaT
+                if pd.isnull(fecha_escritura):
+                    print(f"Fila {index}: Fecha de escritura es nula. Ignorada.")
+                    continue
 
-                    # Verificar si la fecha es anterior a 1778
-                    if fecha_obj < fecha_umbral:
-                        resultado = {
-                            'NroFicha': row['NroFicha'],
-                            'FechaEscritura': fecha_str,
-                            'Observacion': 'Fecha registro inferior a 1778'
-                        }
-                        resultados.append(resultado)
-                        print(f"Fila {index}: Fecha '{fecha_str}' es anterior a 1778. Agregado a resultados.")
+                # Convertir a fecha si es necesario
+                if isinstance(fecha_escritura, str):
+                    try:
+                        fecha_escritura = datetime.strptime(fecha_escritura, "%d/%m/%Y").date()
+                    except ValueError:
+                        print(f"Error en el formato de fecha en la fila {index}: '{fecha_escritura}'")
+                        continue
 
-                except ValueError:
-                    # Manejo de errores si la conversión falla
-                    print(f"Error en el formato de fecha en la fila {index}: '{fecha_str}'")
+                elif isinstance(fecha_escritura, datetime):
+                    fecha_escritura = fecha_escritura.date()  # Tomar solo la parte de la fecha
 
-            print(f"Total de fechas anteriores a 1778 encontradas: {len(resultados)}")
+                # Verificar si la fecha es superior a la fecha actual
+                if fecha_escritura > fecha_actual:
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'FechaEscritura': fecha_escritura.strftime("%d/%m/%Y"),
+                        'Observacion': 'Fecha de escritura es superior a la fecha actual'
+                    }
+                    resultados.append(resultado)
+                    # Solo se agrega el resultado actual, no toda la lista
+                    self.agregar_resultados([resultado])
+                    print(f"Fila {index}: Fecha '{fecha_escritura}' es superior a la fecha actual. Agregado a resultados.")
+
+            print(f"Total de fechas superiores a la fecha actual encontradas: {len(resultados)}")
 
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
 
                 # Guardar el resultado en un nuevo archivo Excel
-                output_file = 'FECHAS_REGISTRO_INFERIORES_1778.xlsx'
-                sheet_name = 'fechas_inferiores_1778'
+                output_file = 'FECHAS_ESCRITURA_SUPERIORES.xlsx'
+                sheet_name = 'fechas_superiores'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-                messagebox.showinfo("Éxito",
-                                    f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
             else:
-                print("No se encontraron fechas anteriores a 1778.")
-                messagebox.showinfo("Información", "No se encontraron fechas anteriores a 1778.")
+                print("No se encontraron fechas superiores a la fecha actual.")
+                messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
 
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+               
+    
+    

@@ -1,6 +1,7 @@
 import pandas as pd
 from tkinter import messagebox
 
+
 class Ficha:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
@@ -27,36 +28,36 @@ class Ficha:
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
-                valor_b = str(row['NumCedulaCatastral'])
+                valor_b = row['NumCedulaCatastral']
                 valor_p = row['AreaTotalTerreno']
 
-                print(f"Fila {index}: Valor B = '{valor_b}',condicion:{valor_b[21]}, Valor P = '{valor_p}'")
+                # Verificar si valor_b no es nulo o vacío, y si tiene al menos 22 caracteres
+                if pd.notna(valor_b) and len(str(valor_b)) > 21:
+                    valor_b_str = str(valor_b)  # Convertir el valor a cadena
+                    print(f"Fila {index}: Valor B = '{valor_b_str}', condicion: {valor_b_str[21]}, Valor P = '{valor_p}'")
 
-                # Verificar las condiciones
-                if valor_b[21] == '0' and (valor_p == '0' or valor_p == 0):
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'Observacion': 'Terreno en ceros para ficha que no es mejora'
-                    }
-                    resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    # Verificar las condiciones
+                    if valor_b_str[21] == '0' and (valor_p == '0' or valor_p == 0):
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'Observacion': 'Terreno en ceros para ficha que no es mejora'
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                else:
+                    print(f"Fila {index}: NumCedulaCatastral no tiene suficientes caracteres o es nulo.")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
-            # Guardar el resultado en un nuevo archivo Excel
-            output_file = 'TERRENO_CERO.xlsx'
-            sheet_name = 'terreno_cero'
-            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-            print(f"Archivo guardado: {output_file}")
-            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+            
+            messagebox.showinfo("Éxito", f"Proceso completado Terreno cero. con {len(resultados)} registros.")
+            return resultados
 
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
         except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+                print(f"Error: {str(e)}")
+                messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
     
     def terreno_null(self):
@@ -65,7 +66,7 @@ class Ficha:
 
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
-            return
+            return []  # Devolver lista vacía si no se encuentra el archivo
 
         try:
             # Leer el archivo Excel, especificando la hoja
@@ -76,26 +77,54 @@ class Ficha:
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
-            # Filtrar las filas donde 'AreaTotalTerreno' es NaN o null
-            terrenos_null = df[df['AreaTotalTerreno'].isnull()]
+            # Lista para almacenar los resultados
+            resultados = []
 
-            print(f"Total de registros con AreaTotalTerreno null: {terrenos_null.shape[0]}")
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                valor_a = str(row['NumCedulaCatastral'])  # Convertir a cadena por si acaso
+                valor_b = row['AreaTotalTerreno']
 
-            if terrenos_null.shape[0] > 0:
-                # Guardar los resultados en un nuevo archivo Excel
-                output_file = 'TERRENO_NULL.xlsx'
-                sheet_name = 'terreno_null'
-                terrenos_null.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-                print(f"Dimensiones del DataFrame de terrenos null: {terrenos_null.shape}")
+            print(f"Fila {index}: Valor A = '{valor_a}'")
 
-                messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {terrenos_null.shape[0]} registros con AreaTotalTerreno null.")
+            # Verificar que valor_a tenga al menos 22 caracteres
+            if len(valor_a) > 21:
+                print(f"CARACTER22B : {valor_a[21]}")
+
+                if valor_a[21] == '2' and pd.isna(valor_b):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'NumCedulaCatastral': row['NumCedulaCatastral'],
+                        'Condicion de predio': valor_a[21],
+                        'AreaTotalTerreno': valor_b,
+                        'Observacion': 'Terreno nulo para condición de predio'
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             else:
-                print("No se encontraron registros con AreaTotalTerreno null.")
-                messagebox.showinfo("Información", "No se encontraron registros con AreaTotalTerreno null.")
+                print(f"Fila {index}: Valor A tiene menos de 22 caracteres, se omite.")
+                    
+            # Crear un nuevo DataFrame con los resultados
+            df_resultado = pd.DataFrame(resultados) if resultados else pd.DataFrame(columns=[
+                'NroFicha', 'NumCedulaCatastral', 'Condicion de predio', 'AreaTotalTerreno', 'Observacion'])
+
+            # Guardar el resultado en un nuevo archivo Excel
+            ''' 
+            output_file = 'TERRENO_NULL.xlsx'
+            sheet_name = 'TERRENO_NULL'
+            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+            print(f"Archivo guardado: {output_file}")
+            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+
+            '''
+            
+            messagebox.showinfo("Éxito",
+                                f"Proceso completado Terreno null. con {len(resultados)} registros.")
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []  # Devolver lista vacía en caso de error
             
     def informal_matricula(self):
         archivo_excel = self.archivo_entry.get()
@@ -119,24 +148,27 @@ class Ficha:
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
-                valor_a = str(row['MatriculaInmobiliaria'])
+                valor_a = str(row['MatriculaInmobiliaria']) if pd.notna(row['MatriculaInmobiliaria']) else ''
                 valor_b = row['ModoAdquisicion']
 
-                print(f"Fila {index}: Valor B = '{valor_a}',condicion:{valor_b}")
+                print(f"Fila {index}: Valor A = '{valor_a}', condicion: {valor_b}")
 
-                # Verificar las condiciones
+                # Verificar las condiciones: valor_b es '2|POSESIÓN' y valor_a no está vacío
                 if valor_b == '2|POSESIÓN' and (valor_a != '' or pd.notna(valor_a)):
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'ModoAdquisicion': row['ModoAdquisicion'],
-                        'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
+                        'MatriculaInmobiliaria': valor_a,
                         'Observacion': 'Matricula invalida para posesión'
+                         
                     }
                     resultados.append(resultado)
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
-
+            
+            
+       
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
 
@@ -147,8 +179,8 @@ class Ficha:
             print(f"Archivo guardado: {output_file}")
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            return resultados   
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -174,25 +206,32 @@ class Ficha:
             resultados = []
 
             # Iterar sobre las filas del DataFrame
-            for index, row in df.iloc[0:].iterrows():
-                valor_a = row['NumCedulaCatastral']
+            for index, row in df.iterrows():
+                valor_a = str(row['NumCedulaCatastral']) if pd.notna(row['NumCedulaCatastral']) else ''
                 valor_b = row['MatriculaInmobiliaria']
 
                 print(f"Fila {index}: Valor A = '{valor_a}'")
-                print(f"CARACTER22B : {valor_a[21]}")
+                print(f"Fila {index}: Valor A = '{valor_b}'")
+                # Verificar si valor_a tiene al menos 22 caracteres
+                if len(valor_a) >= 22:
+                    print(f"CARACTER22B : {valor_a[21]}")
 
-                # Verificar las condiciones
-                if valor_a[21] == '2' and pd.notna(valor_b):
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'NumCedulaCatastral': row['NumCedulaCatastral'],
-                        'Condicion de predio': valor_a[21],
-                        'ModoAdquisicion': row['ModoAdquisicion'],
-                        'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
-                        'Observacion': 'Informalidad con matrícula'
-                    }
-                    resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    # Verificar las condiciones
+                    if valor_a[21] == '2' and pd.notna(valor_b) or valor_b=='':
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'NumCedulaCatastral': valor_a,
+                            'Condicion de predio': valor_a[21],
+                            'ModoAdquisicion': row['ModoAdquisicion'],
+                            'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
+                            'Observacion': 'Informalidad con matrícula'
+                            
+                        }
+                        
+                        resultados.append(resultado)
+                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                else:
+                    print(f"Fila {index} tiene una NumCedulaCatastral demasiado corta: '{valor_a}'")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
@@ -208,9 +247,11 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            return resultados
+
         except Exception as e:
             print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")    
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")  
             
     def circulo_mejora(self):
         archivo_excel = self.archivo_entry.get()
@@ -237,7 +278,10 @@ class Ficha:
                 valor_a = row['NumCedulaCatastral']
                 valor_b = row['circulo']
 
-                print(f"Fila {index}: Valor A = '{valor_a}'")
+            print(f"Fila {index}: Valor A = '{valor_a}'")
+
+            # Verificar que 'valor_a' tiene al menos 22 caracteres
+            if len(valor_a) > 21:
                 print(f"CARACTER22B : {valor_a[21]}")
 
                 # Verificar las condiciones
@@ -252,8 +296,8 @@ class Ficha:
                     }
                     resultados.append(resultado)
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
+            else:
+                print(f"El valor de 'NumCedulaCatastral' en la fila {index} no tiene suficientes caracteres.")
 
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
@@ -267,6 +311,7 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -298,21 +343,22 @@ class Ficha:
 
                 print(f"Fila {index}: Valor A = '{valor_a}'")
 
-                # Verificar las condiciones
-
-                print( type(valor_b))
-
-                if valor_a[21] == '2' and valor_b != 0:
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'NumCedulaCatastral': row['NumCedulaCatastral'],
-                        'Condicion de predio': row['NumCedulaCatastral'][21],
-                        'ModoAdquisicion':row['ModoAdquisicion'],
-                        'Tomo': row['Tomo'],
-                        'Observacion': 'Informalidad con Círculo'
-                    }
-                    resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                # Verificar que 'valor_a' tiene al menos 22 caracteres antes de acceder al índice 21
+                if len(valor_a) > 21:
+                    # Verificar las condiciones
+                    if valor_a[21] == '2' and valor_b != 0:
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'NumCedulaCatastral': row['NumCedulaCatastral'],
+                            'Condicion de predio': valor_a[21],
+                            'ModoAdquisicion': row['ModoAdquisicion'],
+                            'Tomo': row['Tomo'],
+                            'Observacion': 'Informalidad con Tomo'
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                else:
+                    print(f"El valor de 'NumCedulaCatastral' en la fila {index} no tiene suficientes caracteres.")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
@@ -328,9 +374,10 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")           
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")         
     
     
     def modo_adquisicion_informal(self):
@@ -360,18 +407,21 @@ class Ficha:
 
                 print(f"Fila {index}: Valor A = '{valor_a}'")
 
-                # Verificar las condiciones
-                if valor_a[21] == '2' and valor_b != '2|POSESIÓN':
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'NumCedulaCatastral': row['NumCedulaCatastral'],
-                        'Condicion de predio': row['NumCedulaCatastral'][21],
-                        'ModoAdquisicion': row['ModoAdquisicion'],
-                        'Observacion': 'La informalidad no puede tener modo de adquisición diferente a posesión'
-                    }
-                    resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-
+                # Verificar que 'valor_a' tiene al menos 22 caracteres antes de acceder al índice 21
+                if len(valor_a) > 21:
+                    # Verificar las condiciones
+                    if valor_a[21] == '2' and valor_b != '2|POSESIÓN':
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'NumCedulaCatastral': row['NumCedulaCatastral'],
+                            'Condicion de predio': valor_a[21],
+                            'ModoAdquisicion': row['ModoAdquisicion'],
+                            'Observacion': 'La informalidad no puede tener modo de adquisición diferente a posesión'
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                else:
+                    print(f"El valor de 'NumCedulaCatastral' en la fila {index} no tiene suficientes caracteres.")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
@@ -387,6 +437,7 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}") 
@@ -424,6 +475,7 @@ class Ficha:
                 print(f"Dimensiones del DataFrame de duplicados: {duplicados.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {duplicados.shape[0]} registros duplicados.")
+                return duplicados
             else:
                 print("No se encontraron registros duplicados.")
                 messagebox.showinfo("Información", "No se encontraron registros duplicados.")
@@ -481,6 +533,16 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+            
+    def destino_economico_mayorcero(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
