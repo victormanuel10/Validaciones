@@ -70,6 +70,8 @@ class Propietarios:
         
         
         
+        
+        self.entidadvacio()
         self.cedula_mujer()
         self.cedula_hombre()
         self.primer_apellido_blanco()
@@ -87,7 +89,13 @@ class Propietarios:
         
         
         
+        
+        
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_nrofichas())
+        self.agregar_resultados(ficha.areaterrenocero())
+        self.agregar_resultados(ficha.prediosindireccion())
+        self.agregar_resultados(ficha.areaconstruccioncero())
         self.agregar_resultados(ficha.destino_economico_mayorcero())
         self.agregar_resultados(ficha.matricula_mejora())
         self.agregar_resultados(ficha.terreno_cero())
@@ -718,5 +726,63 @@ class Propietarios:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
                
+               
     
-    
+    def entidadvacio(self):
+        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            resultados = []
+
+            
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+               EntidadDepartamento = row['EntidadDepartamento']
+               EntidadMunicipio= row['EntidadMunicipio']
+                        
+               if pd.isna(EntidadDepartamento) or EntidadDepartamento=='' or EntidadMunicipio=='' or pd.isna(EntidadMunicipio):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'EntidadDepartamento':row['EntidadDepartamento'],
+                        'EntidadMunicipio':row['EntidadMunicipio'],
+                        'Observacion': 'Entidad no puede ser vacia o null',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+                    
+            print(f"Entidades vacias: {len(resultados)}")
+
+            if len(resultados) > 0:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+
+                # Guardar el resultado en un nuevo archivo Excel
+                output_file = 'EntidadesVacias.xlsx'
+                sheet_name = 'fechas_superiores'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+
+                messagebox.showinfo("Éxito", f"Proceso completado. Entidades vacias '{output_file}' con {len(resultados)} registros.")
+            else:
+                print("No se encontraron fechas superiores a la fecha actual.")
+                messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

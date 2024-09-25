@@ -606,3 +606,223 @@ class Ficha:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+            
+    def areaterrenocero(self):
+        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+        
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                areatotalterreno = row['AreaTotalTerreno']
+                area_total_construida = row['AreaTotalConstruida']
+
+                if areatotalterreno == '' or areatotalterreno == 0 or pd.isna(areatotalterreno):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'AreaTotalTerreno':areatotalterreno,
+                        'AreaTotalConstruida': area_total_construida,
+                        'Observacion': 'El area total terreno es cero o null',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                '''
+                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
+                sheet_name = 'ErroresDestinoEconomico'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+
+                '''
+                
+                messagebox.showinfo("Éxito", f"Areasterreno es cero o null {len(resultados)} errores.")
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+        
+    def areaconstruccioncero(self):
+        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+        
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                areatotalterreno = row['AreaTotalTerreno']
+                area_total_construida = row['AreaTotalConstruida']
+
+                if area_total_construida <= 0 or pd.isna(areatotalterreno):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'AreaTotalTerreno':areatotalterreno,
+                        'AreaTotalConstruida': area_total_construida,
+                        'Observacion': 'Area total Construida es cero o null',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                '''
+                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
+                sheet_name = 'ErroresDestinoEconomico'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+
+                '''
+                
+                messagebox.showinfo("Éxito", f"AreatotalConstruida es cero o null {len(resultados)} errores.")
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+            
+            
+    def prediosindireccion(self):
+        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+        
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                DireccionReal = row['DireccionReal']
+                
+
+                if DireccionReal == '' or pd.isna(DireccionReal):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'Direccion':row['DireccionReal'],
+                        'Observacion': 'Predio Sin direccion',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                '''
+                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
+                sheet_name = 'ErroresDestinoEconomico'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+
+                '''
+                
+                messagebox.showinfo("Éxito", f"Predios sin direcciion {len(resultados)} errores.")
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+    
+    def validar_nrofichas(self):
+        archivo_excel = self.archivo_entry.get()
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return []
+
+        try:
+            # Leer las hojas Propietarios y Fichas
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name='Propietarios')
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
+
+            nro_ficha_propietarios = df_propietarios['NroFicha'].dropna().unique()
+            nro_ficha_fichas = df_fichas['NroFicha'].dropna().unique()
+
+            fichas_faltantes_en_fichas = set(nro_ficha_propietarios) - set(nro_ficha_fichas)
+
+            
+            fichas_faltantes_en_propietarios = set(nro_ficha_fichas) - set(nro_ficha_propietarios)
+
+            resultados = []
+
+            
+            for nro_ficha in fichas_faltantes_en_fichas:
+                resultado = {
+                    'NroFicha': nro_ficha,
+                    'Observacion': 'NroFicha en Propietarios no está en Fichas',
+                    'Nombre Hoja': 'Propietarios'  
+                }
+                resultados.append(resultado)
+
+            for nro_ficha in fichas_faltantes_en_propietarios:
+                resultado = {
+                    'NroFicha': nro_ficha,
+                    'Observacion': 'NroFicha en Fichas no está en Propietarios',
+                    'Nombre Hoja': 'Fichas' 
+                }
+                resultados.append(resultado)
+
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+            
