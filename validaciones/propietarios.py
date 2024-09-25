@@ -3,17 +3,19 @@ from tkinter import messagebox
 from datetime import datetime
 from validaciones.ficha import Ficha
 from validaciones.construcciones import Construcciones
+from validaciones.califconstrucciones import CalificaionesConstrucciones
 
 class Propietarios:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
         self.resultados_generales = []
     def agregar_resultados(self, resultados):
-        if resultados:
-            self.resultados_generales.extend(resultados)
-        else:
-            print("No se recibieron resultados para agregar.")
-    '''
+        if isinstance(resultados, list):
+            for resultado in resultados:
+                self.resultados_generales.append(resultado)
+        elif isinstance(resultados, pd.DataFrame):
+            self.resultados_generales.extend(resultados.to_dict(orient='records'))
+        '''
         def procesar(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
@@ -63,6 +65,11 @@ class Propietarios:
         errores_construcciones = construcciones.validar_construcciones_No_convencionales()
         self.agregar_resultados(errores_construcciones)
         
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_banios()) 
+        
+        
+        
         self.cedula_mujer()
         self.cedula_hombre()
         self.primer_apellido_blanco()
@@ -76,7 +83,12 @@ class Propietarios:
         
         
         
+        
+        
+        
+        
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.destino_economico_mayorcero())
         self.agregar_resultados(ficha.matricula_mejora())
         self.agregar_resultados(ficha.terreno_cero())
         self.agregar_resultados(ficha.terreno_null())
@@ -86,16 +98,24 @@ class Propietarios:
         self.agregar_resultados(ficha.modo_adquisicion_informal())
         self.agregar_resultados(ficha.ficha_repetida())
         
-        
+        errores_por_hoja = {}
         
         if self.resultados_generales:
-            df_resultado = pd.DataFrame(self.resultados_generales)
-            
-            output_file = 'ERRORES_CONSOLIDADOS.xlsx'
-            df_resultado.to_excel(output_file, sheet_name='ERRORES', index=False)
-            print(f"Archivo consolidado guardado: {output_file}")
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(self.resultados_generales)} registros.")
+            for resultado in self.resultados_generales:
+                nombre_hoja = resultado.get('Nombre Hoja', 'Sin Nombre')  # Obtener el nombre de la hoja
+                if nombre_hoja not in errores_por_hoja:
+                    errores_por_hoja[nombre_hoja] = []  # Inicializa la lista para esa hoja
+                errores_por_hoja[nombre_hoja].append(resultado)
+
+            # Crear un archivo Excel con múltiples hojas
+            with pd.ExcelWriter('ERRORES_CONSOLIDADOS.xlsx') as writer:
+                for hoja, errores in errores_por_hoja.items():
+                    df_resultado = pd.DataFrame(errores)
+                    df_resultado.to_excel(writer, sheet_name=hoja, index=False)
+                    print(f"Errores guardados en la hoja: {hoja}")
+
+            messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
+
         else:
             messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
             
@@ -136,6 +156,7 @@ class Propietarios:
                     'PrimerApellido': row['PrimerApellido'],
                     'SegundoApellido': row['SegundoApellido'],
                     'Observacion': 'Documento no esta en rango de mujeres'
+                    
                 }
                 resultados.append(resultado)
                 self.agregar_resultados(resultados)
@@ -153,7 +174,7 @@ class Propietarios:
 
         messagebox.showinfo("Éxito",
                             f"Proceso completado Cedula Mujer.con {len(resultados)} registros.")
-
+        
     def cedula_hombre(self):
         df = self.leer_archivo()
         if df is None:
@@ -231,6 +252,7 @@ class Propietarios:
         messagebox.showinfo("Éxito",
                             f"Proceso completado Primer Apellido. con {len(resultados)} registros.")
         
+        
     def primer_nombre_blanco(self): 
         df = self.leer_archivo()
         if df is None:
@@ -268,6 +290,7 @@ class Propietarios:
 
         messagebox.showinfo("Éxito",
                             f"Proceso completado PRIMER_NOMBRE. con {len(resultados)} registros.")
+        return resultados
         
     def calidad_propietario_mun(self):
         df = self.leer_archivo()
@@ -307,7 +330,8 @@ class Propietarios:
                         'Documento': row['Documento'],
                         'CalidadPropietario': row['CalidadPropietario'],
                         'RazonSocial': row['RazonSocial'],
-                        'Observacion': 'Calidad del propietario diferente para NIT del Municipio'
+                        'Observacion': 'Calidad del propietario diferente para NIT del Municipio',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     # Solo se agrega el resultado actual, no toda la lista
@@ -330,7 +354,7 @@ class Propietarios:
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
             messagebox.showinfo("Éxito", f"Proceso completado Calidad prop mun. con {len(resultados)} registros.")
-
+            
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -373,7 +397,8 @@ class Propietarios:
                         'Documento': row['Documento'],
                         'CalidadPropietario': row['CalidadPropietario'],
                         'RazonSocial': row['RazonSocial'],
-                        'Observacion': 'tipo de documento diferente para nit del municipio'
+                        'Observacion': 'tipo de documento diferente para nit del municipio',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     self.agregar_resultados(resultados)
@@ -395,6 +420,7 @@ class Propietarios:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado Nit diferente num. con {len(resultados)} registros.")
+            
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -434,7 +460,9 @@ class Propietarios:
                             'TipoDocumento': row['TipoDocumento'],
                             'Documento': row['Documento'],
                             'Derecho': row['Derecho'],
-                            'Observacion': 'Porcentaje de dominio incompleto diferente a cero, falta: ' + str(100 - valor_b_sum)
+                            'Observacion': 'Porcentaje de dominio incompleto diferente a cero, falta: ' + str(100 - valor_b_sum),
+                            'Nombre Hoja': nombre_hoja
+                        
                         }
                         resultados.append(resultado)
                         self.agregar_resultados(resultados)
@@ -460,6 +488,7 @@ class Propietarios:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado Derecho dirente cien. con {len(resultados)} registros.")
+            
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -504,7 +533,8 @@ class Propietarios:
                         'Escritura': row['Escritura'],
                         'FechaEscritura': row['FechaEscritura'],
                         'Entidad': row['Entidad'],
-                        'Observacion': 'Documento diferente a blanco para código asignado'
+                        'Observacion': 'Documento diferente a blanco para código asignado',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     # Agregar solo el resultado actual
@@ -576,7 +606,8 @@ class Propietarios:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'FechaEscritura': fecha_obj.strftime("%d/%m/%Y"),
-                        'Observacion': 'Fecha anterior a 1778'
+                        'Observacion': 'Fecha anterior a 1778',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     self.agregar_resultados(resultados)
@@ -657,7 +688,8 @@ class Propietarios:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'FechaEscritura': fecha_escritura.strftime("%d/%m/%Y"),
-                        'Observacion': 'Fecha de escritura es superior a la fecha actual'
+                        'Observacion': 'Fecha de escritura es superior a la fecha actual',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     # Solo se agrega el resultado actual, no toda la lista

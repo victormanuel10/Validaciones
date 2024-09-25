@@ -40,7 +40,8 @@ class Ficha:
                     if valor_b_str[21] == '0' and (valor_p == '0' or valor_p == 0):
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Terreno en ceros para ficha que no es mejora'
+                            'Observacion': 'Terreno en ceros para ficha que no es mejora',
+                            'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
                         print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
@@ -97,7 +98,8 @@ class Ficha:
                         'NumCedulaCatastral': row['NumCedulaCatastral'],
                         'Condicion de predio': valor_a[21],
                         'AreaTotalTerreno': valor_b,
-                        'Observacion': 'Terreno nulo para condición de predio'
+                        'Observacion': 'Terreno nulo para condición de predio',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
@@ -159,7 +161,8 @@ class Ficha:
                         'NroFicha': row['NroFicha'],
                         'ModoAdquisicion': row['ModoAdquisicion'],
                         'MatriculaInmobiliaria': valor_a,
-                        'Observacion': 'Matricula invalida para posesión'
+                        'Observacion': 'Matricula invalida para posesión',
+                        'Nombre Hoja': nombre_hoja
                          
                     }
                     resultados.append(resultado)
@@ -224,7 +227,8 @@ class Ficha:
                             'Condicion de predio': valor_a[21],
                             'ModoAdquisicion': row['ModoAdquisicion'],
                             'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
-                            'Observacion': 'Informalidad con matrícula'
+                            'Observacion': 'Informalidad con matrícula',
+                            'Nombre Hoja': nombre_hoja
                             
                         }
                         
@@ -292,7 +296,8 @@ class Ficha:
                         'Condicion de predio': valor_a[21],
                         'ModoAdquisicion': row['ModoAdquisicion'],
                         'circulo': row['circulo'],
-                        'Observacion': 'Informalidad con matrícula'
+                        'Observacion': 'Informalidad con matrícula',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
@@ -353,7 +358,8 @@ class Ficha:
                             'Condicion de predio': valor_a[21],
                             'ModoAdquisicion': row['ModoAdquisicion'],
                             'Tomo': row['Tomo'],
-                            'Observacion': 'Informalidad con Tomo'
+                            'Observacion': 'Informalidad con Tomo',
+                            'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
                         print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
@@ -416,7 +422,8 @@ class Ficha:
                             'NumCedulaCatastral': row['NumCedulaCatastral'],
                             'Condicion de predio': valor_a[21],
                             'ModoAdquisicion': row['ModoAdquisicion'],
-                            'Observacion': 'La informalidad no puede tener modo de adquisición diferente a posesión'
+                            'Observacion': 'La informalidad no puede tener modo de adquisición diferente a posesión',
+                            'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
                         print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
@@ -463,7 +470,7 @@ class Ficha:
 
             # Verificar si hay duplicados en la columna 'NroFicha'
             duplicados = df[df.duplicated(subset='NroFicha', keep=False)]  # Detectar duplicados
-
+            
             print(f"Total de registros duplicados encontrados: {duplicados.shape[0]}")
 
             if duplicados.shape[0] > 0:
@@ -475,10 +482,11 @@ class Ficha:
                 print(f"Dimensiones del DataFrame de duplicados: {duplicados.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {duplicados.shape[0]} registros duplicados.")
-                return duplicados
+                
             else:
                 print("No se encontraron registros duplicados.")
                 messagebox.showinfo("Información", "No se encontraron registros duplicados.")
+            return duplicados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -514,25 +522,27 @@ class Ficha:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'DestinoEcconomico': row['DestinoEcconomico'],
-                        'Observacion': 'En sector rural no es valido destinaciones 12,13 y 14'
+                        'Observacion': 'En sector rural no es valido destinaciones 12,13 y 14',
+                        'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
-            # Crear un nuevo DataFrame con los resultados
 
             df_resultado = pd.DataFrame(resultados)
-            # Guardar el resultado en un nuevo archivo Excel
+            '''
             output_file = 'rural_destino_invalido.xlsx'
             sheet_name = 'rural_destino_invalido'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
+            '''
+            
             messagebox.showinfo("Éxito",
-                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                                f"Proceso completado Rural destino invalido.' con {len(resultados)} registros.")
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -546,3 +556,53 @@ class Ficha:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
+        try:
+        # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                destino_economico = row['DestinoEconomico']
+                area_total_construida = row['AreaTotalConstruida']
+
+                if destino_economico in ['12|Lote_Urbanizado_No_Construido', 
+                                        '13|Lote_Urbanizable_No_Urbanizado', 
+                                        '14|Lote_No_Urbanizable'] and area_total_construida > 0:
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'DestinoEconomico': destino_economico,
+                        'AreaTotalConstruida': area_total_construida,
+                        'Observacion': 'Destino económico no debe tener área construida mayor a cero',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                '''
+                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
+                sheet_name = 'ErroresDestinoEconomico'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+
+                '''
+                
+                messagebox.showinfo("Éxito", f"Proceso completado Destino Economico 12 13 14.con {len(resultados)} errores.")
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
