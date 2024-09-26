@@ -118,7 +118,7 @@ class Construcciones:
 
                 
                 
-                messagebox.showinfo("Éxito", f"No convencionales. {len(resultados)} registros.")
+                messagebox.showinfo("Éxito", f"TipoConstruccion no vacio en No convencionales. {len(resultados)} registros.")
                 
             else:
                 messagebox.showinfo("Información", "No se encontraron registros tipo construccion.")
@@ -177,7 +177,7 @@ class Construcciones:
 
                 
                 
-                messagebox.showinfo("Éxito", f"No convencionales. {len(resultados)} registros.")
+                messagebox.showinfo("Éxito", f"AreaMayor a 1000. {len(resultados)} registros.")
                 
             else:
                 messagebox.showinfo("Información", "No se encontraron registros Areamayor1000.")

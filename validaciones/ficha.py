@@ -569,7 +569,7 @@ class Ficha:
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
-                destino_economico = row['DestinoEconomico']
+                destino_economico = row['DestinoEcconomico']
                 area_total_construida = row['AreaTotalConstruida']
 
                 if destino_economico in ['12|Lote_Urbanizado_No_Construido', 
@@ -825,4 +825,59 @@ class Ficha:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
+    
+    def porcentaje_litigiocero(self):
+        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+        
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                PorcentajeLitigio = row['PorcentajeLitigio']
+                
+
+                if PorcentajeLitigio != 0 :
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'Observacion': 'PorcentajeLitigio No puede ser diferente de cero',
+                        'PorcentajeLitigio':row['PorcentajeLitigio'],
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
             
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                
+                output_file = 'PorcentajeLitigio.xlsx'
+                sheet_name = 'PorcentajeLitigio'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+
+                
+                
+                messagebox.showinfo("Éxito", f"PorcentajeLitigio diferente cero {len(resultados)} errores.")
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros PorcentajeLitigiocero.")
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

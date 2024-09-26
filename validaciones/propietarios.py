@@ -4,6 +4,8 @@ from datetime import datetime
 from validaciones.ficha import Ficha
 from validaciones.construcciones import Construcciones
 from validaciones.califconstrucciones import CalificaionesConstrucciones
+from validaciones.zonashomogeneas import ZonasHomogeneas
+from validaciones.colindantes import Colindantes
 
 class Propietarios:
     def __init__(self, archivo_entry):
@@ -61,9 +63,14 @@ class Propietarios:
     '''
     def procesar_errores(self):
         
+        colindantes=Colindantes(self.archivo_entry)
+        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        
+        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
+        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
+        
         construcciones = Construcciones(self.archivo_entry)
-        errores_construcciones = construcciones.validar_construcciones_No_convencionales()
-        self.agregar_resultados(errores_construcciones)
+        self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.areaconstruida_mayora1000())
         self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
@@ -93,7 +100,9 @@ class Propietarios:
         
         
         
+        
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.porcentaje_litigiocero())
         self.agregar_resultados(ficha.validar_nrofichas())
         self.agregar_resultados(ficha.areaterrenocero())
         self.agregar_resultados(ficha.prediosindireccion())
@@ -165,7 +174,8 @@ class Propietarios:
                     'SegundoNombre': row['SegundoNombre'],
                     'PrimerApellido': row['PrimerApellido'],
                     'SegundoApellido': row['SegundoApellido'],
-                    'Observacion': 'Documento no esta en rango de mujeres'
+                    'Observacion': 'Documento no esta en rango de mujeres',
+                    'Nombre Hoja':'Propietarios'
                     
                 }
                 resultados.append(resultado)
