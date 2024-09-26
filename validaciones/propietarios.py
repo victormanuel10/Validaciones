@@ -64,13 +64,15 @@ class Propietarios:
         construcciones = Construcciones(self.archivo_entry)
         errores_construcciones = construcciones.validar_construcciones_No_convencionales()
         self.agregar_resultados(errores_construcciones)
+        self.agregar_resultados(construcciones.areaconstruida_mayora1000())
+        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
+        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
+        
         
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
         self.agregar_resultados(calificonstrucciones.validar_banios()) 
         
-        
-        
-        
+        self.numerofallocero()
         self.entidadvacio()
         self.cedula_mujer()
         self.cedula_hombre()
@@ -763,6 +765,7 @@ class Propietarios:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
+                    self.agregar_resultados([resultado])
                     print(f"Fila {index}: Agregado a resultados: {resultado}")
                     
             print(f"Entidades vacias: {len(resultados)}")
@@ -780,9 +783,74 @@ class Propietarios:
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Entidades vacias '{output_file}' con {len(resultados)} registros.")
             else:
-                print("No se encontraron fechas superiores a la fecha actual.")
+                print("No se encontraron Entidades vacias.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
 
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    def numerofallocero(self):
+        
+        archivo_excel= self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            resultados = []
+
+            
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+               NumeroFallo = row['NumeroFallo']
+               
+                        
+               if   NumeroFallo== '0' or NumeroFallo=='' or pd.isna(NumeroFallo):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'EntidadDepartamento':row['EntidadDepartamento'],
+                        'EntidadMunicipio':row['EntidadMunicipio'],
+                        'NumeroFallo':row['NumeroFallo'],
+                        'Observacion': 'El numero fallo es cero o vacio',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    self.agregar_resultados([resultado])
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+                    
+            print(f"Entidades vacias: {len(resultados)}")
+
+            if len(resultados) > 0:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+
+                # Guardar el resultado en un nuevo archivo Excel
+                output_file = 'NumeroFallo.xlsx'
+                sheet_name = 'Numero fallo'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+
+                messagebox.showinfo("Éxito", f"Proceso completado. Numerofallo '{output_file}' con {len(resultados)} registros.")
+            else:
+                print("No se encontraron Numerofallo.")
+                messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+        
+        
+    
+    
