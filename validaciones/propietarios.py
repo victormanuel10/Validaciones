@@ -184,12 +184,12 @@ class Propietarios:
         sheet_name = 'cedula_mujer'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
-        
+        messagebox.showinfo("Éxito",
+                            f"Proceso completado Cedula Mujer.con {len(resultados)} registros.")
         '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-        messagebox.showinfo("Éxito",
-                            f"Proceso completado Cedula Mujer.con {len(resultados)} registros.")
+        
         
     def cedula_hombre(self):
         df = self.leer_archivo()
@@ -223,12 +223,12 @@ class Propietarios:
         sheet_name = 'cedula_hombre'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
-
+        messagebox.showinfo("Éxito",
+                            f"Proceso completado Cedula Hombre. con {len(resultados)} registros.")
         '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-        messagebox.showinfo("Éxito",
-                            f"Proceso completado Cedula Hombre. con {len(resultados)} registros.")
+        
         
     def primer_apellido_blanco(self):
         df = self.leer_archivo()
@@ -261,13 +261,13 @@ class Propietarios:
         sheet_name = 'PRIMER_APELLIDO'
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
-        
-        '''
-        print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-
         messagebox.showinfo("Éxito",
                             f"Proceso completado Primer Apellido. con {len(resultados)} registros.")
+        '''
         
+
+        
+        print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
         
     def primer_nombre_blanco(self): 
         df = self.leer_archivo()
@@ -301,11 +301,13 @@ class Propietarios:
         df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
         print(f"Archivo guardado: {output_file}")
         
-        '''
-        print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+        
+        
 
         messagebox.showinfo("Éxito",
                             f"Proceso completado PRIMER_NOMBRE. con {len(resultados)} registros.")
+        '''
+        print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
         return resultados
         
     def calidad_propietario_mun(self):
@@ -365,12 +367,13 @@ class Propietarios:
             sheet_name = 'CALIDAD_PROP_MUN'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
-            '''
+            
 
-            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+            
 
             messagebox.showinfo("Éxito", f"Proceso completado Calidad prop mun. con {len(resultados)} registros.")
-            
+            '''
+            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -431,12 +434,13 @@ class Propietarios:
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
             
-            '''
-            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+            
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado Nit diferente num. con {len(resultados)} registros.")
+            ''' 
             
+            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -498,12 +502,12 @@ class Propietarios:
                 sheet_name = 'DERECHO_DIFERENTE_CIEN'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-                
+                messagebox.showinfo("Éxito",
+                f"Proceso completado Derecho dirente cien. con {len(resultados)} registros.")
+            
             '''            
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado Derecho dirente cien. con {len(resultados)} registros.")
             
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -568,11 +572,12 @@ class Propietarios:
             sheet_name = 'DOCUMENTO_CODIGO_ASIGNADO'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
-            '''
+            
 
-            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-
+            
             messagebox.showinfo("Éxito", f"Proceso completado Codigo Asignado. con {len(resultados)} registros.")
+            '''
+            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -642,10 +647,11 @@ class Propietarios:
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-                '''
+                
 
                 messagebox.showinfo("Éxito",
                                     f"Proceso completado. Fechas inferiores a 1778: {len(resultados)} registros.")
+                '''
             else:
                 print("No se encontraron fechas anteriores a 1778.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas anteriores a 1778.")
@@ -717,7 +723,7 @@ class Propietarios:
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-
+                '''
                 # Guardar el resultado en un nuevo archivo Excel
                 output_file = 'FECHAS_ESCRITURA_SUPERIORES.xlsx'
                 sheet_name = 'fechas_superiores'
@@ -726,6 +732,7 @@ class Propietarios:
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+                '''
             else:
                 print("No se encontraron fechas superiores a la fecha actual.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
@@ -779,7 +786,7 @@ class Propietarios:
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-
+                '''
                 # Guardar el resultado en un nuevo archivo Excel
                 output_file = 'EntidadesVacias.xlsx'
                 sheet_name = 'fechas_superiores'
@@ -788,6 +795,7 @@ class Propietarios:
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Entidades vacias '{output_file}' con {len(resultados)} registros.")
+                '''
             else:
                 print("No se encontraron Entidades vacias.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
@@ -840,7 +848,7 @@ class Propietarios:
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-
+                '''
                 # Guardar el resultado en un nuevo archivo Excel
                 output_file = 'NumeroFallo.xlsx'
                 sheet_name = 'Numero fallo'
@@ -849,6 +857,7 @@ class Propietarios:
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Numerofallo '{output_file}' con {len(resultados)} registros.")
+                '''
             else:
                 print("No se encontraron Numerofallo.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")

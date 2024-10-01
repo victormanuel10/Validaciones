@@ -60,7 +60,7 @@ class CalificaionesConstrucciones:
                 
                 
                 
-                messagebox.showinfo( f"Tamaño baño. {len(resultados)} registros.")
+                #messagebox.showinfo( f"Tamaño baño. {len(resultados)} registros.")
                 
             else:
                 messagebox.showinfo("Información", "No se encontraron registros que cumplan con la condición.")
@@ -109,13 +109,16 @@ class CalificaionesConstrucciones:
 
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
-
+                '''
+                
+                
                 output_file = 'MuroInvalido.xlsx'
                 sheet_name = 'MuroInvalido'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Muro Invalido con {len(resultados)} registros.")
+                '''
             else:
                 messagebox.showinfo("Información", "No se encontraron registros que cumplan con la condición.")
 
@@ -164,13 +167,16 @@ class CalificaionesConstrucciones:
 
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
-
+                '''
                 output_file = 'MuroInvalido.xlsx'
                 sheet_name = 'MuroInvalido'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Muro Invalido con {len(resultados)} registros.")
+                
+                '''
+                
             else:
                 messagebox.showinfo("Información", "No se encontraron registros que cumplan con la condición.")
 

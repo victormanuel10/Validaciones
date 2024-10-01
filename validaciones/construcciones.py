@@ -55,10 +55,10 @@ class Construcciones:
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
 
-                '''
+                
                 
                 messagebox.showinfo("Éxito", f"No convencionales. {len(resultados)} registros.")
-                
+                '''
             else:
                 messagebox.showinfo("Información", "No se encontraron registros No convencionales.")
             return resultados
@@ -110,7 +110,7 @@ class Construcciones:
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
 
-                
+                '''
                 output_file = 'TipoConstruccion.xlsx'
                 sheet_name = 'TipoConstruccion'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
@@ -119,7 +119,7 @@ class Construcciones:
                 
                 
                 messagebox.showinfo("Éxito", f"TipoConstruccion no vacio en No convencionales. {len(resultados)} registros.")
-                
+                '''
             else:
                 messagebox.showinfo("Información", "No se encontraron registros tipo construccion.")
             return resultados
@@ -169,16 +169,13 @@ class Construcciones:
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
 
-                
+                '''
                 output_file = 'Areamayor1000.xlsx'
                 sheet_name = 'Areamayor1000'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-
-                
-                
                 messagebox.showinfo("Éxito", f"AreaMayor a 1000. {len(resultados)} registros.")
-                
+                '''
             else:
                 messagebox.showinfo("Información", "No se encontraron registros Areamayor1000.")
             return resultados
@@ -223,12 +220,12 @@ class Construcciones:
             # Si se encuentran errores, guardar los resultados en un archivo Excel
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
-                
+                '''
                 output_file = 'ERRORES_SECUENCIAS_CONSTRUCCIONES.xlsx'
                 df_resultado.to_excel(output_file, sheet_name='ErroresSecuencias', index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
-            
+                '''
             else:
                 messagebox.showinfo("Sin errores", "Todas las secuencias en Construcciones están presentes en ConstruccionesGenerales.")
             return resultados

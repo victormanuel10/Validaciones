@@ -53,7 +53,7 @@ class Ficha:
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
             
-            messagebox.showinfo("Éxito", f"Proceso completado Terreno cero. con {len(resultados)} registros.")
+            #messagebox.showinfo("Éxito", f"Proceso completado Terreno cero. con {len(resultados)} registros.")
             return resultados
 
         except Exception as e:
@@ -117,11 +117,11 @@ class Ficha:
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
             print(f"Archivo guardado: {output_file}")
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-
-            '''
-            
             messagebox.showinfo("Éxito",
                                 f"Proceso completado Terreno null. con {len(resultados)} registros.")
+         
+            '''
+            
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -174,7 +174,7 @@ class Ficha:
        
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
-
+            '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'INFORMA_MATRICULA.xlsx'
             sheet_name = 'INFORMAL_MATRICULA'
@@ -183,6 +183,8 @@ class Ficha:
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
             messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            
+            '''
             return resultados   
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -241,7 +243,7 @@ class Ficha:
 
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
-
+            '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'MATRICULA_MEJORA.xlsx'
             sheet_name = 'MATRICULA_MEJORA'
@@ -251,6 +253,8 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            
+            '''
             return resultados
 
         except Exception as e:
@@ -306,7 +310,7 @@ class Ficha:
 
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
-
+            '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'CIRCULO_MEJORA.xlsx'
             sheet_name = 'CIRCULO_MEJORA'
@@ -316,6 +320,8 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            
+            '''
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -370,7 +376,7 @@ class Ficha:
 
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
-
+            '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'TOMO_MEJORA.xlsx'
             sheet_name = 'TOMO_MEJORA'
@@ -380,6 +386,8 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            
+            '''
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -434,7 +442,7 @@ class Ficha:
 
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
-
+            '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'MODO_ADQUISICION_INFORMAL.xlsx'
             sheet_name = 'MODO_ADQUISICION_INFORMAL'
@@ -444,6 +452,8 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            
+            '''
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -474,6 +484,7 @@ class Ficha:
             print(f"Total de registros duplicados encontrados: {duplicados.shape[0]}")
 
             if duplicados.shape[0] > 0:
+                
                 # Guardar los resultados en un nuevo archivo Excel
                 output_file = 'FICHAS_REPETIDAS.xlsx'
                 sheet_name = 'fichas_repetidas'
@@ -482,6 +493,7 @@ class Ficha:
                 print(f"Dimensiones del DataFrame de duplicados: {duplicados.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {duplicados.shape[0]} registros duplicados.")
+                
                 
             else:
                 print("No se encontraron registros duplicados.")
@@ -595,10 +607,10 @@ class Ficha:
                 sheet_name = 'ErroresDestinoEconomico'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-
+                messagebox.showinfo("Éxito", f"Proceso completado Destino Economico 12 13 14.con {len(resultados)} errores.")
+            
                 '''
                 
-                messagebox.showinfo("Éxito", f"Proceso completado Destino Economico 12 13 14.con {len(resultados)} errores.")
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
@@ -653,10 +665,10 @@ class Ficha:
                 sheet_name = 'ErroresDestinoEconomico'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-
+                messagebox.showinfo("Éxito", f"Areasterreno es cero o null {len(resultados)} errores.")
+            
                 '''
                 
-                messagebox.showinfo("Éxito", f"Areasterreno es cero o null {len(resultados)} errores.")
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
@@ -710,10 +722,10 @@ class Ficha:
                 sheet_name = 'ErroresDestinoEconomico'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-
+                messagebox.showinfo("Éxito", f"AreatotalConstruida es cero o null {len(resultados)} errores.")
+            
                 '''
                 
-                messagebox.showinfo("Éxito", f"AreatotalConstruida es cero o null {len(resultados)} errores.")
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
@@ -768,10 +780,10 @@ class Ficha:
                 sheet_name = 'ErroresDestinoEconomico'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-
+                messagebox.showinfo("Éxito", f"Predios sin direcciion {len(resultados)} errores.")
+            
                 '''
                 
-                messagebox.showinfo("Éxito", f"Predios sin direcciion {len(resultados)} errores.")
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
@@ -864,16 +876,18 @@ class Ficha:
             
             if resultados:
                 # Crear un nuevo DataFrame con los resultados
-                df_resultado = pd.DataFrame(resultados)
                 
+                
+                df_resultado = pd.DataFrame(resultados)
+                '''
                 output_file = 'PorcentajeLitigio.xlsx'
                 sheet_name = 'PorcentajeLitigio'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-
-                
-                
                 messagebox.showinfo("Éxito", f"PorcentajeLitigio diferente cero {len(resultados)} errores.")
+                print(f"Archivo guardado: {output_file}")
+                '''
+                
+
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros PorcentajeLitigiocero.")

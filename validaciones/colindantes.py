@@ -51,12 +51,13 @@ class Colindantes:
             
             # Si se encuentran errores, se guardan en un archivo Excel
             if resultados:
+                '''
                 df_resultado = pd.DataFrame(resultados)
                 output_file = 'ERRORES_ORIENTACIONES_COLINDANTES.xlsx'
                 df_resultado.to_excel(output_file, sheet_name='ErroresOrientaciones', index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
-            
+                '''
             else:
                 messagebox.showinfo("Sin errores", "Todos los NroFicha tienen las orientaciones 'ESTE', 'NORTE', 'SUR', y 'OESTE'.")
             return resultados

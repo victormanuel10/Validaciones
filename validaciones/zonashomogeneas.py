@@ -47,12 +47,14 @@ class ZonasHomogeneas:
             
             # Si se encuentran errores, se guardan en un archivo Excel
             if resultados:
+                '''
+                
                 df_resultado = pd.DataFrame(resultados)
                 output_file = 'ERRORES_ZONAS_HOMOGENEAS.xlsx'
                 df_resultado.to_excel(output_file, sheet_name='ErroresZonasHomogeneas', index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
-            
+                '''
             else:
                 messagebox.showinfo("Sin errores", "Todos los NroFicha tienen registros de 'fisica' y 'geoeconomica'.")
             return resultados
