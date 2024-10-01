@@ -63,6 +63,12 @@ class Propietarios:
     '''
     def procesar_errores(self):
         
+        
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_banios()) 
+        self.agregar_resultados(calificonstrucciones.Validar_armazon())
+        self.agregar_resultados(calificonstrucciones.Validar_Cubierta())
+        
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
@@ -76,8 +82,7 @@ class Propietarios:
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
         
         
-        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        self.agregar_resultados(calificonstrucciones.validar_banios()) 
+        
         
         self.numerofallocero()
         self.entidadvacio()
@@ -91,15 +96,6 @@ class Propietarios:
         self.documento_blanco_cod_asig()
         self.fecha_escritura_inferior()
         self.fecha_escritura_mayor()
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.porcentaje_litigiocero())
