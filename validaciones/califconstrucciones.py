@@ -224,13 +224,15 @@ class CalificaionesConstrucciones:
 
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
-                
+                '''
                 output_file = 'BanioBueno.xlsx'
                 sheet_name = 'BanioBueno'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Muro Invalido con {len(resultados)} registros.")
+                
+                '''
                 
                 
             else:
