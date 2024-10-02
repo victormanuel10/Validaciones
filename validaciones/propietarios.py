@@ -65,6 +65,8 @@ class Propietarios:
         
         
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
+        self.agregar_resultados(calificonstrucciones.Conservacion_banio_bueno())
         self.agregar_resultados(calificonstrucciones.validar_banios()) 
         self.agregar_resultados(calificonstrucciones.Validar_armazon())
         self.agregar_resultados(calificonstrucciones.Validar_Cubierta())
