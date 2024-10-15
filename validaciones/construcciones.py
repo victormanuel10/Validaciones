@@ -1,11 +1,11 @@
 import pandas as pd
 from tkinter import messagebox
 from datetime import datetime
-
+from NPHORPH.fichasvalidador import FiltroFichas
 class Construcciones:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
-        
+        self.filtro_fichas = FiltroFichas(archivo_entry)
         
     def validar_construcciones_No_convencionales(self):
         archivo_excel = self.archivo_entry.get()
@@ -14,7 +14,9 @@ class Construcciones:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -75,7 +77,9 @@ class Construcciones:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -136,7 +140,9 @@ class Construcciones:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -190,7 +196,9 @@ class Construcciones:
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer las hojas Construcciones y ConstruccionesGenerales
             df_construcciones = pd.read_excel(archivo_excel, sheet_name='Construcciones')
@@ -229,6 +237,49 @@ class Construcciones:
             else:
                 messagebox.showinfo("Sin errores", "Todas las secuencias en Construcciones están presentes en ConstruccionesGenerales.")
             return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+    
+    def validar_edad_construccion(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Construcciones'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                edad_construccion = row.get('EdadConstruccion', None)
+
+                # Verificar si 'EdadConstruccion' es <= 0
+                if edad_construccion is not None and edad_construccion <= 0:
+                    resultado = {
+                        'NroFicha': row.get('NroFicha', 'Sin NroFicha'),
+                        'Secuencia': row.get('Secuencia', 'Sin Secuencia'),
+                        'EdadConstruccion': edad_construccion,
+                        'Observacion': 'Edad de construcción inválida (<= 0)',
+                    }
+                    resultados.append(resultado)
+                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
+
+            # Agregar resultados a la lista general
+            return resultados
+
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

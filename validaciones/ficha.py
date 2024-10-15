@@ -1,24 +1,31 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 from tkinter import messagebox
-
+from NPHORPH.fichasvalidador import FiltroFichas
 
 class Ficha:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
-
+        self.filtro_fichas = FiltroFichas(archivo_entry)
+        
     def terreno_cero(self):
+        
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
+        
 
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            
+            print("Leyendo archivo: {}, Hoja: {}".format(archivo_excel, nombre_hoja))
             print(f"funcion: terreno_cero")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
@@ -51,6 +58,7 @@ class Ficha:
             print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
+            
             df_resultado = pd.DataFrame(resultados)
             
             #messagebox.showinfo("Éxito", f"Proceso completado Terreno cero. con {len(resultados)} registros.")
@@ -64,11 +72,14 @@ class Ficha:
     def terreno_null(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return []  # Devolver lista vacía si no se encuentra el archivo
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -131,11 +142,14 @@ class Ficha:
     def informal_matricula(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -193,11 +207,14 @@ class Ficha:
     def matricula_mejora(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -264,11 +281,13 @@ class Ficha:
     def circulo_mejora(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -330,7 +349,10 @@ class Ficha:
     def tomo_mejora(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
@@ -397,11 +419,13 @@ class Ficha:
     def modo_adquisicion_informal(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -464,11 +488,13 @@ class Ficha:
     def ficha_repetida(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -506,11 +532,14 @@ class Ficha:
     def rural_destino_invalido(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -565,9 +594,13 @@ class Ficha:
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
         
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
         # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -586,7 +619,8 @@ class Ficha:
 
                 if destino_economico in ['12|Lote_Urbanizado_No_Construido', 
                                         '13|Lote_Urbanizable_No_Urbanizado', 
-                                        '14|Lote_No_Urbanizable'] and area_total_construida > 0:
+                                        '14|Lote_No_Urbanizable',
+                                        '19|USO PUBLICO'] and area_total_construida > 0:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'DestinoEconomico': destino_economico,
@@ -624,10 +658,12 @@ class Ficha:
         
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         
         try:
         
@@ -682,10 +718,13 @@ class Ficha:
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
         
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
         
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -737,16 +776,18 @@ class Ficha:
             
             
     def prediosindireccion(self):
-        
         archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Fichas'
-        
+        nombre_hoja = 'Fichas'        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
-        
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
@@ -755,86 +796,157 @@ class Ficha:
 
             resultados = []
 
+            # Lista de palabras no permitidas
+            palabras_no_permitidas = ['CALLE', 'calle', 'AVENIDA', 'avenida', 'CR','CRA','Cra', 'KL', 'CARRERA', 'Carrera', 'Diagonal']
+
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
                 DireccionReal = row['DireccionReal']
-                
 
+                # Verificar si la dirección está vacía o contiene palabras no permitidas
                 if DireccionReal == '' or pd.isna(DireccionReal):
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'Direccion':row['DireccionReal'],
-                        'Observacion': 'Predio Sin direccion',
-                        'Nombre Hoja': nombre_hoja
-                    }
-                    resultados.append(resultado)
-                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+                    observacion = 'Predio sin dirección'
+                elif any(palabra in DireccionReal for palabra in palabras_no_permitidas):
+                    observacion = 'Contiene palabras no permitidas'
+                else:
+                    continue
+
+                resultado = {
+                    'NroFicha': row['NroFicha'],
+                    'Direccion': row['DireccionReal'],
+                    'Observacion': observacion,
+                    'Nombre Hoja': nombre_hoja
+                }
+                resultados.append(resultado)
+                print(f"Fila {index}: Agregado a resultados: {resultado}")
 
             print(f"Total de errores encontrados: {len(resultados)}")
+            '''
             
             if resultados:
+                
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-                '''
-                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
-                sheet_name = 'ErroresDestinoEconomico'
+                
+                output_file = 'Direcciones.xlsx'
+                sheet_name = 'Direcciones'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Predios sin direcciion {len(resultados)} errores.")
-            
-                '''
+                messagebox.showinfo("Éxito", f"Predios sin dirección o con palabras no permitidas: {len(resultados)} errores.")
                 
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-    
-    def validar_nrofichas(self):
-        archivo_excel = self.archivo_entry.get()
         
+    def validar_nrofichas_propietarios(self):
+        archivo_excel = self.archivo_entry.get()
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return []
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer las hojas Propietarios y Fichas
             df_propietarios = pd.read_excel(archivo_excel, sheet_name='Propietarios')
             df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
 
-            nro_ficha_propietarios = df_propietarios['NroFicha'].dropna().unique()
-            nro_ficha_fichas = df_fichas['NroFicha'].dropna().unique()
+            # Asegurarse de que las columnas 'NroFicha' sean de tipo string y sin espacios en blanco
+            df_propietarios['NroFicha'] = df_propietarios['NroFicha'].astype(str).str.strip()
+            df_fichas['NroFicha'] = df_fichas['NroFicha'].astype(str).str.strip()
 
-            fichas_faltantes_en_fichas = set(nro_ficha_propietarios) - set(nro_ficha_fichas)
+            # Obtener los valores únicos y no nulos de 'NroFicha'
+            nro_ficha_propietarios = set(df_propietarios['NroFicha'].dropna().unique())
+            nro_ficha_fichas = set(df_fichas['NroFicha'].dropna().unique())
 
-            
-            fichas_faltantes_en_propietarios = set(nro_ficha_fichas) - set(nro_ficha_propietarios)
+            # Verificar si hay NroFicha en Propietarios que no están en Fichas
+            fichas_faltantes_en_fichas = nro_ficha_propietarios - nro_ficha_fichas
 
             resultados = []
 
-            
             for nro_ficha in fichas_faltantes_en_fichas:
                 resultado = {
                     'NroFicha': nro_ficha,
                     'Observacion': 'NroFicha en Propietarios no está en Fichas',
-                    'Nombre Hoja': 'Propietarios'  
+                    'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
+            '''
+            
+            if resultados:
+                print("")
+                #messagebox.showinfo("Resultados", f"Se encontraron {len(resultados)} fichas faltantes en Fichas.")
+            else:
+                messagebox.showinfo("Información", "No faltan fichas en Fichas desde Propietarios.")
+            '''
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        
+    def validar_nrofichas_faltantes(self):
+        archivo_excel = self.archivo_entry.get()
+        
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return []
+        df_fichas_filtradas = self.filtro_fichas.filtrar_datos_fichas()
+        if df_fichas_filtradas is None:
+            return []
+        
+        try:
+            # Leer las hojas Propietarios y Fichas
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name='Propietarios')
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
+
+            # Asegurarse de que las columnas 'NroFicha' sean de tipo string y sin espacios en blanco
+            df_propietarios['NroFicha'] = df_propietarios['NroFicha'].astype(str).str.strip()
+            df_fichas['NroFicha'] = df_fichas['NroFicha'].astype(str).str.strip()
+
+            # Obtener los valores únicos y no nulos de 'NroFicha'
+            nro_ficha_propietarios = set(df_propietarios['NroFicha'].dropna().unique())
+            nro_ficha_fichas = set(df_fichas['NroFicha'].dropna().unique())
+
+            # Verificar si hay NroFicha en Fichas que no están en Propietarios
+            fichas_faltantes_en_propietarios = nro_ficha_fichas - nro_ficha_propietarios
+
+            resultados = []
 
             for nro_ficha in fichas_faltantes_en_propietarios:
                 resultado = {
                     'NroFicha': nro_ficha,
                     'Observacion': 'NroFicha en Fichas no está en Propietarios',
-                    'Nombre Hoja': 'Fichas' 
+                    'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
+            '''
+            
+            if resultados:
+                
+                
+                df_resultado = pd.DataFrame(resultados)
+                
+                output_file = 'Fichas faltantes propietarios.xlsx'
+                sheet_name = 'Fichas faltantes propietarios'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                messagebox.showinfo("Éxito", f"Fichas faltantes propietarios {len(resultados)} errores.")
+                print(f"Archivo guardado: {output_file}")
 
+            else:
+                messagebox.showinfo("Información", "No faltan fichas en Propietarios.")
+            '''
             return resultados
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            print(f"Error: {str(e)}")  # Python 3 - print con formato
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
     
@@ -846,6 +958,9 @@ class Ficha:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
+        df_fichas_filtradas = self.filtro_fichas.filtrar_datos_fichas()
+        if df_fichas_filtradas is None:
+            return []
         
         try:
         
@@ -892,6 +1007,207 @@ class Ficha:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros PorcentajeLitigiocero.")
             return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+            
+    def validar_matriculas_duplicadas(self):
+        archivo_excel = self.archivo_entry.get()
+
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return []
+        df_fichas_filtradas = self.filtro_fichas.filtrar_datos_fichas()
+        if df_fichas_filtradas is None:
+            return []
+        
+        try:
+            # Leer las hojas FICHAS y PROPIETARIOS
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name='Propietarios')
+
+            # Verificar que exista la columna NroFicha en FICHAS y Propietarios, y Documento en Propietarios
+            if 'NroFicha' not in df_fichas.columns:
+                messagebox.showerror("Error", "Falta la columna 'NroFicha' en la hoja FICHAS.")
+                return []
+
+            if 'NroFicha' not in df_propietarios.columns or 'Documento' not in df_propietarios.columns:
+                messagebox.showerror("Error", "Faltan las columnas 'NroFicha' o 'Documento' en la hoja Propietarios.")
+                return []
+
+            # Eliminar filas donde 'MatriculaInmobiliaria' esté vacía en FICHAS
+            df_fichas_limpio = df_fichas.dropna(subset=['MatriculaInmobiliaria'])
+
+            # Identificar las filas duplicadas en 'MatriculaInmobiliaria'
+            matriculas_duplicadas = df_fichas_limpio[df_fichas_limpio.duplicated('MatriculaInmobiliaria', keep=False)]
+
+            resultados = []
+
+            for matricula, group in matriculas_duplicadas.groupby('MatriculaInmobiliaria'):
+                documentos = set() 
+                for _, row in group.iterrows():
+                    nro_ficha_fichas = row['NroFicha']
+
+                    # Buscar el Documento en la hoja Propietarios usando NroFicha
+                    propietario_fila = df_propietarios[df_propietarios['NroFicha'] == nro_ficha_fichas]
+
+                    if not propietario_fila.empty:
+                        documento_propietario = propietario_fila['Documento'].values[0]
+                        documentos.add(documento_propietario) 
+                        
+                if len(documentos) > 1:
+                    for _, row in group.iterrows():
+                        nro_ficha_fichas = row['NroFicha']
+                        resultado = {
+                            'MatriculaInmobiliaria': matricula,
+                            'NroFicha': nro_ficha_fichas,
+                            'Observacion': 'Matrícula Inmobiliaria duplicada en FICHAS con Documentos diferentes en PROPIETARIOS',
+                            'Nombre Hoja': 'Fichas'
+                        }
+                        resultados.append(resultado)
+                '''
+                df_resultado = pd.DataFrame(resultados)
+
+                
+                output_file = 'Matrícula Inmobiliaria.xlsx'
+                sheet_name = 'Matrícula Inmobiliaria'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                '''
+                
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        
+    def validar_npn(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        df_fichas_filtradas = self.filtro_fichas.filtrar_datos_fichas()
+        if df_fichas_filtradas is None:
+            return []
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los errores
+            errores = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                npn = row['Npn']  
+                
+                if isinstance(npn, str) and len(npn) >= 22:
+                    if npn[21] == '0':
+                        resto_caracteres = npn[22:]
+                        if any(char != '0' for char in resto_caracteres):
+                            # Si no son todos '0', agregar a los errores
+                            error = {
+                                'NroFicha': row['NroFicha'],
+                                'Npn': npn,
+                                'Observacion': 'El carácter 22 es 0 pero los caracteres restantes no son todos ceros',
+                                'Nombre Hoja': nombre_hoja
+                            }
+                            errores.append(error)
+                            print(f"Error encontrado en la fila {index}: {error}")
+                else:
+                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
+
+            print(f"Total de errores encontrados: {len(errores)}")
+
+            # Si hay errores, guardarlos en un archivo Excel
+            '''
+            
+            if errores:
+                df_errores = pd.DataFrame(errores)
+                output_file = 'ERRORES_NPN.xlsx'
+                sheet_name = 'ErroresNpn'
+                df_errores.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Errores", f"Se encontraron {len(errores)} errores y se guardaron en '{output_file}'.")
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
+            return errores
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    def validar_npn14a17(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"funcion: validar_npn")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                npn = str(row['Npn'])  # Convertir a cadena para asegurar el acceso por índice
+
+                # Validar que el Npn tenga al menos 17 caracteres antes de acceder a las posiciones 14-17
+                if len(npn) >= 17:
+                    # Extraer los caracteres de las posiciones 14, 15, 16 y 17
+                    subcadena_npn = npn[13:17]
+
+                    # Verificar si las posiciones 14-17 son "0000"
+                    if subcadena_npn == "0000":
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'Npn': row['Npn'],
+                            'Observacion': 'Npn contiene 0000 en las posiciones 14-17',
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                else:
+                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
+            
+            print(f"Total de errores encontrados: {len(resultados)}")
+            '''
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                
+                # Guardar el resultado en un archivo Excel
+                output_file = 'ERRORES_NPN.xlsx'
+                sheet_name = 'ErroresNPN'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Validación completada con {len(resultados)} errores.")
+                
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
+            return resultados
+
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

@@ -6,104 +6,41 @@ from validaciones.construcciones import Construcciones
 from validaciones.califconstrucciones import CalificaionesConstrucciones
 from validaciones.zonashomogeneas import ZonasHomogeneas
 from validaciones.colindantes import Colindantes
+from validaciones.cartografia import Cartografia
+from NPHORPH.fichasvalidador import FiltroFichas
+from validaciones.fichasrph import FichasRPH
 
 class Propietarios:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
         self.resultados_generales = []
+        self.filtro_fichas = FiltroFichas(archivo_entry)
+        
     def agregar_resultados(self, resultados):
         if isinstance(resultados, list):
             for resultado in resultados:
                 self.resultados_generales.append(resultado)
         elif isinstance(resultados, pd.DataFrame):
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
-        '''
-        def procesar(self):
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
-
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
-            return
-
-        try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
-            print(f"Procesando archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
-            #Propietarios
-            self.cedula_mujer(df)
-            self.cedula_hombre(df)
-            self.primer_apellido_blanco(df)
-            self.primer_nombre_blanco(df)
-            self.calidad_propietario_mun(df)
-            self.nit_diferente_mun(df)
-            self.derecho_diferente_cien()
-            self.documento_blanco_cod_asig()
-            self.fecha_escritura_inferior()
-            self.fecha_registro_inferior()
-            #Ficha
-            ficha = Ficha(self.archivo_entry)
-            ficha.terreno_cero()
-            ficha.terreno_null()
-            ficha.informal_matricula()
-            ficha.matricula_mejora()
-            ficha.tomo_mejora()
-            ficha.modo_adquisicion_informal()
-            ficha.ficha_repetida()
-            ficha.rural_destino_invalido()
-
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-
-    '''
+       
     def procesar_errores(self):
         
         
-        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
-        self.agregar_resultados(calificonstrucciones.Conservacion_banio_bueno())
-        self.agregar_resultados(calificonstrucciones.validar_banios()) 
-        self.agregar_resultados(calificonstrucciones.Validar_armazon())
-        self.agregar_resultados(calificonstrucciones.Validar_Cubierta())
         
-        colindantes=Colindantes(self.archivo_entry)
-        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        ficharph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(ficharph.validar_coeficiente_copropiedad())
         
-        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
-        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
-        
-        construcciones = Construcciones(self.archivo_entry)
-        self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
-        self.agregar_resultados(construcciones.areaconstruida_mayora1000())
-        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
-        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
-        
-        
-        
-        
-        self.numerofallocero()
-        self.entidadvacio()
-        self.cedula_mujer()
-        self.cedula_hombre()
-        self.primer_apellido_blanco()
-        self.primer_nombre_blanco()
-        self.calidad_propietario_mun()
-        self.nit_diferente_mun()
-        self.derecho_diferente_cien()
-        self.documento_blanco_cod_asig()
-        self.fecha_escritura_inferior()
-        self.fecha_escritura_mayor()
         
         ficha = Ficha(self.archivo_entry)
-        self.agregar_resultados(ficha.porcentaje_litigiocero())
-        self.agregar_resultados(ficha.validar_nrofichas())
-        self.agregar_resultados(ficha.areaterrenocero())
+        
         self.agregar_resultados(ficha.prediosindireccion())
+        self.agregar_resultados(ficha.validar_npn14a17())
+        self.agregar_resultados(ficha.validar_npn())
+        self.agregar_resultados(ficha.validar_nrofichas_faltantes())
+        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
+        self.agregar_resultados(ficha.validar_matriculas_duplicadas())
+        self.agregar_resultados(ficha.porcentaje_litigiocero())
+        self.agregar_resultados(ficha.areaterrenocero())
         self.agregar_resultados(ficha.areaconstruccioncero())
         self.agregar_resultados(ficha.destino_economico_mayorcero())
         self.agregar_resultados(ficha.matricula_mejora())
@@ -114,6 +51,51 @@ class Propietarios:
         self.agregar_resultados(ficha.tomo_mejora())
         self.agregar_resultados(ficha.modo_adquisicion_informal())
         self.agregar_resultados(ficha.ficha_repetida())
+        
+        cartografia=Cartografia(self.archivo_entry)
+        self.agregar_resultados(cartografia.validar_fichas_faltantes())
+        self.agregar_resultados(cartografia.validar_cartografia_faltantes())
+        
+        
+        
+        colindantes=Colindantes(self.archivo_entry)
+        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        
+        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
+        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
+        
+        construcciones = Construcciones(self.archivo_entry)
+        self.agregar_resultados(construcciones.validar_edad_construccion())
+        self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
+        self.agregar_resultados(construcciones.areaconstruida_mayora1000())
+        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
+        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
+        
+        
+        
+        self.validar_documento_sexo_masculino()
+        self.validar_tipo_documento_sexo()
+        self.validar_documento_sexo_femenino()
+        self.numerofallocero()
+        self.entidadvacio()
+        self.primer_apellido_blanco()
+        self.primer_nombre_blanco()
+        self.calidad_propietario_mun()
+        self.nit_diferente_mun()
+        self.derecho_diferente_cien()
+        self.documento_blanco_cod_asig()
+        self.fecha_escritura_inferior()
+        self.fecha_escritura_mayor()
+        
+        
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_sinCocina())
+        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
+        self.agregar_resultados(calificonstrucciones.validar_banios()) 
+        self.agregar_resultados(calificonstrucciones.Validar_armazon())
+        self.agregar_resultados(calificonstrucciones.Validar_fachada())
+        
+        
         
         errores_por_hoja = {}
         
@@ -152,83 +134,223 @@ class Propietarios:
             messagebox.showerror("Error", f"Ocurrió un error al leer el archivo: {str(e)}")
             return None
     
-    def cedula_mujer(self):
-        df = self.leer_archivo()
-        if df is None:
+    def validar_documento_sexo_femenino(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        resultados = []
-        for index, row in df.iterrows():
-            valor_a = str(row['TipoDocumento'])
-            valor_b = row['Documento']
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
-            print(f"Fila {index}: Valor A = '{valor_a}', Valor B = '{valor_b}'")
+            print(f"funcion: validar_documento_sexo")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
-            if valor_a == '2|CEDULA DE CIUDADANIA MUJER' and (valor_b <= 20000000 or valor_b >= 70000000):
-                resultado = {
-                    'NroFicha': row['NroFicha'],
-                    'TipoDocumento': row['TipoDocumento'],
-                    'Documento': row['Documento'],
-                    'PrimerNombre': row['PrimerNombre'],
-                    'SegundoNombre': row['SegundoNombre'],
-                    'PrimerApellido': row['PrimerApellido'],
-                    'SegundoApellido': row['SegundoApellido'],
-                    'Observacion': 'Documento no esta en rango de mujeres',
-                    'Nombre Hoja':'Propietarios'
-                    
-                }
-                resultados.append(resultado)
-                self.agregar_resultados(resultados)
-                print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+            # Lista para almacenar los resultados
+            resultados = []
 
-        df_resultado = pd.DataFrame(resultados)
-        ''''
-        output_file = 'CEDULA_MUJER.xlsx'
-        sheet_name = 'cedula_mujer'
-        df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-        print(f"Archivo guardado: {output_file}")
-        messagebox.showinfo("Éxito",
-                            f"Proceso completado Cedula Mujer.con {len(resultados)} registros.")
-        '''
-        print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                tipo_documento = row['TipoDocumento']
+                documento = row['Documento']
+                sexo = row['Sexo']
+
+                # Intentar convertir el valor de 'Documento' a entero
+                try:
+                    documento = int(documento)
+                except ValueError:
+                    # Si no se puede convertir a entero, saltar la fila
+                    print(f"Fila {index}: El valor del documento no es un número válido. Saltando fila.")
+                    continue
+
+                # Verificar si el Tipo de Documento es '10|CEDULA DE CIUDADANIA'
+                if tipo_documento == '10|CEDULA DE CIUDADANIA':
+                    # Validar que el Documento esté fuera del rango [20000000, 70000000] y que el Sexo sea 'F|FEMENINO'
+                    if (documento <= 20000000 or documento >= 70000000) and sexo == 'F|FEMENINO':
+                        resultado = {
+                            'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
+                            'TipoDocumento': row['TipoDocumento'],
+                            'Documento': row['Documento'],
+                            'Sexo': row['Sexo'],
+                            'Observacion': 'Documento fuera del rango para Sexo Femenino',
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+            
+            print(f"Total de errores encontrados: {len(resultados)}")
+            '''
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                
+                # Guardar el resultado en un archivo Excel
+                output_file = 'ERRORES_DOCUMENTO_SEXO.xlsx'
+                sheet_name = 'ErroresDocumentoSexo'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Validación completada con {len(resultados)} errores.")
+                
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
+            self.agregar_resultados(resultados)
+            
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
 
         
+   
+
+    def validar_tipo_documento_sexo(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
         
-    def cedula_hombre(self):
-        df = self.leer_archivo()
-        if df is None:
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        resultados = []
-        for index, row in df.iterrows():
-            valor_a = str(row['TipoDocumento'])
-            valor_b = row['Documento']
+        
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
-            print(f"Fila {index}: Valor A = '{valor_a}', Valor B = '{valor_b}'")
+            print(f"funcion: validar_tipo_documento_sexo")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
-            if valor_a == '1|CEDULA DE CIUDADANIA HOMBRE' and ((valor_b >= 20000000 and valor_b <= 69999999) or valor_b >= 100000000):
-                resultado = {
-                    'NroFicha': row['NroFicha'],
-                    'TipoDocumento': row['TipoDocumento'],
-                    'Documento': row['Documento'],
-                    'PrimerNombre': row['PrimerNombre'],
-                    'SegundoNombre': row['SegundoNombre'],
-                    'PrimerApellido': row['PrimerApellido'],
-                    'SegundoApellido': row['SegundoApellido'],
-                    'Observacion': 'Documento no esta en rango de hombre'
-                }
-                resultados.append(resultado)
-                self.agregar_resultados(resultados)
-                print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+            # Lista para almacenar los resultados
+            resultados = []
 
-        df_resultado = pd.DataFrame(resultados)
-        '''
-        output_file = 'CEDULA_HOMBRE.xlsx'
-        sheet_name = 'cedula_hombre'
-        df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-        print(f"Archivo guardado: {output_file}")
-        messagebox.showinfo("Éxito",
-                            f"Proceso completado Cedula Hombre. con {len(resultados)} registros.")
-        '''
-        print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                tipo_documento = row['TipoDocumento']
+                sexo = row['Sexo']
+
+                # Verificar si el Tipo de Documento es '3|NIT'
+                if tipo_documento == '3|NIT':
+                    # Validar que el Sexo sea 'N|NO BINARIO'
+                    if sexo != 'N|NO BINARIO':
+                        resultado = {
+                            'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
+                            'TipoDocumento': row['TipoDocumento'],
+                            'Sexo': row['Sexo'],
+                            'Observacion': 'El tipo de documento es 3|NIT, pero el sexo no es N|NO BINARIO',
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+            
+            print(f"Total de errores encontrados: {len(resultados)}")
+            '''
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                
+                # Guardar el resultado en un archivo Excel
+                output_file = 'ERRORES_TIPO_DOCUMENTO_SEXO.xlsx'
+                sheet_name = 'ErroresTipoDocumentoSexo'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Validación completada con {len(resultados)} errores.")
+               
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
+            self.agregar_resultados(resultados)
+            
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")    
+    
+    def validar_documento_sexo_masculino(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"funcion: validar_documento_sexo_masculino")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                tipo_documento = row['TipoDocumento']
+                documento = row['Documento']
+                sexo = row['Sexo']
+
+                # Intentar convertir el valor de 'Documento' a entero
+                try:
+                    documento = int(documento)
+                except ValueError:
+                    # Si no se puede convertir a entero, saltar la fila
+                    print(f"Fila {index}: El valor del documento no es un número válido. Saltando fila.")
+                    continue
+
+                # Verificar si el Tipo de Documento es '10|CEDULA DE CIUDADANIA'
+                if tipo_documento == '10|CEDULA DE CIUDADANIA':
+                    # Validar si el Documento está entre 20000000 y 69999999, y el Sexo es 'M|MASCULINO'
+                    if 20000000 <= documento <= 69999999 and sexo == 'M|MASCULINO':
+                        resultado = {
+                            'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
+                            'TipoDocumento': row['TipoDocumento'],
+                            'Documento': row['Documento'],
+                            'Sexo': row['Sexo'],
+                            'Observacion': 'Documento en rango para Cédula de Ciudadanía y Sexo Masculino',
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+            
+            print(f"Total de errores encontrados: {len(resultados)}")
+            '''
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                
+                # Guardar el resultado en un archivo Excel
+                output_file = 'ERRORES_DOCUMENTO_SEXO_MASCULINO.xlsx'
+                sheet_name = 'ErroresDocumentoSexoMasculino'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Validación completada con {len(resultados)} errores.")
+            
+            else:
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
+            self.agregar_resultados(resultados)
+            
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+    
+    
 
         
         
@@ -236,6 +358,8 @@ class Propietarios:
         df = self.leer_archivo()
         if df is None:
             return
+        
+        
         resultados = []
         for index, row in df.iterrows():
             valor_a = row['PrimerApellido']
@@ -275,6 +399,7 @@ class Propietarios:
         df = self.leer_archivo()
         if df is None:
             return
+       
         resultados = []
         for index, row in df.iterrows():
             valor_a = row['PrimerNombre']
@@ -310,19 +435,22 @@ class Propietarios:
                             f"Proceso completado PRIMER_NOMBRE. con {len(resultados)} registros.")
         '''
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-        return resultados
+        
         
     def calidad_propietario_mun(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
         df = self.leer_archivo()
         if df is None:
             return
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
+        
 
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -381,16 +509,19 @@ class Propietarios:
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
     def nit_diferente_mun(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
         df = self.leer_archivo()
         if df is None:
             return
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
+        
 
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -454,7 +585,9 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -522,7 +655,9 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -592,7 +727,9 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -672,7 +809,9 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -753,7 +892,9 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -784,11 +925,11 @@ class Propietarios:
                     print(f"Fila {index}: Agregado a resultados: {resultado}")
                     
             print(f"Entidades vacias: {len(resultados)}")
-
+            '''
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-                '''
+                
                 # Guardar el resultado en un nuevo archivo Excel
                 output_file = 'EntidadesVacias.xlsx'
                 sheet_name = 'fechas_superiores'
@@ -797,11 +938,12 @@ class Propietarios:
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Entidades vacias '{output_file}' con {len(resultados)} registros.")
-                '''
+               
             else:
                 print("No se encontraron Entidades vacias.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
-
+             '''
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -814,7 +956,9 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        
+        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
+        if df_fichas_filtradas is None:
+            return []
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -846,11 +990,11 @@ class Propietarios:
                     print(f"Fila {index}: Agregado a resultados: {resultado}")
                     
             print(f"Entidades vacias: {len(resultados)}")
-
+            '''
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-                '''
+                
                 # Guardar el resultado en un nuevo archivo Excel
                 output_file = 'NumeroFallo.xlsx'
                 sheet_name = 'Numero fallo'
@@ -859,11 +1003,11 @@ class Propietarios:
                 print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Numerofallo '{output_file}' con {len(resultados)} registros.")
-                '''
+                
             else:
                 print("No se encontraron Numerofallo.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
-
+            '''
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
