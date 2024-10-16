@@ -1,13 +1,12 @@
 import pandas as pd
 from tkinter import messagebox
 from datetime import datetime
-from NPHORPH.fichasvalidador import FiltroFichas
 
 class Colindantes:
     
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
-        self.filtro_fichas = FiltroFichas(archivo_entry)
+        
     
     def validar_orientaciones_colindantes(self):
         archivo_excel = self.archivo_entry.get()
@@ -16,9 +15,7 @@ class Colindantes:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []    
+            
         try:
             # Leer el archivo Excel y la hoja Colindantes
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)

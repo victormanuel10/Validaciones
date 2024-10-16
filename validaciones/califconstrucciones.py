@@ -1,12 +1,12 @@
 import pandas as pd
 from tkinter import messagebox
 from datetime import datetime
-from NPHORPH.fichasvalidador import FiltroFichas
+
 
 class CalificaionesConstrucciones:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
-        self.filtro_fichas = FiltroFichas(archivo_entry)
+        
     
     def validar_banios(self):
         
@@ -17,9 +17,7 @@ class CalificaionesConstrucciones:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return 
         
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -145,9 +143,7 @@ class CalificaionesConstrucciones:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
@@ -312,9 +308,7 @@ class CalificaionesConstrucciones:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
@@ -471,9 +465,7 @@ class CalificaionesConstrucciones:
         if not archivo_excel or not nombre_hoja_calificaciones or not nombre_hoja_construcciones:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica los nombres de las hojas.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             
             df_calificaciones = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_calificaciones)

@@ -1,24 +1,31 @@
 import pandas as pd
 from tkinter import messagebox
-from NPHORPH.fichasvalidador import FiltroFichas
 
 class FichasRPH:
     def __init__(self, archivo_entry):
+        # archivo_entry can be either a string (file path) or tkinter.Entry
         self.archivo_entry = archivo_entry
         self.resultados_generales = []
-        self.filtro_fichas=FiltroFichas(archivo_entry)
+
+    def obtener_archivo(self):
+        """ Helper function to get the file path from either a tkinter.Entry or a string. """
+        if isinstance(self.archivo_entry, str):
+            return self.archivo_entry
+        elif hasattr(self.archivo_entry, 'get'):
+            return self.archivo_entry.get()
+        else:
+            return None
 
     def validar_coeficiente_copropiedad(self):
-        archivo_excel = self.archivo_entry.get()
-        
+        # Get the file path
+        archivo_excel = self.obtener_archivo()
+
         if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
             return []
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_rph_parcelacion()
-        if df_fichas_filtradas is None:
-            return []
+
         try:
-            # Leer la hoja FICHAS (o la hoja donde esté NumCedulaCatastral y CoeficienteCopropiedad)
+            # Leer la hoja FICHAS
             df_fichas = pd.read_excel(archivo_excel, sheet_name='FichasPrediales')
             
             # Crear una columna con los primeros 19 dígitos de NumCedulaCatastral
@@ -48,9 +55,7 @@ class FichasRPH:
                 df_resultado.to_excel(output_file, index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros.")
-            
             return resultados
-
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

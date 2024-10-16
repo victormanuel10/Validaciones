@@ -3,7 +3,6 @@ from tkinter import filedialog, messagebox
 from tkinter import ttk
 from PIL import Image, ImageTk
 import os
-from osgeo import ogr
 import pandas as pd
 
 class InterfazGrafica:
@@ -13,9 +12,8 @@ class InterfazGrafica:
         self.root.title("Carga Masiva")
         self.root.geometry("800x400")
         self.root.state('zoomed')
-        self.gdb_path = tk.StringVar()  # Inicialización de gdb_path
-        self.excel_file_path = tk.StringVar()  # Inicialización de excel_file_path
-        # Crear el contenedor de pestañas
+        self.gdb_path = tk.StringVar()
+        self.excel_file_path = tk.StringVar()
         self.notebook = ttk.Notebook(self.root)
         self.notebook.pack(expand=1, fill="both")
 
@@ -26,22 +24,21 @@ class InterfazGrafica:
 
         self.notebook.add(self.tab_validaciones, text="Validaciones")
         self.notebook.add(self.tab_Agregar_Fichas, text="Agregar Fichas")
-        self.notebook.add(self.tab_convertir_gdb, text="Convertir GDB")
+        
 
-        self.background_image = self.crear_imagen_semitransparente("./assets/Logo_Conestudios.png", 0.1)
-
+        ruta_imagen = os.path.join(os.path.dirname(__file__), "assets", "Logo_Conestudios.png")
+        self.background_image = self.crear_imagen_semitransparente(ruta_imagen, 0.1)
         # Configurar la pestaña de validaciones
         self.configurar_pestania_validaciones()
 
-        # Configurar la pestaña de convertir GDB
-        self.configurar_pestania_convertir_gdb()
+        
         
         self.configurar_pestania_agregar_fichas()
         
     def configurar_pestania_validaciones(self):
-        # Cargar la imagen y configurarla como fondo en la pestaña de validaciones
-        self.background_image = self.crear_imagen_semitransparente("./assets/Logo_Conestudios.png", 0.1)
+    # Cargar la imagen y configurarla como fondo en la pestaña de validaciones
         self.background_label = tk.Label(self.tab_validaciones, image=self.background_image)
+        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
         self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Crear los widgets dentro de la pestaña "Validaciones"
@@ -54,6 +51,16 @@ class InterfazGrafica:
         self.boton_nph = tk.Button(frame_nph, text="Seleccionar Archivo NPH", command=self.seleccionar_archivo_nph)
         self.boton_nph.pack(side=tk.LEFT, padx=10)
 
+        # Agregar nuevo botón para seleccionar archivo RPH
+        frame_rph = tk.Frame(self.tab_validaciones, bg='#7ea7b9')
+        frame_rph.pack(pady=20)
+
+        tk.Label(frame_rph, text="Carga Masiva RPH:", font="arial 12 bold", bg='#7ea7b9').pack(side=tk.LEFT, padx=10)
+        self.archivo_entry_rph = tk.Entry(frame_rph, width=50)
+        self.archivo_entry_rph.pack(side=tk.LEFT, padx=10)
+        self.boton_rph = tk.Button(frame_rph, text="Seleccionar Archivo RPH", command=self.seleccionar_archivo_rph)
+        self.boton_rph.pack(side=tk.LEFT, padx=10)
+
         frame_botones = tk.Frame(self.tab_validaciones, bg='#7ea7b9')
         frame_botones.pack(side=tk.BOTTOM, pady=10)
 
@@ -63,21 +70,8 @@ class InterfazGrafica:
         self.boton_limpiar = tk.Button(frame_botones, text="Limpiar", font="Arial 16 bold", command=self.limpiar_seleccion)
         self.boton_limpiar.pack(side=tk.LEFT)
 
-    def configurar_pestania_convertir_gdb(self):
-        # Usar la misma imagen de fondo en la pestaña de convertir GDB
-        self.background_label_convertir_gdb = tk.Label(self.tab_convertir_gdb, image=self.background_image)
-        self.background_label_convertir_gdb.place(x=0, y=0, relwidth=1, relheight=1)
-
-        # Crear widgets para seleccionar la geodatabase
-        tk.Label(self.tab_convertir_gdb, text="Convertir GDB a GPKG", font="arial 12 bold", bg='#7ea7b9').pack(pady=20)
-
-        # Botón para iniciar la conversión
-        self.boton_convertir = tk.Button(self.tab_convertir_gdb, text="Seleccionar carpeta .gdb", font="Arial 16 bold", command=self.select_gdb_folder)
-        self.boton_convertir.pack(pady=10)
     
     def configurar_pestania_agregar_fichas(self):
-        """Configura la pestaña para agregar fichas."""
-        # Cargar la imagen y configurarla como fondo en la pestaña de agregar fichas
         self.background_label_agregar_fichas = tk.Label(self.tab_Agregar_Fichas, image=self.background_image)
         self.background_label_agregar_fichas.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -112,8 +106,22 @@ class InterfazGrafica:
             self.archivo_entry_nph.delete(0, tk.END)
             self.archivo_entry_nph.insert(0, filename)
             self.boton_procesar.config(command=self.app.procesar_archivo, state=tk.NORMAL)
-    
-    
+            self.boton_rph.config(state=tk.DISABLED)
+        else:
+            self.boton_rph.config(state=tk.NORMAL)
+                
+    def seleccionar_archivo_rph(self):
+        filename = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
+        
+        if filename:
+            self.archivo_entry_rph.delete(0, tk.END)
+            self.archivo_entry_rph.insert(0, filename)
+            self.boton_procesar.config(command=self.app.procesar_archivorph, state=tk.NORMAL)
+            self.boton_nph.config(state=tk.DISABLED)
+        else:
+            self.boton_nph.config(state=tk.NORMAL) 
+
+           
     def select_excel(self):
         filename = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])
         if filename:
@@ -121,7 +129,9 @@ class InterfazGrafica:
     
     def limpiar_seleccion(self):
         self.archivo_entry_nph.delete(0, tk.END)
-        self.boton_procesar.config(state=tk.DISABLED)
+        self.archivo_entry_rph.delete(0, tk.END)
+        self.boton_rph.config(state=tk.NORMAL)
+        self.boton_nph.config(state=tk.NORMAL)
     
     def limpiar_seleccion_fichas(self):
         self.archivo_entry_fichas.delete(0, tk.END)
@@ -132,45 +142,8 @@ class InterfazGrafica:
         if gdb_folder:
             self.gdb_path.set(gdb_folder)
             
-    def select_gdb_folder(self):
-        gdb_folder = filedialog.askdirectory(title="Seleccionar carpeta .gdb")
-        if gdb_folder:
-            output_path = os.path.join(os.path.dirname(gdb_folder), os.path.basename(gdb_folder) + ".gpkg")  # Define la ruta de salida .gpkg
-            self.convert_gdb_to_gpkg(gdb_folder, output_path)
 
-    def convert_gdb_to_gpkg(self, gdb_folder, output_path):
-        # Elimina el archivo de salida si ya existe
-        if os.path.exists(output_path):
-            os.remove(output_path)
-
-        driver = ogr.GetDriverByName('OpenFileGDB')
-        if driver is None:
-            messagebox.showerror("Error", "Driver OpenFileGDB no está disponible.")
-            return
-
-        # Abre la carpeta GDB como un geodatabase
-        gdb = driver.Open(gdb_folder, 0)
-
-        if not gdb:
-            messagebox.showerror("Error", f"No se pudo abrir la geodatabase GDB: {gdb_folder}")
-            return
-
-        output_driver = ogr.GetDriverByName('GPKG')
-        if output_driver is None:
-            messagebox.showerror("Error", "No se pudo encontrar el driver de salida.")
-            return
-
-        # Crea el DataSource de salida
-        output_layer = output_driver.CreateDataSource(output_path)
-        if output_layer is None:
-            messagebox.showerror("Error", "No se pudo crear el archivo de salida.")
-            return
-
-        for i in range(gdb.GetLayerCount()):
-            layer = gdb.GetLayerByIndex(i)
-            output_layer.CopyLayer(layer, layer.GetName())
-
-        messagebox.showinfo("Éxito", "Conversión completada.")
+    
 
     def crear_imagen_semitransparente(self, image_path, alpha):
         image = Image.open(image_path)

@@ -7,14 +7,13 @@ from validaciones.califconstrucciones import CalificaionesConstrucciones
 from validaciones.zonashomogeneas import ZonasHomogeneas
 from validaciones.colindantes import Colindantes
 from validaciones.cartografia import Cartografia
-from NPHORPH.fichasvalidador import FiltroFichas
-from validaciones.fichasrph import FichasRPH
+from erroresRPH import FichasRPHProcesador
 
 class Propietarios:
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
         self.resultados_generales = []
-        self.filtro_fichas = FiltroFichas(archivo_entry)
+        
         
     def agregar_resultados(self, resultados):
         if isinstance(resultados, list):
@@ -26,9 +25,6 @@ class Propietarios:
     def procesar_errores(self):
         
         
-        
-        ficharph=FichasRPH(self.archivo_entry)
-        self.agregar_resultados(ficharph.validar_coeficiente_copropiedad())
         
         
         ficha = Ficha(self.archivo_entry)
@@ -219,9 +215,7 @@ class Propietarios:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
         
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -448,9 +442,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -519,9 +511,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -585,9 +575,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -655,9 +643,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -727,9 +713,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -809,9 +793,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -892,9 +874,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
@@ -956,9 +936,7 @@ class Propietarios:
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)

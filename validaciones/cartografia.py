@@ -1,12 +1,12 @@
 import pandas as pd
 from tkinter import messagebox
-from NPHORPH.fichasvalidador import FiltroFichas
+
 class Cartografia:
     
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
         self.resultados_generales = []
-        self.filtro_fichas = FiltroFichas(archivo_entry)
+        
         
     def validar_fichas_faltantes(self):
         archivo_excel = self.archivo_entry.get()
@@ -14,9 +14,7 @@ class Cartografia:
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return []
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer las hojas FICHAS y CARTOGRAFIA
             df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
@@ -68,9 +66,7 @@ class Cartografia:
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return []
-        df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-        if df_fichas_filtradas is None:
-            return []
+        
         try:
             # Leer las hojas FICHAS y CARTOGRAFIA
             df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
