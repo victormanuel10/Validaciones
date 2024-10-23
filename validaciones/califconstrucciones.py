@@ -80,9 +80,7 @@ class CalificaionesConstrucciones:
             if not archivo_excel or not nombre_hoja:
                 messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
                 return 
-            df_fichas_filtradas = self.filtro_fichas.obtener_fichas_filtradas()
-            if df_fichas_filtradas is None:
-                return []
+            
             try:
                 
                 df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
