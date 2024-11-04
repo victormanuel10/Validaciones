@@ -7,7 +7,8 @@ from validaciones.califconstrucciones import CalificaionesConstrucciones
 from validaciones.zonashomogeneas import ZonasHomogeneas
 from validaciones.colindantes import Colindantes
 from validaciones.cartografia import Cartografia
-from erroresRPH import FichasRPHProcesador
+from ValidacionesRPH.erroresRPH import FichasRPHProcesador
+
 
 class Propietarios:
     def __init__(self, archivo_entry):
@@ -23,12 +24,18 @@ class Propietarios:
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
        
     def procesar_errores(self):
-        
-        
+        construcciones = Construcciones(self.archivo_entry)
+        self.agregar_resultados(construcciones.validar_porcentaje_construido())
+        self.agregar_resultados(construcciones.validar_edad_construccion())
+        self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
+        self.agregar_resultados(construcciones.areaconstruida_mayora1000())
+        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
+        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
         
         
         ficha = Ficha(self.archivo_entry)
-        
+        self.agregar_resultados(ficha.validar_destino_economico())
+        self.agregar_resultados(ficha.ultimo_digito())
         self.agregar_resultados(ficha.prediosindireccion())
         self.agregar_resultados(ficha.validar_npn14a17())
         self.agregar_resultados(ficha.validar_npn())
@@ -60,15 +67,10 @@ class Propietarios:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        construcciones = Construcciones(self.archivo_entry)
-        self.agregar_resultados(construcciones.validar_edad_construccion())
-        self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
-        self.agregar_resultados(construcciones.areaconstruida_mayora1000())
-        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
-        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
         
         
         
+        self.validar_documento_inicia_con_cero()
         self.validar_documento_sexo_masculino()
         self.validar_tipo_documento_sexo()
         self.validar_documento_sexo_femenino()
@@ -130,6 +132,52 @@ class Propietarios:
             messagebox.showerror("Error", f"Ocurrió un error al leer el archivo: {str(e)}")
             return None
     
+    def validar_documento_inicia_con_cero(self):
+        """
+        Verifica que en la hoja 'Propietarios' no haya valores en la columna 'Documento' que inicien con '0'.
+        Si los hay, genera un error por cada registro que cumple la condición.
+        """
+        archivo_excel = self.archivo_entry.get()
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja 'Propietarios'
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name='Propietarios')
+            
+            # Filtrar los documentos que inician con '0'
+            errores = df_propietarios[df_propietarios['Documento'].astype(str).str.startswith('0')]
+            
+            resultados = []
+
+            # Generar una lista de errores
+            for _, row in errores.iterrows():
+                resultado = {
+                    'NroFicha': row['NroFicha'],
+                    'Documento': row['Documento'],
+                    'Observacion': 'El documento inicia con "0"',
+                    'Nombre Hoja': 'Propietarios'
+                }
+                resultados.append(resultado)
+
+            # Guardar los resultados en un archivo Excel si hay errores
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_Documento_Inicia_Con_Cero_Propietarios.xlsx'
+                df_resultado.to_excel(output_file, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con Documento que inicia con '0'.")
+            else:
+                messagebox.showinfo("Sin errores", "No se encontraron Documentos que inicien con '0' en la hoja 'Propietarios'.")
+
+            self.agregar_resultados(resultados)
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        
     def validar_documento_sexo_femenino(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'

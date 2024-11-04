@@ -3,7 +3,7 @@ import warnings
 from tkinter import filedialog, messagebox
 from interfaz import InterfazGrafica
 from validaciones.propietarios import Propietarios
-from erroresRPH import FichasRPHProcesador
+from ValidacionesRPH.erroresRPH import FichasRPHProcesador
 import traceback
 import logging
 

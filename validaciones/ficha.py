@@ -1172,3 +1172,126 @@ class Ficha:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    
+    def ultimo_digito(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"funcion: validar_npn")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                npn = str(row['Npn'])  # Convertir a cadena para asegurar el acceso por índice
+
+                # Validar que el Npn tenga al menos 17 caracteres antes de acceder a las posiciones 14-17
+                if len(npn) >= 17:
+                    # Extraer los caracteres de las posiciones 14-17
+                
+                    # Validar si el último dígito de 'Npn' es diferente de "0"
+                    if npn[-1] != "0":
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'CaracteristicaPredio':row['CaracteristicaPredio'],
+                            'Npn': row['Npn'],
+                            'Observacion': 'El último dígito de Npn no es 0',
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                else:
+                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                    
+                    # Guardar el resultado en un archivo Excel
+                output_file = 'ERRORES_NPNUltimo.xlsx'
+                sheet_name = 'ErroresNPN'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Validación completada con {len(resultados)} errores.")
+                
+            else:
+                    print("No se encontraron errores.")
+                    messagebox.showinfo("Información", "No se encontraron registros con errores.")
+                    
+            print(f"Total de errores encontrados: {len(resultados)}")
+
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+                
+    
+    def validar_destino_economico(self):
+        """
+        Verifica que en la hoja 'FichasPrediales', si el cuarto dígito de 'NumCedulaCatastral' es '2'
+        y el 'DestinoEconomico' es uno de los valores especificados, se genera un error.
+        """
+        archivo_excel = self.obtener_archivo()
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja 'FichasPrediales'
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
+
+            # Lista de valores de DestinoEconomico para verificar
+            destinos_invalidos = [
+                "12|LOTE URBANIZADO NO CONSTRUIDO",
+                "13|LOTE URBANIZABLE NO URBANIZADO",
+                "14|LOTE NO URBANIZABLE"
+            ]
+            
+            resultados = []
+
+            # Iterar sobre cada fila para validar las condiciones
+            for index, row in df_fichas.iterrows():
+                num_cedula_catastral = str(row['NumCedulaCatastral'])  # Convertir a cadena
+                destino_economico = row.get('DestinoEconomico', '')
+
+                # Verificar que NumCedulaCatastral tenga al menos 4 caracteres y cumpla con las condiciones
+                if len(num_cedula_catastral) >= 4 and num_cedula_catastral[3] == '2' and destino_economico in destinos_invalidos:
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'NumCedulaCatastral': num_cedula_catastral,
+                        'DestinoEconomico': destino_economico,
+                        'Observacion': 'Destino Economico no valido para ficha Rural',
+                        'Nombre Hoja': 'FichasPrediales'
+                    }
+                    resultados.append(resultado)
+            '''
+            
+            # Guardar los resultados en un archivo Excel si hay errores
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_Posiciones_NumCedulaCatastral_y_DestinoEconomico_FichasPrediales.xlsx'
+                df_resultado.to_excel(output_file, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros que cumplen con las condiciones.")
+            else:
+                messagebox.showinfo("Sin errores", "No se encontraron registros que cumplan con las condiciones en 'FichasPrediales'.")
+            '''
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        

@@ -275,3 +275,98 @@ class Construcciones:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    def validar_porcentaje_construido(self):
+        """
+        Verifica que en la hoja 'Construcciones' no haya valores en la columna 'PorcentajeConstruido' 
+        que sean iguales o menores a 0. Si los hay, genera un error por cada registro que cumple la condición.
+        """
+        archivo_excel = self.archivo_entry.get()
+        
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja 'Construcciones'
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name='Construcciones')
+            
+            # Filtrar registros donde 'PorcentajeConstruido' es menor o igual a 0
+            errores = df_construcciones[df_construcciones['PorcentajeConstruido'] <= 0]
+            
+            resultados = []
+
+            # Generar lista de errores
+            for _, row in errores.iterrows():
+                resultado = {
+                    'NroFicha': row['NroFicha'],
+                    'PorcentajeConstruido': row['PorcentajeConstruido'],
+                    'Observacion': 'El valor de PorcentajeConstruido es igual o menor a 0',
+                    'Nombre Hoja': 'Construcciones'
+                }
+                resultados.append(resultado)
+
+            # Guardar los resultados en un archivo Excel si hay errores
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_PorcentajeConstruido_Construcciones.xlsx'
+                df_resultado.to_excel(output_file, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con PorcentajeConstruido igual o menor a 0.")
+            else:
+                messagebox.showinfo("Sin errores", "No se encontraron valores de PorcentajeConstruido igual o menor a 0 en la hoja 'Construcciones'.")
+
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        
+    def validar_puntos_construcciones(self):
+        """
+        Verifica que en la hoja 'Construcciones' no haya valores en la columna 'Puntos' 
+        que sean menores a 1 o estén vacíos (null). Si los hay, genera un error por cada 
+        registro que cumpla alguna de estas condiciones.
+        """
+        archivo_excel = self.archivo_entry.get()
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja 'Construcciones'
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name='Construcciones')
+            
+            # Filtrar registros donde 'Puntos' es menor a 1 o es null
+            errores = df_construcciones[(df_construcciones['Puntos'] < 1) | (df_construcciones['Puntos'].isnull())]
+            
+            resultados = []
+
+            # Generar lista de errores
+            for _, row in errores.iterrows():
+                resultado = {
+                    'NroFicha': row['NroFicha'],
+                    'Puntos': row['Puntos'],
+                    'Observacion': 'El valor de Puntos es menor a 1 o está vacío',
+                    'Nombre Hoja': 'Construcciones'
+                }
+                resultados.append(resultado)
+
+            # Guardar los resultados en un archivo Excel si hay errores
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_Puntos_Construcciones.xlsx'
+                df_resultado.to_excel(output_file, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con Puntos menor a 1 o vacío.")
+            else:
+                messagebox.showinfo("Sin errores", "No se encontraron valores de Puntos menores a 1 o vacíos en la hoja 'Construcciones'.")
+
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
