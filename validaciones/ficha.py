@@ -1243,7 +1243,7 @@ class Ficha:
         Verifica que en la hoja 'FichasPrediales', si el cuarto dígito de 'NumCedulaCatastral' es '2'
         y el 'DestinoEconomico' es uno de los valores especificados, se genera un error.
         """
-        archivo_excel = self.obtener_archivo()
+        archivo_excel = self.archivo_entry.get()
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
             return []

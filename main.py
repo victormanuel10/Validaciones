@@ -37,11 +37,11 @@ class Application:
 
     
 try:
-        # Aquí va todo tu código de la aplicación
+        
     if __name__ == "__main__":
         root = tk.Tk()
         app = Application(root)
-        root.mainloop() # Función principal de tu aplicación
+        root.mainloop() 
 except Exception as e:
     logging.error("Excepción ocurrió", exc_info=True)
     traceback.print_exc()
