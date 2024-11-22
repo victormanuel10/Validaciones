@@ -562,7 +562,8 @@ class CalificaionesConstrucciones:
                         }
                         resultados.append(resultado)
                         print(f"Error encontrado: {resultado}")
-
+            '''
+            
             # Manejar resultados
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
@@ -573,7 +574,7 @@ class CalificaionesConstrucciones:
                 messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores en Cubierta y Número de Pisos.")
             else:
                 messagebox.showinfo("Información", "No se encontraron errores en Cubierta y Número de Pisos.")
-
+            '''
             return resultados
 
         except Exception as e:

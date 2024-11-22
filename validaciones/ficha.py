@@ -757,7 +757,7 @@ class Ficha:
             
             
             
-    def prediosindireccion(self):
+    def predios_con_direcciones_invalidas(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'        
         if not archivo_excel or not nombre_hoja:
@@ -782,19 +782,19 @@ class Ficha:
             for index, row in df.iterrows():
                 DireccionReal = row['DireccionReal']
 
-                # Verificar si la dirección está vacía, contiene palabras no permitidas o palabras (no números) con más de 5 caracteres
-                if DireccionReal == '' or pd.isna(DireccionReal):
+                # Validar si la dirección está vacía
+                if not DireccionReal or pd.isna(DireccionReal):
                     observacion = 'Predio sin dirección'
+                # Validar si contiene palabras no permitidas
                 elif any(palabra in DireccionReal for palabra in palabras_no_permitidas):
                     observacion = 'Contiene palabras no permitidas'
-                elif any(len(palabra) > 5 and not palabra.isdigit() for palabra in str(DireccionReal).split()):
-                    observacion = 'Contiene palabras con más de 5 caracteres (excluyendo números)'
                 else:
                     continue
 
+                # Agregar a resultados
                 resultado = {
                     'NroFicha': row['NroFicha'],
-                    'Direccion': DireccionReal,
+                    'Direccion': DireccionReal if not pd.isna(DireccionReal) else '',
                     'Observacion': observacion,
                     'Nombre Hoja': nombre_hoja
                 }
@@ -803,19 +803,18 @@ class Ficha:
 
             print(f"Total de errores encontrados: {len(resultados)}")
 
-            
             if resultados:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
                 
-                output_file = 'Direcciones.xlsx'
+                output_file = 'Direcciones_invalidas.xlsx'
                 sheet_name = 'Direcciones'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Predios sin dirección o con palabras no permitidas: {len(resultados)} errores.")
+                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores.")
             else:
-                print("No se encontraron errores.")
-                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+                print("No se encontraron direcciones inválidas.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores en las direcciones.")
             
             return resultados
         except Exception as e:
@@ -1036,9 +1035,10 @@ class Ficha:
                             'Nombre Hoja': 'Fichas'
                         }
                         resultados.append(resultado)
-                '''
+                
                 df_resultado = pd.DataFrame(resultados)
 
+                '''
                 
                 output_file = 'Matrícula Inmobiliaria.xlsx'
                 sheet_name = 'Matrícula Inmobiliaria'

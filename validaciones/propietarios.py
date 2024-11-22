@@ -31,7 +31,8 @@ class Propietarios:
         
         
         ficha = Ficha(self.archivo_entry)
-        self.agregar_resultados(ficha.prediosindireccion())
+        self.agregar_resultados(ficha.validar_matriculas_duplicadas())
+        self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
         self.agregar_resultados(ficha.validar_matricula_numerica())
@@ -100,7 +101,7 @@ class Propietarios:
         self.agregar_resultados(ficha.validar_npn())
         self.agregar_resultados(ficha.validar_nrofichas_faltantes())
         self.agregar_resultados(ficha.validar_nrofichas_propietarios())
-        self.agregar_resultados(ficha.validar_matriculas_duplicadas())
+        
         self.agregar_resultados(ficha.porcentaje_litigiocero())
         self.agregar_resultados(ficha.areaterrenocero())
         self.agregar_resultados(ficha.areaconstruccioncero())
