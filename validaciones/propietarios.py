@@ -1,5 +1,7 @@
+# -- coding: utf-8 --
 import pandas as pd
 from tkinter import messagebox
+from collections import Counter
 from datetime import datetime
 from validaciones.ficha import Ficha
 from validaciones.construcciones import Construcciones
@@ -7,7 +9,7 @@ from validaciones.califconstrucciones import CalificaionesConstrucciones
 from validaciones.zonashomogeneas import ZonasHomogeneas
 from validaciones.colindantes import Colindantes
 from validaciones.cartografia import Cartografia
-from ValidacionesRPH.erroresRPH import FichasRPHProcesador
+from ValidacionesRPH.fichasrph import FichasRPH
 
 
 class Propietarios:
@@ -15,6 +17,8 @@ class Propietarios:
         self.archivo_entry = archivo_entry
         self.resultados_generales = []
         
+        
+    
         
     def agregar_resultados(self, resultados):
         if isinstance(resultados, list):
@@ -24,19 +28,74 @@ class Propietarios:
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
        
     def procesar_errores(self):
+        
+        
+        ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.prediosindireccion())
+        self.agregar_resultados(ficha.validar_duplicados_npn())
+        self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
+        self.agregar_resultados(ficha.validar_matricula_numerica())
+        self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
+        
+        
+        
+        
+        
+        self.validar_matricula_entidad()
+        self.derecho_diferente_cien()
+        self.validar_documento_inicia_con_cero()
+        self.validar_documento_sexo_masculino()
+        self.validar_tipo_documento_sexo()
+        self.validar_documento_sexo_femenino()
+        self.numerofallocero()
+        self.entidadvacio()
+        self.primer_apellido_blanco()
+        self.primer_nombre_blanco()
+        self.calidad_propietario_mun()
+        self.nit_diferente_mun()
+        self.documento_blanco_cod_asig()
+        self.fecha_escritura_inferior()
+        self.fecha_escritura_mayor()
+        
+        
+        
+        
+        fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.validar_informalidad_edificio())
+        self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
+        self.agregar_resultados(fichasrph.validar_digitos_informalidad())
+        self.agregar_resultados(fichasrph.validar_area_total_lote_npn())
+        self.agregar_resultados(fichasrph.validar_area_comun())
+        self.agregar_resultados(fichasrph.validar_unidades_rph())
+        self.agregar_resultados(fichasrph.validar_npn_num_cedula())
+        self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
+        self.agregar_resultados(fichasrph.edificio_en_cero_rph())
+        self.agregar_resultados(fichasrph.validar_duplicados_npn())
+        self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
+        
         construcciones = Construcciones(self.archivo_entry)
+        self.agregar_resultados(construcciones.validar_secuencia_convencional())
+        self.agregar_resultados(construcciones.validar_secuencia_unica_por_ficha())
+        self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
+        self.agregar_resultados(construcciones.validar_secuencia_convencional_calificaciones())
+        self.agregar_resultados(construcciones.validar_no_convencional_secuencia())       
+        self.agregar_resultados(construcciones.validar_construcciones_puntos())
         self.agregar_resultados(construcciones.validar_porcentaje_construido())
         self.agregar_resultados(construcciones.validar_edad_construccion())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.areaconstruida_mayora1000())
         self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
-        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_generales())
+        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
+        self.agregar_resultados(construcciones.validar_secuencia_calificaciones_vs_construcciones())
         
-        
-        ficha = Ficha(self.archivo_entry)
-        self.agregar_resultados(ficha.validar_destino_economico())
+        self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
+        self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
+        self.agregar_resultados(ficha.Validar_Longitud_NPN())
+        self.agregar_resultados(ficha.validar_tipo_documento())
+        self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
+        self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
         self.agregar_resultados(ficha.ultimo_digito())
-        self.agregar_resultados(ficha.prediosindireccion())
+        
         self.agregar_resultados(ficha.validar_npn14a17())
         self.agregar_resultados(ficha.validar_npn())
         self.agregar_resultados(ficha.validar_nrofichas_faltantes())
@@ -58,35 +117,18 @@ class Propietarios:
         cartografia=Cartografia(self.archivo_entry)
         self.agregar_resultados(cartografia.validar_fichas_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_faltantes())
-        
-        
-        
+        self.agregar_resultados(cartografia.validar_cartografia_columnas())
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
-        
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
         
         
-        
-        self.validar_documento_inicia_con_cero()
-        self.validar_documento_sexo_masculino()
-        self.validar_tipo_documento_sexo()
-        self.validar_documento_sexo_femenino()
-        self.numerofallocero()
-        self.entidadvacio()
-        self.primer_apellido_blanco()
-        self.primer_nombre_blanco()
-        self.calidad_propietario_mun()
-        self.nit_diferente_mun()
-        self.derecho_diferente_cien()
-        self.documento_blanco_cod_asig()
-        self.fecha_escritura_inferior()
-        self.fecha_escritura_mayor()
-        
+       
         
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
         self.agregar_resultados(calificonstrucciones.validar_sinCocina())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         self.agregar_resultados(calificonstrucciones.validar_banios()) 
@@ -94,28 +136,29 @@ class Propietarios:
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         
         
-        
+        self.generar_reporte_observaciones()  
+
         errores_por_hoja = {}
-        
+
         if self.resultados_generales:
             for resultado in self.resultados_generales:
-                nombre_hoja = resultado.get('Nombre Hoja', 'Sin Nombre')  # Obtener el nombre de la hoja
+                nombre_hoja = resultado.get('Nombre Hoja', 'Sin Nombre')
                 if nombre_hoja not in errores_por_hoja:
-                    errores_por_hoja[nombre_hoja] = []  # Inicializa la lista para esa hoja
+                    errores_por_hoja[nombre_hoja] = []
                 errores_por_hoja[nombre_hoja].append(resultado)
 
-            # Crear un archivo Excel con múltiples hojas
             with pd.ExcelWriter('ERRORES_CONSOLIDADOS.xlsx') as writer:
                 for hoja, errores in errores_por_hoja.items():
                     df_resultado = pd.DataFrame(errores)
                     df_resultado.to_excel(writer, sheet_name=hoja, index=False)
                     print(f"Errores guardados en la hoja: {hoja}")
+                
+                # Asegúrate de que el reporte se agrega al archivo después de los errores
+                self.agregar_reporte(writer)
 
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
-
         else:
             messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
-            
     def leer_archivo(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
@@ -131,6 +174,46 @@ class Propietarios:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error al leer el archivo: {str(e)}")
             return None
+    
+    def generar_reporte_observaciones(self):
+        """
+        Genera un reporte con el conteo de las observaciones y lo guarda en la hoja 'Reporte'.
+        """
+        if not self.resultados_generales:
+            print("No hay resultados generales para generar el reporte.")
+            return  # Termina la función si no hay resultados
+
+        # Verifica la estructura de los datos
+        print("Estructura de resultados generales:")
+        print(self.resultados_generales)  # Imprime los resultados para ver qué contiene
+
+        # Asegúrate de que todos los diccionarios tengan la clave 'Observacion'
+        for resultado in self.resultados_generales:
+            if 'Observacion' not in resultado:
+                print("Falta la clave 'Observacion' en uno de los resultados:", resultado)
+
+        # Filtra los resultados que contienen la clave 'Observacion'
+        contador_observaciones = Counter([resultado['Observacion'] for resultado in self.resultados_generales if 'Observacion' in resultado])
+
+        # Crear el DataFrame con el conteo
+        df_reporte = pd.DataFrame(contador_observaciones.items(), columns=['Observacion', 'Cantidad'])
+
+        # Agregar la hoja 'Reporte' al archivo Excel con los errores
+        self.reporte = df_reporte
+
+        # Verificación
+        print("Reporte generado:")
+        print(self.reporte)  # Esto debería mostrar el DataFrame con las observaciones
+
+    def agregar_reporte(self, writer):
+        """
+        Agrega la hoja 'Reporte' con el conteo de observaciones al archivo Excel.
+        """
+        if hasattr(self, 'reporte'):
+            self.reporte.to_excel(writer, sheet_name='Reporte', index=False)
+            print("Reporte de observaciones agregado a la hoja 'Reporte'.")
+        else:
+            print("No hay observaciones para generar el reporte.")
     
     def validar_documento_inicia_con_cero(self):
         """
@@ -160,7 +243,8 @@ class Propietarios:
                     'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
-
+            '''
+            
             # Guardar los resultados en un archivo Excel si hay errores
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
@@ -170,7 +254,7 @@ class Propietarios:
                 messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con Documento que inicia con '0'.")
             else:
                 messagebox.showinfo("Sin errores", "No se encontraron Documentos que inicien con '0' en la hoja 'Propietarios'.")
-
+            '''
             self.agregar_resultados(resultados)
 
         except Exception as e:
@@ -625,61 +709,40 @@ class Propietarios:
             return
         
         try:
-            # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
             print(f"funcion: derecho_diferente_cien")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
-            # Lista para almacenar los resultados
+            
             resultados = []
 
-            # Agrupar el DataFrame por 'NroFicha'
+            # Agrupar por 'NroFicha'
             grouped = df.groupby('NroFicha')
 
             for name, group in grouped:
                 valor_b_sum = group['Derecho'].sum()
 
-                # Si la suma de 'Derecho' no es 100, guardar los valores
+                # Si la suma de 'Derecho' no es 100, agregar una sola observación para el grupo
                 if round(valor_b_sum, 3) != 100:
-                    print(f"suma de derechos no es 100: {valor_b_sum}")
-                    for _, row in group.iterrows():
-                        resultado = {
-                            'NroFicha': row['NroFicha'],
-                            'TipoDocumento': row['TipoDocumento'],
-                            'Documento': row['Documento'],
-                            'Derecho': row['Derecho'],
-                            'Observacion': 'Porcentaje de dominio incompleto diferente a cero, falta: ' + str(100 - valor_b_sum),
-                            'Nombre Hoja': nombre_hoja
-                        
-                        }
-                        resultados.append(resultado)
-                        self.agregar_resultados(resultados)
-                        print(f"Fila {_} agregado: {resultado}")
+                    falta_derecho = round(100 - valor_b_sum, 3)
+                    resultado = {
+                        'NroFicha': name,
+                        'TipoDocumento': group['TipoDocumento'].iloc[0],
+                        'Documento': group['Documento'].iloc[0],
+                        'Suma Derecho': valor_b_sum,
+                        'Observacion': f'Porcentaje de derecho diferente a 100, falta: {falta_derecho}',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Resultado agregado para NroFicha {name}: {resultado}")
 
-            print(f"Total de resultados encontrados: {len(resultados)}")
+            # Agregar los resultados al consolidado solo una vez
             if resultados:
-            
-                fila_vacia = {key: '' for key in resultados[0].keys()}
-                resultados.append(fila_vacia)
-            # Crear un nuevo DataFrame con los resultados
+                self.agregar_resultados(resultados)
+                print(f"Total de resultados agregados: {len(resultados)}")
+
+            # Crear el DataFrame de resultados
             df_resultado = pd.DataFrame(resultados)
-
-            # Guardar el resultado en un nuevo archivo Excel
-            '''
-                output_file = 'DERECHO_DIFERENTE_CIEN.xlsx'
-                sheet_name = 'DERECHO_DIFERENTE_CIEN'
-                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito",
-                f"Proceso completado Derecho dirente cien. con {len(resultados)} registros.")
-            
-            '''            
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-
-            
+        
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -806,13 +869,14 @@ class Propietarios:
                     print(f"Fila {index}: Fecha '{fecha_obj}' es anterior a 1778. Agregado a resultados.")
 
             print(f"Total de fechas anteriores a 1778 encontradas: {len(resultados)}")
-
+            '''
+            
             if len(resultados) > 0:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
 
                 # Guardar el resultado en un nuevo archivo Excel
-                '''
+                
                 output_file = 'FECHAS_ESCRITURA_INFERIORES_1778.xlsx'
                 sheet_name = 'fechas_inferiores_1778'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
@@ -822,11 +886,11 @@ class Propietarios:
 
                 messagebox.showinfo("Éxito",
                                     f"Proceso completado. Fechas inferiores a 1778: {len(resultados)} registros.")
-                '''
+                
             else:
                 print("No se encontraron fechas anteriores a 1778.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas anteriores a 1778.")
-
+            '''
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -937,10 +1001,12 @@ class Propietarios:
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
+                
+               Entidad=row['Entidad'] 
                EntidadDepartamento = row['EntidadDepartamento']
                EntidadMunicipio= row['EntidadMunicipio']
                         
-               if pd.isna(EntidadDepartamento) or EntidadDepartamento=='' or EntidadMunicipio=='' or pd.isna(EntidadMunicipio):
+               if pd.isna(EntidadDepartamento) or EntidadDepartamento=='' or EntidadMunicipio=='' or pd.isna(EntidadMunicipio) or Entidad=='':
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'EntidadDepartamento':row['EntidadDepartamento'],
@@ -1039,5 +1105,62 @@ class Propietarios:
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
         
         
+  
     
-    
+    def validar_matricula_entidad(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"funcion: validar_matricula_entidad")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados que no cumplen la condición
+            resultados = []
+
+            # Iterar sobre cada fila del DataFrame
+            for _, row in df.iterrows():
+                matricula_inmobiliaria = str(row.get('MatriculaInmobiliaria', '')).strip()
+                entidad_departamento = str(row.get('EntidadDepartamento', '')).strip()
+                entidad_municipio = str(row.get('EntidadMunicipio', '')).strip()
+
+                # Validar la condición
+                if matricula_inmobiliaria and (entidad_departamento == 'null|null' or not entidad_municipio):
+                    resultado = {
+                        'NroFicha': row.get('NroFicha'),
+                        'MatriculaInmobiliaria': matricula_inmobiliaria,
+                        'EntidadDepartamento': entidad_departamento,
+                        'EntidadMunicipio': entidad_municipio,
+                        'Observacion': 'EntidadDepartamento no puede ser null|null y EntidadMunicipio no puede ser vacío si MatriculaInmobiliaria tiene valor',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Condición de error encontrada: {resultado}")
+                    self.agregar_resultados([resultado])
+            # Generar reporte si hay resultados
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Validacion_Matricula_Entidad.xlsx'
+                sheet_name = 'Propietarios_Errores'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo de reporte guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores de MatriculaInmobiliaria y Entidad.")
+            else:
+                messagebox.showinfo("Información", "No se encontraron errores en los registros de MatriculaInmobiliaria y Entidad.")
+
+            
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+      

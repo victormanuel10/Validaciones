@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
+from tkinter import ttk, filedialog, messagebox,Checkbutton, BooleanVar
 import pandas as pd
 import openpyxl
 import os
@@ -9,49 +9,9 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl import load_workbook
 
 class ExcelConsolidator(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Consolidador de archivos Excel")
-        self.geometry("600x400")
-        
-        # Crear las pestañas
-        self.notebook = ttk.Notebook(self)
-        self.notebook.pack(fill='both', expand=True)
-        
-        # Pestaña para consolidar carpeta
-        self.tab_consolidar_carpeta = ttk.Frame(self.notebook)
-        self.notebook.add(self.tab_consolidar_carpeta, text="Consolidar carpeta")
-        self.create_consolidar_carpeta_tab()
-        
-        # Pestaña para consolidar PH y NPH
-        self.tab_consolidar_ph_nph = ttk.Frame(self.notebook)
-        self.notebook.add(self.tab_consolidar_ph_nph, text="Consolidar PH y NPH")
-        self.create_consolidar_ph_nph_tab()
     
-    def create_consolidar_carpeta_tab(self):
-        # Variables
-        self.folder_path = tk.StringVar()
-        
-        # Instrucciones y entrada de carpeta
-        instructions = tk.Label(self.tab_consolidar_carpeta, text="Seleccione la carpeta con los archivos Excel a consolidar")
-        instructions.pack(pady=10)
-        
-        folder_frame = tk.Frame(self.tab_consolidar_carpeta)
-        folder_frame.pack(pady=10)
-        
-        self.folder_entry = tk.Entry(folder_frame, textvariable=self.folder_path, width=50)
-        self.folder_entry.pack(side=tk.LEFT, padx=(0, 10))
-        
-        browse_btn = tk.Button(folder_frame, text="Buscar", command=self.browse_folder)
-        browse_btn.pack(side=tk.LEFT)
-        
-        # Botón para consolidar
-        consolidate_btn = tk.Button(self.tab_consolidar_carpeta, text="Consolidar carpeta", command=self.consolidate_files)
-        consolidate_btn.pack(pady=20)
     
-    def browse_folder(self):
-        folder_selected = filedialog.askdirectory()
-        self.folder_path.set(folder_selected)
+    
 
     def format_number(self, value):
         """
@@ -100,8 +60,34 @@ class ExcelConsolidator(tk.Tk):
             cols[cols == dup] = [dup + f"_{i}" if i != 0 else dup for i in range(sum(cols == dup))]
         df.columns = cols
         return df
+    def create_consolidar_carpeta_tab(self):
+        self.background_label = tk.Label(self.tab_consolidar_carpeta, image=self.background_image)
+        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        # Variables
+        self.folder_path = tk.StringVar()
+        
+        # Instrucciones y entrada de carpeta
+        instructions = tk.Label(self.tab_consolidar_carpeta, text="Seleccione la carpeta con los archivos Excel a consolidar")
+        instructions.pack(pady=10)
+        
+        folder_frame = tk.Frame(self.tab_consolidar_carpeta)
+        folder_frame.pack(pady=10)
+        
+        self.folder_entry = tk.Entry(folder_frame, textvariable=self.folder_path, width=50)
+        self.folder_entry.pack(side=tk.LEFT, padx=(0, 10))
+        browse_btn = tk.Button(folder_frame, text="Buscar", command=self.browse_folder)
+        browse_btn.pack(side=tk.LEFT)
+        
+        # Botón para consolidar
+        consolidate_btn = tk.Button(self.tab_consolidar_carpeta, text="Consolidar carpeta", command=self.consolidar_carpeta)
+        consolidate_btn.pack(pady=20)
     
-    def consolidate_files(self):
+    def browse_folder(self):
+        folder_selected = filedialog.askdirectory()
+        self.folder_path.set(folder_selected)
+        
+    def consolidar_carpeta(self):
         if not self.folder_path.get():
             messagebox.showerror("Error", "Por favor seleccione una carpeta")
             return
@@ -134,6 +120,18 @@ class ExcelConsolidator(tk.Tk):
                     
                     continue  # Pasar a la siguiente hoja sin consolidar
 
+                if sheet_name == "Leer":
+                    # Copiar la hoja "Leer" tal como está desde el primer archivo
+                    data = self.read_excel_preserve_numbers(excel_files[0], sheet_name)
+                    consolidated_sheet = consolidated_wb.create_sheet(title=sheet_name)
+                    consolidated_sheet.append(data.columns.tolist())  # Agregar encabezados
+
+                    # Agregar datos de la hoja original
+                    for row in data.itertuples(index=False, name=None):
+                        consolidated_sheet.append(row)
+
+                    continue  # Pasar a la siguiente hoja sin consolidar
+
                 # Proceso normal de consolidación para las demás hojas
                 consolidated_sheet = consolidated_wb.create_sheet(title=sheet_name)
                 dfs = []
@@ -151,10 +149,17 @@ class ExcelConsolidator(tk.Tk):
                     # Eliminar filas duplicadas
                     df = df.drop_duplicates().reset_index(drop=True)
 
+                    
+                    # Agregar la columna 'Radicado' a todas las hojas
+                    df['Radicado'] = os.path.basename(excel_file)
+
+                    # Si la columna 'Npn' existe, crear la columna 'NPN_TERRENO'
                     if 'Npn' in df.columns:
                         df['NPN_TERRENO'] = df['Npn'].astype(str).str[:21]
 
+                    # Agregar el DataFrame procesado a la lista
                     dfs.append(df)
+                   
 
                     # Cargar el libro fuente para copiar validaciones de datos
                     source_wb = openpyxl.load_workbook(excel_file, data_only=False)
@@ -202,26 +207,9 @@ class ExcelConsolidator(tk.Tk):
                         promptTitle=dv.promptTitle,
                         prompt=dv.prompt
                     )
-
-                    # Aquí corregimos cómo manejamos los rangos de las validaciones
-                    for range in dv.ranges:
-                        start_cell = range.min_col, range.min_row  # Min columna y fila
-                        end_cell = range.max_col, range.max_row    # Max columna y fila
-
-                        # Convertimos las celdas de min y max en las referencias de celda correspondientes
-                        start_cell_str = openpyxl.utils.get_column_letter(start_cell[0]) + str(start_cell[1])
-                        end_cell_str = openpyxl.utils.get_column_letter(end_cell[0]) + str(end_cell[1])
-
-                        # Asegurarnos de que no generamos un rango donde la fila de inicio es mayor que la fila de fin
-                        if start_cell[1] <= consolidated_df.shape[0]:
-                            new_range = f"{start_cell_str}:{openpyxl.utils.get_column_letter(end_cell[0])}{consolidated_df.shape[0] + 1}"
-                        else:
-                            new_range = f"{start_cell_str}:{openpyxl.utils.get_column_letter(end_cell[0])}{start_cell[1]}"
-
-                        consolidated_dv.add(new_range)  # Agregar el nuevo rango a la validación
-
-                    # Aplicar la validación de datos al rango
                     consolidated_sheet.add_data_validation(consolidated_dv)
+                    for range in dv.ranges:
+                        consolidated_dv.add(range)
 
                 # Ajustar el ancho de las columnas basado en la longitud máxima de las celdas
                 for column in temp_sheet.columns:
@@ -230,7 +218,7 @@ class ExcelConsolidator(tk.Tk):
                     consolidated_sheet.column_dimensions[column[0].column_letter].width = adjusted_width
 
             # Guardar el libro consolidado final
-            output_path = folder / "Consolidado_con_validaciones.xlsx"
+            output_path = folder / "Consolidado.xlsx"
             consolidated_wb.save(output_path)
 
             # Eliminar el archivo temporal
@@ -244,47 +232,8 @@ class ExcelConsolidator(tk.Tk):
 
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error durante la consolidación:\n{str(e)}")
-            
-    def create_consolidar_ph_nph_tab(self):
-        # Variables
-        self.ruta_archivo_1 = ""
-        self.ruta_archivo_2 = ""
-        self.ruta_guardado = ""
-        
-        # Etiquetas y cuadros de entrada
-        tk.Label(self.tab_consolidar_ph_nph, text="Archivo NPH:").grid(row=0, column=0, padx=10, pady=10, sticky="e")
-        self.entry_archivo_1 = tk.Entry(self.tab_consolidar_ph_nph, width=50)
-        self.entry_archivo_1.grid(row=0, column=1, padx=10, pady=10)
-        tk.Button(self.tab_consolidar_ph_nph, text="Seleccionar", command=self.seleccionar_archivo_1).grid(row=0, column=2, padx=10, pady=10)
 
-        tk.Label(self.tab_consolidar_ph_nph, text="Archivo PH:").grid(row=1, column=0, padx=10, pady=10, sticky="e")
-        self.entry_archivo_2 = tk.Entry(self.tab_consolidar_ph_nph, width=50)
-        self.entry_archivo_2.grid(row=1, column=1, padx=10, pady=10)
-        tk.Button(self.tab_consolidar_ph_nph, text="Seleccionar", command=self.seleccionar_archivo_2).grid(row=1, column=2, padx=10, pady=10)
-
-        tk.Label(self.tab_consolidar_ph_nph, text="Guardar como:").grid(row=2, column=0, padx=10, pady=10, sticky="e")
-        self.entry_guardado = tk.Entry(self.tab_consolidar_ph_nph, width=50)
-        self.entry_guardado.grid(row=2, column=1, padx=10, pady=10)
-        tk.Button(self.tab_consolidar_ph_nph, text="Seleccionar", command=self.seleccionar_guardado).grid(row=2, column=2, padx=10, pady=10)
-        
-        # Botón para ejecutar la consolidación
-        tk.Button(self.tab_consolidar_ph_nph, text="Consolidar archivos", command=self.consolidar_archivos).grid(row=3, column=1, padx=10, pady=20)
     
-    def seleccionar_archivo_1(self):
-        self.ruta_archivo_1 = filedialog.askopenfilename(title="Selecciona el primer archivo de Excel", filetypes=[("Excel files", "*.xlsx")])
-        self.entry_archivo_1.delete(0, tk.END)
-        self.entry_archivo_1.insert(0, self.ruta_archivo_1)
-    
-    def seleccionar_archivo_2(self):
-        self.ruta_archivo_2 = filedialog.askopenfilename(title="Selecciona el segundo archivo de Excel", filetypes=[("Excel files", "*.xlsx")])
-        self.entry_archivo_2.delete(0, tk.END)
-        self.entry_archivo_2.insert(0, self.ruta_archivo_2)
-
-    def seleccionar_guardado(self):
-        self.ruta_guardado = filedialog.asksaveasfilename(defaultextension=".xlsx", title="Guardar archivo consolidado como", filetypes=[("Excel files", "*.xlsx")])
-        self.entry_guardado.delete(0, tk.END)
-        self.entry_guardado.insert(0, self.ruta_guardado)
-        
 
     def combinar_hojas(self, lista_hojas, data_archivo_1, data_archivo_2):
         df_consolidado = pd.DataFrame()
@@ -307,8 +256,7 @@ class ExcelConsolidator(tk.Tk):
             'ConstruccionesGenerales': ['ConstruccionesGenerales', 'ConstruccionGeneralFicha'],
             'Colindantes': ['Colindantes', 'ColindantesFicha'],
             'ZonasHomogeneas': ['ZonasHomogeneas'],
-            'Cartografia': ['Cartografia'],
-            'InformacionGrafica': ['InformacionGrafica'],
+            'CartografiaInformacionGrafica': ['CartografiaInformacionGrafica'],
             'Listas': ['Listas']
         }
 
@@ -316,41 +264,157 @@ class ExcelConsolidator(tk.Tk):
         data_archivo_1 = pd.read_excel(self.ruta_archivo_1, sheet_name=None, dtype=str)
         data_archivo_2 = pd.read_excel(self.ruta_archivo_2, sheet_name=None, dtype=str)
 
-        # Renombrar columnas en el archivo 2 para mantener la consistencia con el archivo 1
+        # Renombrar columnas en el archivo 2 para mantener la consistencia con el archivo 1 MatriculaMatriz CalificacionesConsFicha
         if "Ficha" in data_archivo_2:
-            data_archivo_2["Ficha"].rename(columns={
-                'NumCedCatastral': 'NumCedulaCatastral',
-            }, inplace=True)
-
+            data_archivo_2["Ficha"].rename(columns={'NumCedCatastral': 'NumCedulaCatastral'}, inplace=True)
+            data_archivo_2["Ficha"].rename(columns={'MatriculaMatriz': 'MatriculaInmobiliaria'}, inplace=True)
         if "FichasPrediales" in data_archivo_2:
-            data_archivo_2["FichasPrediales"].rename(columns={
-                'DestinoEconomico':'DestinoEcconomico'
-            }, inplace=True)
+            data_archivo_2["FichasPrediales"].rename(columns={'DestinoEconomico': 'DestinoEcconomico'}, inplace=True)
+        if "ConstruccionesFicha" in data_archivo_2:
+            data_archivo_2["ConstruccionesFicha"].rename(columns={'Secuencia': 'secuencia', 'IdentificadorUso': 'IdUso', 'PorcentajeConstruccion': 'PorcentajeConstruido','Puntos':'Puntos'}, inplace=True)        
+        if "CalificacionesConstrucciones" in data_archivo_2:
+            data_archivo_2["CalificacionesConstrucciones"].rename(columns={'CubrimientoMuro': 'Cubrimiento Muro'}, inplace=True)
+            data_archivo_2["CalificacionesConstrucciones"].rename(columns={'CubrimientoMuro': 'Cubrimiento Muro'}, inplace=True)
 
+        # Diccionario para almacenar los dataframes consolidados
         consolidado = {}
 
         # Consolidar las hojas correspondientes
         for hoja_destino, hojas_fuente in correspondencias.items():
-            data_frames = []
-            for nombre_hoja in hojas_fuente:
-                if nombre_hoja in data_archivo_1:
-                    data_frames.append(data_archivo_1[nombre_hoja])
-                if nombre_hoja in data_archivo_2:
-                    data_frames.append(data_archivo_2[nombre_hoja])
+            consolidado[hoja_destino] = self.combinar_hojas(hojas_fuente, data_archivo_1, data_archivo_2)
 
-            # Concatenar todos los DataFrames de la hoja actual
-            if data_frames:
-                df_consolidado = pd.concat(data_frames, ignore_index=True)
-                consolidado[hoja_destino] = df_consolidado
+        # Agregar funcionalidad para la hoja Construcciones
+        if 'Construcciones' in consolidado:
+            construcciones_df = consolidado['Construcciones']
 
-        # Agregar las hojas del archivo 2 que no tienen correspondencia en las especificaciones
+            # Agregar la columna FHNC
+            construcciones_df['FHNC'] = construcciones_df['NroFicha'] + "-" + construcciones_df['NumeroConstruccion']
+
+            # Buscar en Fichas para obtener el valor de NpnConst
+            if 'Fichas' in consolidado:
+                fichas_df = consolidado['Fichas']
+                construcciones_df = construcciones_df.merge(
+                    fichas_df[['NroFicha', 'Npn']],
+                    on='NroFicha',
+                    how='left',
+                    suffixes=('', '_fichas')
+                )
+                construcciones_df['NpnConst'] = construcciones_df['Npn'].astype(str).str[:21] + "00000000-" + construcciones_df['NumeroConstruccion']
+                construcciones_df.drop(columns=['Npn'], inplace=True)  # Eliminar la columna Npn tras usarla
+                consolidado['Construcciones'] = construcciones_df
+
+            # Buscar en Fichas para obtener el valor de MatriculaInmobiliaria
+            '''if 'Fichas' in consolidado:
+                fichas_df = consolidado['Fichas']
+                construcciones_df = construcciones_df.merge(
+                    fichas_df[['NroFicha', 'MatriculaInmobiliaria']],
+                    on='NroFicha',
+                    how='left',
+                    suffixes=('', '_fichas')
+                )
+                construcciones_df['MatriculaInmobiliaria'] = construcciones_df['MatriculaInmobiliaria']
+                consolidado['Propietarios'] = construcciones_df
+
+            # Buscar en Fichas para obtener el valor de tomo
+            if 'Fichas' in consolidado:
+                fichas_df = consolidado['Fichas']
+                construcciones_df = construcciones_df.merge(
+                    fichas_df[['NroFicha', 'Tomo']],
+                    on='NroFicha',
+                    how='left',
+                    suffixes=('', '_fichas')
+                )
+                construcciones_df['Tomo'] = construcciones_df['Tomo']
+                consolidado['Propietarios'] = construcciones_df'''
+
+        if 'CalificacionesConstrucciones' in consolidado and 'Construcciones' in consolidado:
+            calificaciones_df = consolidado['CalificacionesConstrucciones']  
+            calificaciones_df.rename(columns={'Secuencia': 'secuencia'}, inplace=True)
+
+            construcciones_df = consolidado['Construcciones']
+
+            # Hacer un merge usando la columna 'secuencia'
+            calificaciones_df = calificaciones_df.merge(
+                construcciones_df[['secuencia', 'FHNC', 'NpnConst','TipoConstruccion']],
+                on='secuencia',
+                how='left'
+            )
+
+            consolidado['CalificacionesConstrucciones'] = calificaciones_df
+
+        if 'Fichas' in consolidado:
+            fichas_df = consolidado['Fichas']
+
+            
+            # Llenar el campo Corregimiento si está vacío
+            fichas_df['Corregimiento'] = fichas_df['Corregimiento'].where(
+                ~fichas_df['Corregimiento'].isna(),  # Mantener valores que NO están vacíos
+                fichas_df['NumCedulaCatastral'].str[4:7]  # Extraer caracteres 5 al 7
+            )
+
+            # Llenar el campo Barrio si está vacío
+            fichas_df['Barrio'] = fichas_df['Barrio'].where(
+                ~fichas_df['Barrio'].isna(),
+                fichas_df['NumCedulaCatastral'].str[7:10]  # Extraer caracteres 8 al 10
+            )
+
+            # Llenar el campo Manzana si está vacío
+            fichas_df['ManzanVereda'] = fichas_df['ManzanVereda'].where(
+                ~fichas_df['ManzanVereda'].isna(),
+                fichas_df['NumCedulaCatastral'].str[10:14]  # Extraer caracteres 11 al 14
+            )
+
+            # Llenar el campo Predio si está vacío
+            fichas_df['Predio'] = fichas_df['Predio'].where(
+                ~fichas_df['Predio'].isna(),
+                fichas_df['NumCedulaCatastral'].str[14:19]  # Extraer desde el carácter 15 en adelante
+            )
+
+
+            fichas_df['Cp'] = fichas_df['Npn'].str[21]  # Índice 21 para el dígito 22
+
+            fichas_df['Edificio'] = fichas_df['Npn'].str[22:24]  # Índices 22 y 23 para los dígitos 23 y 24
+
+            fichas_df['Piso'] = fichas_df['Npn'].str[24:26]  # Índices 24 y 25 para los dígitos 25 y 26
+
+            fichas_df['Unidad Predial'] = fichas_df['Npn'].str[26:30]  # Índices 26 a 29 para los dígitos 27 a 30
+
+            cols = list(fichas_df.columns)
+            npn_index = cols.index('Npn') + 1
+            cols.insert(npn_index, cols.pop(cols.index('Cp')))  # Mover 'Cp' después de 'Npn'
+            cols.insert(npn_index + 1, cols.pop(cols.index('Edificio')))  # Mover 'Edificio' después de 'Cp'
+            cols.insert(npn_index + 2, cols.pop(cols.index('Piso')))  # Mover 'Piso' después de 'Edificio'
+            cols.insert(npn_index + 3, cols.pop(cols.index('Unidad Predial')))  # Mover 'Unidad Predial' después de 'Piso'
+            fichas_df = fichas_df[cols] 
+
+        if 'Fichas' in consolidado and 'Propietarios' in consolidado:
+            fichas_df = consolidado['Fichas']
+            propietarios_df = consolidado['Propietarios']
+
+            # Realizar merge entre Fichas y Propietarios usando NroFicha
+            propietarios_df = propietarios_df.merge(
+                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo']],
+                on='NroFicha',
+                how='left'
+            )
+
+            # Actualizar el DataFrame de Propietarios con la columna MatriculaInmobiliaria
+            consolidado['Propietarios'] = propietarios_df
+            print("Campo MatriculaInmobiliaria copiado de Fichas a Propietarios según NroFicha.")
+          
+        
+
+        # Actualizar el consolidado con la nueva versión de fichas_df
+        consolidado['Fichas'] = fichas_df
+
+        # Agregar las hojas que no tienen correspondencia
         hojas_no_correspondidas = set(data_archivo_2.keys()).difference([item for sublist in correspondencias.values() for item in sublist])
         for hoja in hojas_no_correspondidas:
             consolidado[hoja] = data_archivo_2[hoja]
 
-        # Guardar el archivo consolidado en la ubicación especificada
+        # Guardar el archivo consolidado
         ruta_consolidada = self.ruta_guardado
-        with pd.ExcelWriter(ruta_consolidada, engine='openpyxl') as writer:
+        with pd.ExcelWriter(ruta_consolidada, engine='xlsxwriter') as writer:
             for nombre_hoja, df in consolidado.items():
                 df.to_excel(writer, sheet_name=nombre_hoja, index=False)
 
@@ -358,12 +422,15 @@ class ExcelConsolidator(tk.Tk):
         try:
             wb_consolidado = load_workbook(ruta_consolidada)
 
-            # Copiar validaciones de datos de los archivos originales
+            # Copiar validaciones de cada archivo original
             for ruta_archivo in [self.ruta_archivo_1, self.ruta_archivo_2]:
                 wb_original = load_workbook(ruta_archivo)
+
                 for nombre_hoja in wb_original.sheetnames:
+                    hoja_original = wb_original[nombre_hoja]
+
+                    # Verifica si la hoja existe en el archivo consolidado
                     if nombre_hoja in wb_consolidado.sheetnames:
-                        hoja_original = wb_original[nombre_hoja]
                         hoja_consolidada = wb_consolidado[nombre_hoja]
 
                         # Copiar las validaciones de datos
@@ -376,7 +443,7 @@ class ExcelConsolidator(tk.Tk):
                                 new_dv.sqref = dv.sqref
                                 hoja_consolidada.add_data_validation(new_dv)
 
-            # Guardar el archivo consolidado final con validaciones
+            # Guardar el archivo con las validaciones copiadas
             wb_consolidado.save(ruta_consolidada)
 
         except Exception as e:
@@ -384,6 +451,5 @@ class ExcelConsolidator(tk.Tk):
             return
 
         messagebox.showinfo("Consolidación completada", f"El archivo consolidado se ha guardado en {ruta_consolidada}")
-if __name__ == "__main__":
-    app = ExcelConsolidator()
-    app.mainloop()
+        
+

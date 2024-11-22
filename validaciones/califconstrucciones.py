@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 import pandas as pd
 from tkinter import messagebox
 from datetime import datetime
@@ -38,7 +39,7 @@ class CalificaionesConstrucciones:
                 
                 if ( Tamaniobanio == '311|SIN BAÑO') and (pd.notna(EnchapesBanio) or pd.notna(MobiliarioBanio) or pd.notna(ConservacionBanio)):
                     resultado = {
-                        'Secuencia':row['Secuencia'],
+                        'secuencia':row['secuencia'],
                         'Tamaño baño': row['TamanioBanio'],
                         'Observacion': 'No puede tener EnchapesBanio, MobiliarioBanio, ConservacionBanio ',
                         'Nombre Hoja': nombre_hoja
@@ -101,7 +102,7 @@ class CalificaionesConstrucciones:
                     
                     if ( TamanioCocina == '411|SIN COCINA') and (pd.notna(Enchape) or pd.notna(MobiliarioCocina) or pd.notna(ConservacionCocina)):
                         resultado = {
-                            'Secuencia':row['Secuencia'],
+                            'secuencia':row['secuencia'],
                             'Observacion': 'No puede tener Enchape, MobiliarioCocina, ConservacionCocina ',
                             'Nombre Hoja': nombre_hoja
                         }
@@ -165,7 +166,7 @@ class CalificaionesConstrucciones:
                 if Armazon == '111|MADERA, TAPIA':
                     if Muro not in muros_validos_Madera_Tapia:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
@@ -177,7 +178,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso == '235|TABLETA, CAUCHO, ACRÍLICO, GRANITO, BALDOSAS FINA, CERÁMICA':
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon':row['Armazon'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para armazon',
@@ -187,7 +188,7 @@ class CalificaionesConstrucciones:
                         
                     if Cubierta not in Cubierta_validas_Madera_Tapia:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Piso': row['Piso'],
                             'Cubierta':row['Cubierta'],
                             'Observacion': 'Cubierta invalido para armazon',
@@ -200,7 +201,7 @@ class CalificaionesConstrucciones:
                     # Validación para el campo Muro
                     if Muro == '122|BAHAREQUE,ADOBE, TAPIA' or Muro == '121|MATERIALES DE DESECHOS,ESTERILLA':
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta': row['Cubierta'],
@@ -214,7 +215,7 @@ class CalificaionesConstrucciones:
                     cubiertas_invalidas_prefabricado = ['121|MATERIALES DE DESECHOS', '135|AZOTEA, ALUMINIO,PLACAS CON ETERNIT', '136|PLACA IMPERMEABILI, CUBIERTA DE LUJO']
                     if Cubierta in cubiertas_invalidas_prefabricado:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta': row['Cubierta'],
@@ -230,7 +231,7 @@ class CalificaionesConstrucciones:
                 elif Armazon == '113|LADRILLO,BLOQUE, MADERA INMUNIZADA':
                     if Muro=='122|BAHAREQUE,ADOBE, TAPIA':
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
@@ -243,7 +244,7 @@ class CalificaionesConstrucciones:
 
                     if Cubierta=='131|MATERIALES DE DESECHO':
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
@@ -257,7 +258,7 @@ class CalificaionesConstrucciones:
                 elif Armazon == '114|CONCRETO HASTA TRES PISOS':
                     if (Muro=='121|MATERIALES DE DESECHOS,ESTERILLA' or Muro=='123|MADERA' or Muro=='122|BAHAREQUE,ADOBE, TAPIA'):
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
@@ -268,7 +269,7 @@ class CalificaionesConstrucciones:
                         resultados.append(resultado)
                     if (Cubierta=='131|MATERIALES DE DESECHO'):
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
@@ -353,7 +354,7 @@ class CalificaionesConstrucciones:
                     # Validación para Cubrimiento Muro
                     if Cubrimiento_Muro in cubrimiento_invalidos:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada',
@@ -364,7 +365,7 @@ class CalificaionesConstrucciones:
                     # Validación para Piso
                     if Piso in pisos_invalidos:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada',
@@ -375,7 +376,7 @@ class CalificaionesConstrucciones:
                 elif Fachada == '212|SENCILLA':
                     if Cubrimiento_Muro in cubrimiento_invalidos_sencilla:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada',
@@ -385,7 +386,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso in pisos_invalidos_sencilla:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada',
@@ -397,7 +398,7 @@ class CalificaionesConstrucciones:
                 elif Fachada == '213|REGULAR':
                     if Cubrimiento_Muro in cubrimiento_invalidos_regular:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada',
@@ -407,7 +408,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso in pisos_invalidos_regular:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada',
@@ -418,7 +419,7 @@ class CalificaionesConstrucciones:
                 elif Fachada == '214|BUENA':
                     if Cubrimiento_Muro in cubrimiento_invalidos_bueno:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada',
@@ -428,7 +429,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso in pisos_invalidos_bueno:
                         resultado = {
-                            'Secuencia': row['Secuencia'],
+                            'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada',
@@ -436,7 +437,8 @@ class CalificaionesConstrucciones:
                         }
                         resultados.append(resultado)
                 print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-
+            '''
+            
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
                 
@@ -448,7 +450,7 @@ class CalificaionesConstrucciones:
                 messagebox.showinfo("Éxito", f"Proceso completado. Cubrimiento Muro invalido con {len(resultados)} registros.")
             else:
                 messagebox.showinfo("Información", "No se encontraron registros que cumplan con la condición.")
-
+            '''
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -480,14 +482,14 @@ class CalificaionesConstrucciones:
                 cubierta = row['Cubierta']
 
                 if conservacion == '143|BUENO' and cubierta == '132|ZINC,TEJA DE BARRO':
-                    secuencia = row['Secuencia']
+                    secuencia = row['secuencia']
 
                     
                     construccion_row = df_construcciones[df_construcciones['secuencia'] == secuencia]
 
                     if not construccion_row.empty and construccion_row.iloc[0]['EdadConstruccion'] >= 20:
                         resultado = {
-                            'Secuencia': secuencia,
+                            'secuencia': secuencia,
                             'Conservacion': conservacion,
                             'Observacion': 'La edad de la construcción es mayor o igual a 20 años',
                             'Nombre Hoja': nombre_hoja_calificaciones
@@ -514,4 +516,66 @@ class CalificaionesConstrucciones:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
 
-    
+    def validar_cubierta_y_numero_pisos(self):
+        archivo_excel = self.archivo_entry.get()
+        hoja_calificaciones = 'CalificacionesConstrucciones'
+        hoja_construcciones = 'Construcciones'
+
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return
+
+        try:
+            # Leer ambas hojas del archivo Excel
+            df_calificaciones = pd.read_excel(archivo_excel, sheet_name=hoja_calificaciones)
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+
+            print(f"funcion: validar_cubierta_numero_pisos")
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Dimensiones Hoja Calificaciones: {df_calificaciones.shape}")
+            print(f"Dimensiones Hoja Construcciones: {df_construcciones.shape}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Filtrar las filas de CalificacionesConstrucciones donde Cubierta sea igual al valor especificado
+            calificaciones_filtradas = df_calificaciones[df_calificaciones['Cubierta'] == '135|AZOTEA, ALUMINIO,PLACAS CON ETERNIT']
+
+            for _, fila_calificaciones in calificaciones_filtradas.iterrows():
+                secuencia = fila_calificaciones['secuencia']
+
+                # Buscar la misma secuencia en la hoja Construcciones
+                construccion_filtrada = df_construcciones[df_construcciones['secuencia'] == secuencia]
+
+                if not construccion_filtrada.empty:
+                    numero_pisos = construccion_filtrada.iloc[0]['NumeroPisos']
+
+                    # Validar que el Número de Pisos sea menor a 3
+                    if numero_pisos < 3:
+                        resultado = {
+                            'secuencia': secuencia,
+                            'Cubierta': fila_calificaciones['Cubierta'],
+                            'NumeroPisos': numero_pisos,
+                            'Observacion': 'Número de pisos menor a 3 para la cubierta azotea ',
+                            'Nombre Hoja': hoja_calificaciones
+                            
+                        }
+                        resultados.append(resultado)
+                        print(f"Error encontrado: {resultado}")
+
+            # Manejar resultados
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_Cubierta_NumeroPisos.xlsx'
+                sheet_name = 'Errores'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores en Cubierta y Número de Pisos.")
+            else:
+                messagebox.showinfo("Información", "No se encontraron errores en Cubierta y Número de Pisos.")
+
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
