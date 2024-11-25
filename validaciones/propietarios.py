@@ -222,7 +222,7 @@ class Propietarios:
         Agrega la hoja 'Reporte' con el conteo de observaciones al archivo Excel.
         """
         if hasattr(self, 'reporte'):
-            self.reporte.to_excel(writer, sheet_name='Reporte', index=False)
+            self.reporte.to_excel(writer, sheet_name='Resumen', index=False)
             print("Reporte de observaciones agregado a la hoja 'Reporte'.")
         else:
             print("No hay observaciones para generar el reporte.")
