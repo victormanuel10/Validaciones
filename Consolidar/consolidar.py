@@ -153,9 +153,9 @@ class ExcelConsolidator(tk.Tk):
                     # Agregar la columna 'Radicado' a todas las hojas
                     df['Radicado'] = os.path.basename(excel_file)
 
-                    # Si la columna 'Npn' existe, crear la columna 'NPN_TERRENO'
+                    # Si la columna 'Npn' existe, crear la columna 'NpnTerreno'
                     if 'Npn' in df.columns:
-                        df['NPN_TERRENO'] = df['Npn'].astype(str).str[:21]
+                        df['NpnTerreno'] = df['Npn'].astype(str).str[:21]
 
                     # Agregar el DataFrame procesado a la lista
                     dfs.append(df)
@@ -393,7 +393,7 @@ class ExcelConsolidator(tk.Tk):
 
             # Realizar merge entre Fichas y Propietarios usando NroFicha
             propietarios_df = propietarios_df.merge(
-                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo']],
+                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo','NpnTerreno']],
                 on='NroFicha',
                 how='left'
             )
