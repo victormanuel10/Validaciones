@@ -1,6 +1,6 @@
 # -- coding: utf-8 --
 import tkinter as tk
-#from osgeo import ogr
+from osgeo import ogr
 from tkinter import ttk,filedialog, messagebox
 from PIL import Image, ImageTk
 import openpyxl
@@ -10,7 +10,7 @@ import numpy as np
 from pathlib import Path
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl import load_workbook
-from Consolidar.consolidar import ExcelConsolidator
+
 
 
 
@@ -27,10 +27,10 @@ class InterfazGrafica:
         self.notebook.pack(expand=1, fill="both")
         
         # Crear las pestañas
-        self.tab_validaciones = tk.Frame(self.notebook, bg='#7ea7b9')
-        self.tab_consolidar_carpeta = tk.Frame(self.notebook, bg='#7ea7b9')
-        self.tab_consolidar_ph_nph = tk.Frame(self.notebook, bg='#7ea7b9')
-        self.tab_convertir_gdb = tk.Frame(self.notebook, bg='#7ea7b9')
+        self.tab_validaciones = tk.Frame(self.notebook, bg='#FFFFFF')
+        self.tab_consolidar_carpeta = tk.Frame(self.notebook, bg='#FFFFFF')
+        self.tab_consolidar_ph_nph = tk.Frame(self.notebook, bg='#FFFFFF')
+        self.tab_convertir_gdb = tk.Frame(self.notebook, bg='#FFFFFF')
         
         self.notebook.add(self.tab_validaciones, text="Validaciones")
         self.notebook.add(self.tab_consolidar_carpeta, text="Consolidar carpeta")
@@ -39,8 +39,8 @@ class InterfazGrafica:
 
 
 
-        ruta_imagen = os.path.join(os.path.dirname(__file__), "assets", "Logo_Conestudios.png")
-        self.background_image = self.crear_imagen_semitransparente(ruta_imagen, 0.1)
+        #ruta_imagen = os.path.join(os.path.dirname(__file__), "assets", "Logo_Conestudios.png")
+        #self.background_image = self.crear_imagen_semitransparente(ruta_imagen, 0.1)
         # Configurar la pestaña de validaciones
         self.configurar_pestania_validaciones()
         self.create_consolidar_carpeta_tab()
@@ -49,9 +49,9 @@ class InterfazGrafica:
         
     def configurar_pestania_validaciones(self):
     # Cargar la imagen y configurarla como fondo en la pestaña de validaciones
-        self.background_label = tk.Label(self.tab_validaciones, image=self.background_image)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label = tk.Label(self.tab_validaciones, image=self.background_image)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Crear los widgets dentro de la pestaña "Validaciones"
         frame_nph = tk.Frame(self.tab_validaciones, bg='#7ea7b9')
@@ -86,9 +86,9 @@ class InterfazGrafica:
         return ImageTk.PhotoImage(image)    
         
     def create_consolidar_carpeta_tab(self):
-        self.background_label = tk.Label(self.tab_consolidar_carpeta, image=self.background_image)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label = tk.Label(self.tab_consolidar_carpeta, image=self.background_image)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
         # Variables
         self.folder_path = tk.StringVar()
         
@@ -101,7 +101,7 @@ class InterfazGrafica:
         
         self.folder_entry = tk.Entry(folder_frame, textvariable=self.folder_path, width=50)
         self.folder_entry.pack(side=tk.LEFT, padx=(0, 10))
-        browse_btn = tk.Button(folder_frame, text="Buscar", command=self)
+        browse_btn = tk.Button(folder_frame, text="Buscar", command=self.browse_folder)
         browse_btn.pack(side=tk.LEFT)
         
         # Botón para consolidar
@@ -109,9 +109,9 @@ class InterfazGrafica:
         consolidate_btn.pack(pady=20)
     
     def create_consolidar_ph_nph_tab(self):
-        self.background_label = tk.Label(self.tab_consolidar_ph_nph, image=self.background_image)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label = tk.Label(self.tab_consolidar_ph_nph, image=self.background_image)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
         # Variables
         self.ruta_archivo_1 = ""
         self.ruta_archivo_2 = ""
@@ -135,11 +135,14 @@ class InterfazGrafica:
         
         # Botón para ejecutar la consolidación
         tk.Button(self.tab_consolidar_ph_nph, text="Consolidar archivos", command=self.consolidar_archivos).grid(row=3, column=1, padx=10, pady=20)
-    
+        tk.Button(self.tab_consolidar_ph_nph, text="Generar versión app", command=self.generar_version_app).grid(row=4, column=1, padx=10, pady=20)
+        
     def Configurar_Pestaña_Convertir(self):
-        self.background_label = tk.Label(self.tab_convertir_gdb, image=self.background_image)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label = tk.Label(self.tab_convertir_gdb, image=self.background_image)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        #self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        self.gdb_path = tk.StringVar()
         
         tk.Label(self.tab_convertir_gdb, text="Seleccionar",font=("Arial", 12)).pack(pady=10)
         self.entry_convertir = tk.Entry( self.tab_convertir_gdb, width=50)
@@ -460,9 +463,9 @@ class InterfazGrafica:
             data_archivo_2["Ficha"].rename(columns={'NumCedCatastral': 'NumCedulaCatastral'}, inplace=True)
             data_archivo_2["Ficha"].rename(columns={'MatriculaMatriz': 'MatriculaInmobiliaria'}, inplace=True)
         if "FichasPrediales" in data_archivo_2:
-            data_archivo_2["FichasPrediales"].rename(columns={'DestinoEconomico': 'DestinoEcconomico'}, inplace=True)
+            data_archivo_2["FichasPrediales"].rename(columns={'DestinoEconomico': 'DestinoEcconomico','Puntos ':'Puntos'}, inplace=True)
         if "ConstruccionesFicha" in data_archivo_2:
-            data_archivo_2["ConstruccionesFicha"].rename(columns={'Secuencia': 'secuencia', 'IdentificadorUso': 'IdUso', 'PorcentajeConstruccion': 'PorcentajeConstruido','Puntos':'Puntos'}, inplace=True)        
+            data_archivo_2["ConstruccionesFicha"].rename(columns={'Secuencia': 'secuencia', 'IdentificadorUso': 'IdUso', 'PorcentajeConstruccion': 'PorcentajeConstruido','Puntos':'Puntos '}, inplace=True)        
         if "CalificacionesConstrucciones" in data_archivo_2:
             data_archivo_2["CalificacionesConstrucciones"].rename(columns={'CubrimientoMuro': 'Cubrimiento Muro'}, inplace=True)
             data_archivo_2["CalificacionesConstrucciones"].rename(columns={'CubrimientoMuro': 'Cubrimiento Muro'}, inplace=True)
@@ -560,23 +563,7 @@ class InterfazGrafica:
                 ~fichas_df['Predio'].isna(),
                 fichas_df['NumCedulaCatastral'].str[14:19]  # Extraer desde el carácter 15 en adelante
             )
-
-
-            fichas_df['Cp'] = fichas_df['Npn'].str[21]  # Índice 21 para el dígito 22
-
-            fichas_df['Edificio'] = fichas_df['Npn'].str[22:24]  # Índices 22 y 23 para los dígitos 23 y 24
-
-            fichas_df['Piso'] = fichas_df['Npn'].str[24:26]  # Índices 24 y 25 para los dígitos 25 y 26
-
-            fichas_df['Unidad Predial'] = fichas_df['Npn'].str[26:30]  # Índices 26 a 29 para los dígitos 27 a 30
-
-            cols = list(fichas_df.columns)
-            npn_index = cols.index('Npn') + 1
-            cols.insert(npn_index, cols.pop(cols.index('Cp')))  # Mover 'Cp' después de 'Npn'
-            cols.insert(npn_index + 1, cols.pop(cols.index('Edificio')))  # Mover 'Edificio' después de 'Cp'
-            cols.insert(npn_index + 2, cols.pop(cols.index('Piso')))  # Mover 'Piso' después de 'Edificio'
-            cols.insert(npn_index + 3, cols.pop(cols.index('Unidad Predial')))  # Mover 'Unidad Predial' después de 'Piso'
-            fichas_df = fichas_df[cols] 
+        
 
         if 'Fichas' in consolidado and 'Propietarios' in consolidado:
             fichas_df = consolidado['Fichas']
@@ -642,8 +629,43 @@ class InterfazGrafica:
             return
 
         messagebox.showinfo("Consolidación completada", f"El archivo consolidado se ha guardado en {ruta_consolidada}")
-        
+    def generar_version_app(self):
+        if not self.ruta_guardado:
+            messagebox.showwarning("Selección incompleta", "Por favor selecciona una ubicación para guardar el archivo consolidado.")
+            return
 
+        try:
+            ruta_consolidada = self.ruta_guardado
+            output_path = ruta_consolidada.replace(".xlsx", "_version_app.xlsx")
+
+            # Lista de columnas a omitir según libro y hoja
+            omisiones = {
+                'Fichas': ['TipoMutacion', 'DireccionReferencia','ObjectId','ObjectIdEdificio','NumeroRadicado','Resolucion','FechaResolucion','Lado'],
+                'Propietarios': ['CodigoFideicomiso','SiglaComercial','DepartamentoPersona','MunicipioPersona','Direccion'],
+                'Construcciones': ['ObjectIdConstruccion','ObjectIdModelo',],
+                # Agrega más hojas y columnas según sea necesario
+            }
+
+            # Cargar el archivo consolidado
+            wb = load_workbook(ruta_consolidada)
+            for sheet_name, columns_to_omit in omisiones.items():
+                if sheet_name in wb.sheetnames:
+                    sheet = wb[sheet_name]
+                    # Obtener índices de columnas a eliminar
+                    column_indices = [
+                        idx for idx, cell in enumerate(sheet[1], start=1) if cell.value in columns_to_omit
+                    ]
+                    # Eliminar columnas desde la última hacia la primera
+                    for col_idx in sorted(column_indices, reverse=True):
+                        sheet.delete_cols(col_idx)
+
+            # Guardar el archivo modificado
+            wb.save(output_path)
+            messagebox.showinfo("Generación completada", f"El archivo generado se ha guardado en {output_path}")
+
+        except Exception as e:
+            messagebox.showerror("Error", f"Ocurrió un error durante la generación del archivo:\n{str(e)}")
+        
 
     def seleccionar_archivo_nph(self):
         filename = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx *.xls")])

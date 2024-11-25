@@ -113,7 +113,7 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': fila['NroFicha'],
                             'Npn': fila['Npn'],
-                            'Observacion': 'No existe ficha resumen 2 para predio con característica RPH y parcelación',
+                            'Observacion': 'No existe Unidades prediales para la ficha resumen',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -165,7 +165,7 @@ class FichasRPH:
                 grupo['Npn_24_digitos'] = grupo['Npn'].apply(lambda x: x.zfill(24))
                 
                 # Filtrar registros con dígito 22 igual a 8 o 9
-                grupo = grupo[grupo['Npn_24_digitos'].str[21].isin(['8', '9'])]
+                grupo = grupo[grupo['Npn_24_digitos'].str[21].isin(['9'])]
 
                 # Separar los registros donde los dígitos 23 y 24 son '00'
                 npn_con_cero = grupo[grupo['Npn_24_digitos'].str[22:24] == '00']
@@ -574,7 +574,7 @@ class FichasRPH:
                             'Npn': row['Npn'],
                             'UnidadesEnRPH': row['UnidadesEnRPH'],
                             'Unidades Prediales': conteo_npn_relacionados,
-                            'Observacion': 'UnidadesEnRPH no coincide con el Unidades Prediales.',
+                            'Observacion': 'Unidades Prediales en ficha resumen no coincide con el total de Unidades.',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)

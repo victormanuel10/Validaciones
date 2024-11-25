@@ -69,16 +69,14 @@ class Construcciones:
             
             
     def tipo_construccion_noconvencionales(self):
-        
-        archivo_excel=self.archivo_entry.get()
-        nombre_hoja='Construcciones'
-        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Construcciones'
+
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        
+
         try:
-            
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"funcion: validar_construcciones")
@@ -86,44 +84,43 @@ class Construcciones:
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
-            
             resultados = []
 
             for index, row in df.iterrows():
-                TipoConstruccion = row['TipoConstruccion']
-                NoConvensional = row['ConvencionalNoConvencional']
+                tipo_construccion = row['TipoConstruccion']
+                no_convencional = row['ConvencionalNoConvencional']
 
-                if NoConvensional == 'No Convencional' and TipoConstruccion != '' :
+                # Validación: TipoConstruccion no debe tener valor (vacío o nulo) o ser diferente de 'N'
+                if no_convencional == 'No Convencional' and tipo_construccion not in ['', 'N']:
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'secuencia':row['secuencia'],
-                        'TipoContruccion':row['TipoConstruccion'],
+                        'secuencia': row['secuencia'],
+                        'TipoConstruccion': row['TipoConstruccion'],
                         'ConvencionalNoConvencional': row['ConvencionalNoConvencional'],
                         'calificacionNoConvencional': row['calificacionNoConvencional'],
-                        'Observacion': 'TipoConstruccion debe ser vacio si es No convencional',
+                        'Observacion': 'TipoConstruccion debe ser vacío o "N" si es No convencional',
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    
+
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-                
-                
+            '''
+            
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
 
-                '''
+                
                 output_file = 'TipoConstruccion.xlsx'
                 sheet_name = 'TipoConstruccion'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
 
+                messagebox.showinfo("Éxito", f"TipoConstruccion inválido en No Convencionales. {len(resultados)} registros.")
                 
-                
-                messagebox.showinfo("Éxito", f"TipoConstruccion no vacio en No convencionales. {len(resultados)} registros.")
-                '''
             else:
-                messagebox.showinfo("Información", "No se encontraron registros tipo construccion.")
+                messagebox.showinfo("Información", "No se encontraron registros tipo construcción inválidos.")
             return resultados
+            '''
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -191,7 +188,7 @@ class Construcciones:
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return
-        
+
         try:
             # Leer las hojas Construcciones y CalificacionesConstrucciones
             df_construcciones = pd.read_excel(archivo_excel, sheet_name='Construcciones')
@@ -201,8 +198,15 @@ class Construcciones:
             print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
             print(f"Dimensiones de CalificacionesConstrucciones: {df_calificaciones.shape}")
 
+            # Filtrar Construcciones: excluir registros donde ConvencionalNoConvencional sea 'No Convencional'
+            df_construcciones_filtrado = df_construcciones[
+                df_construcciones['ConvencionalNoConvencional'] != 'No Convencional'
+            ]
+
+            print(f"Filtrado de Construcciones (excluyendo 'No Convencional'): {df_construcciones_filtrado.shape}")
+
             # Extraer las secuencias de cada hoja
-            secuencia_construcciones = set(df_construcciones['secuencia'].dropna())
+            secuencia_construcciones = set(df_construcciones_filtrado['secuencia'].dropna())
             secuencia_calificaciones = set(df_calificaciones['secuencia'].dropna())
 
             # Encontrar secuencias en Construcciones que no están en CalificacionesConstrucciones
@@ -217,7 +221,8 @@ class Construcciones:
                 }
                 resultados.append(resultado)
                 print(f"secuencia faltante: {resultado}")
-            '''
+
+            
             # Si se encuentran errores, guardar los resultados en un archivo Excel
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
@@ -227,7 +232,7 @@ class Construcciones:
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
             else:
                 messagebox.showinfo("Sin errores", "Todas las secuencias en Construcciones están presentes en CalificacionesConstrucciones.")
-            '''
+            
             return resultados
 
         except Exception as e:
@@ -345,18 +350,18 @@ class Construcciones:
             # Validar cada fila en la columna 'Puntos'
             for index, row in df_construcciones.iterrows():
                 # Validar si 'Puntos' es nulo
-                if pd.isnull(row['Puntos']):
+                if pd.isnull(row['Puntos ']):
                     errores.append({
-                        'Puntos':row ['Puntos'],
+                        'Puntos':row ['Puntos '],
                         'Observacion': "La columna 'Puntos' contiene valores nulos.",
                         'NroFicha': row['NroFicha'],
                         'Nombre Hoja': 'Construcciones'
                     })
                 
                 # Validar si 'Puntos' es menor a 1
-                elif row['Puntos'] < 1:
+                elif row['Puntos '] < 1:
                     errores.append({
-                        'Puntos':row ['Puntos'],
+                        'Puntos':row ['Puntos '],
                         'Observacion': "La columna 'Puntos' contiene valores menores a 1.",
                         'NroFicha': row['NroFicha'],
                         'Nombre Hoja': 'Construcciones'

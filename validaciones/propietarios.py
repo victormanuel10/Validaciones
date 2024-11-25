@@ -30,12 +30,37 @@ class Propietarios:
     def procesar_errores(self):
         
         
+        
         ficha = Ficha(self.archivo_entry)
-        self.agregar_resultados(ficha.validar_matriculas_duplicadas())
+        self.agregar_resultados(ficha.tomo_mejora())
+        self.agregar_resultados(ficha.validar_fichas_en_propietarios())
+        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
+        self.agregar_resultados(ficha.validar_matricula_repetida())
+        self.agregar_resultados(ficha.validar_matricula_numerica())
+        
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
-        self.agregar_resultados(ficha.validar_matricula_numerica())
+        self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
+        self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
+        self.agregar_resultados(ficha.Validar_Longitud_NPN())
+        self.agregar_resultados(ficha.validar_tipo_documento())
+        self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
+        self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
+        self.agregar_resultados(ficha.ultimo_digito())
+        self.agregar_resultados(ficha.validar_npn14a17())
+        self.agregar_resultados(ficha.validar_npn())
+        self.agregar_resultados(ficha.porcentaje_litigiocero())
+        self.agregar_resultados(ficha.areaterrenocero())
+        self.agregar_resultados(ficha.areaconstruccioncero())
+        self.agregar_resultados(ficha.destino_economico_mayorcero())
+        self.agregar_resultados(ficha.matricula_mejora())
+        self.agregar_resultados(ficha.terreno_cero())
+        self.agregar_resultados(ficha.terreno_null())
+        self.agregar_resultados(ficha.informal_matricula())
+        self.agregar_resultados(ficha.circulo_mejora())
+        self.agregar_resultados(ficha.modo_adquisicion_informal())
+        self.agregar_resultados(ficha.ficha_repetida())
         self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
         
         
@@ -52,8 +77,6 @@ class Propietarios:
         self.entidadvacio()
         self.primer_apellido_blanco()
         self.primer_nombre_blanco()
-        self.calidad_propietario_mun()
-        self.nit_diferente_mun()
         self.documento_blanco_cod_asig()
         self.fecha_escritura_inferior()
         self.fecha_escritura_mayor()
@@ -75,6 +98,7 @@ class Propietarios:
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
         
         construcciones = Construcciones(self.archivo_entry)
+        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
         self.agregar_resultados(construcciones.validar_secuencia_convencional())
         self.agregar_resultados(construcciones.validar_secuencia_unica_por_ficha())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
@@ -86,47 +110,9 @@ class Propietarios:
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.areaconstruida_mayora1000())
         self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
-        self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
         self.agregar_resultados(construcciones.validar_secuencia_calificaciones_vs_construcciones())
         
-        self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
-        self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
-        self.agregar_resultados(ficha.Validar_Longitud_NPN())
-        self.agregar_resultados(ficha.validar_tipo_documento())
-        self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
-        self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
-        self.agregar_resultados(ficha.ultimo_digito())
         
-        self.agregar_resultados(ficha.validar_npn14a17())
-        self.agregar_resultados(ficha.validar_npn())
-        self.agregar_resultados(ficha.validar_nrofichas_faltantes())
-        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
-        
-        self.agregar_resultados(ficha.porcentaje_litigiocero())
-        self.agregar_resultados(ficha.areaterrenocero())
-        self.agregar_resultados(ficha.areaconstruccioncero())
-        self.agregar_resultados(ficha.destino_economico_mayorcero())
-        self.agregar_resultados(ficha.matricula_mejora())
-        self.agregar_resultados(ficha.terreno_cero())
-        self.agregar_resultados(ficha.terreno_null())
-        self.agregar_resultados(ficha.informal_matricula())
-        self.agregar_resultados(ficha.circulo_mejora())
-        self.agregar_resultados(ficha.tomo_mejora())
-        self.agregar_resultados(ficha.modo_adquisicion_informal())
-        self.agregar_resultados(ficha.ficha_repetida())
-        
-        cartografia=Cartografia(self.archivo_entry)
-        self.agregar_resultados(cartografia.validar_fichas_faltantes())
-        self.agregar_resultados(cartografia.validar_cartografia_faltantes())
-        self.agregar_resultados(cartografia.validar_cartografia_columnas())
-        colindantes=Colindantes(self.archivo_entry)
-        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
-        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
-        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
-        
-        
-        
-       
         
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
         self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
@@ -135,6 +121,28 @@ class Propietarios:
         self.agregar_resultados(calificonstrucciones.validar_banios()) 
         self.agregar_resultados(calificonstrucciones.Validar_armazon())
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
+        
+        
+        
+        cartografia=Cartografia(self.archivo_entry)
+        self.agregar_resultados(cartografia.validar_fichas_faltantes())
+        self.agregar_resultados(cartografia.validar_cartografia_faltantes())
+        self.agregar_resultados(cartografia.validar_cartografia_columnas())
+        
+        
+        colindantes=Colindantes(self.archivo_entry)
+        self.agregar_reporte(colindantes.validar_orientaciones_rph())
+        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        
+        
+        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
+        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
+        
+
+        
+       
+        
+        
         
         
         self.generar_reporte_observaciones()  
@@ -160,6 +168,9 @@ class Propietarios:
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
         else:
             messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
+    
+    
+    
     def leer_archivo(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
@@ -369,12 +380,12 @@ class Propietarios:
                 # Verificar si el Tipo de Documento es '3|NIT'
                 if tipo_documento == '3|NIT':
                     # Validar que el Sexo sea 'N|NO BINARIO'
-                    if sexo != 'N|NO BINARIO':
+                    if pd.notna(sexo):
                         resultado = {
                             'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
                             'TipoDocumento': row['TipoDocumento'],
                             'Sexo': row['Sexo'],
-                            'Observacion': 'El tipo de documento es 3|NIT, pero el sexo no es N|NO BINARIO',
+                            'Observacion': 'El tipo de documento es 3|NIT, pero el sexo no es Correcto',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -564,142 +575,7 @@ class Propietarios:
         print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
         
         
-    def calidad_propietario_mun(self):
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
-        df = self.leer_archivo()
-        if df is None:
-            return
-        
-
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
-            return
-        
-        try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
-            print(f"funcion: calidad_propietario_mun")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
-            # Lista para almacenar los resultados
-            resultados = []
-
-            # Iterar sobre las filas del DataFrame
-            for index, row in df.iterrows():
-                valor_a = row['CalidadPropietario']
-                valor_b = row['TipoDocumento']
-
-                print(f"Fila {index}: Valor A = '{valor_a}'")
-
-                # Verificar las condiciones
-                if valor_a != '4|MUNICIPAL' and valor_b == '3|NIT':
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'TipoDocumento': row['TipoDocumento'],
-                        'Documento': row['Documento'],
-                        'CalidadPropietario': row['CalidadPropietario'],
-                        'RazonSocial': row['RazonSocial'],
-                        'Observacion': 'Calidad del propietario diferente para NIT del Municipio',
-                        'Nombre Hoja': nombre_hoja
-                    }
-                    resultados.append(resultado)
-                    # Solo se agrega el resultado actual, no toda la lista
-                    self.agregar_resultados([resultado])
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
-
-            # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
-
-            # Guardar el resultado en un nuevo archivo Excel
-            '''
-            output_file = 'CALIDAD_PROP_MUN.xlsx'
-            sheet_name = 'CALIDAD_PROP_MUN'
-            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-            print(f"Archivo guardado: {output_file}")
-            
-
-            
-
-            messagebox.showinfo("Éxito", f"Proceso completado Calidad prop mun. con {len(resultados)} registros.")
-            '''
-            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
-    def nit_diferente_mun(self):
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
-        df = self.leer_archivo()
-        if df is None:
-            return
-        
-
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
-            return
-        
-        try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
-            print(f"funcion: nit_diferente_mun")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
-            # Lista para almacenar los resultados
-            resultados = []
-
-            # Iterar sobre las filas del DataFrame
-            for index, row in df.iterrows():
-                valor_a = row['CalidadPropietario']
-                valor_b = row['TipoDocumento']
-
-                print(f"Fila {index}: Valor A = '{valor_a}'")
-
-                # Verificar las condiciones
-                if valor_a == '4|MUNICIPAL' and valor_b != '3|NIT':
-                    resultado = {
-                        'NroFicha': row['NroFicha'],
-                        'TipoDocumento': row['TipoDocumento'],
-                        'Documento': row['Documento'],
-                        'CalidadPropietario': row['CalidadPropietario'],
-                        'RazonSocial': row['RazonSocial'],
-                        'Observacion': 'tipo de documento diferente para nit del municipio',
-                        'Nombre Hoja': nombre_hoja
-                    }
-                    resultados.append(resultado)
-                    self.agregar_resultados(resultados)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
-
-            # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
-
-            '''
-            output_file = 'NIT_DIFERENTE_MUN.xlsx'
-            sheet_name = 'NIT_DIFERENTE_MUN'
-            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-            print(f"Archivo guardado: {output_file}")
-            
-            
-
-            messagebox.showinfo("Éxito",
-                                f"Proceso completado Nit diferente num. con {len(resultados)} registros.")
-            ''' 
-            
-            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+    
             
     def derecho_diferente_cien(self):
         archivo_excel = self.archivo_entry.get()
@@ -1148,6 +1024,8 @@ class Propietarios:
                     print(f"Condición de error encontrada: {resultado}")
                     self.agregar_resultados([resultado])
             # Generar reporte si hay resultados
+            '''
+            
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
                 output_file = 'Validacion_Matricula_Entidad.xlsx'
@@ -1157,9 +1035,9 @@ class Propietarios:
                 messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores de MatriculaInmobiliaria y Entidad.")
             else:
                 messagebox.showinfo("Información", "No se encontraron errores en los registros de MatriculaInmobiliaria y Entidad.")
-
+            '''
             
-
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
