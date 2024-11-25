@@ -571,7 +571,7 @@ class InterfazGrafica:
 
             # Realizar merge entre Fichas y Propietarios usando NroFicha
             propietarios_df = propietarios_df.merge(
-                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo']],
+                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo','NPN_TERRENO']],
                 on='NroFicha',
                 how='left'
             )
