@@ -10,7 +10,7 @@ from validaciones.zonashomogeneas import ZonasHomogeneas
 from validaciones.colindantes import Colindantes
 from validaciones.cartografia import Cartografia
 from ValidacionesRPH.fichasrph import FichasRPH
-
+from reportes import Reportes
 
 class Propietarios:
     def __init__(self, archivo_entry):
@@ -30,9 +30,20 @@ class Propietarios:
     def procesar_errores(self):
         
         
+        reportes=Reportes(self.archivo_entry)
+        self.agregar_resultados(reportes.matriz_con_matricula())
+        self.agregar_resultados(reportes.matriz_sin_matricula())
+        self.agregar_resultados(reportes.matriz_sin_circulo())
+        self.agregar_resultados(reportes.matriz_con_circulo())
+        self.agregar_resultados(reportes.contar_rph_matriz())
+        self.agregar_resultados(reportes.contar_unidades_prediales())
+        self.agregar_resultados(reportes.contar_nph())
+        self.agregar_resultados(reportes.contar_nph_calidad_propietario())
+        '''
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.tomo_mejora())
+        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_nrofichas_propietarios())
         self.agregar_resultados(ficha.validar_matricula_repetida())
@@ -131,14 +142,14 @@ class Propietarios:
         
         
         colindantes=Colindantes(self.archivo_entry)
-        self.agregar_reporte(colindantes.validar_orientaciones_rph())
+        self.agregar_resultados(colindantes.validar_orientaciones_rph())
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
         
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-
+        '''
         
        
         
@@ -146,7 +157,7 @@ class Propietarios:
         
         
         self.generar_reporte_observaciones()  
-
+        
         errores_por_hoja = {}
 
         if self.resultados_generales:
@@ -164,7 +175,7 @@ class Propietarios:
                 
                 # Asegúrate de que el reporte se agrega al archivo después de los errores
                 self.agregar_reporte(writer)
-
+    
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
         else:
             messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
@@ -186,6 +197,8 @@ class Propietarios:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error al leer el archivo: {str(e)}")
             return None
+    
+    
     
     def generar_reporte_observaciones(self):
         """
@@ -217,12 +230,50 @@ class Propietarios:
         print("Reporte generado:")
         print(self.reporte)  # Esto debería mostrar el DataFrame con las observaciones
 
+    def generar_reporte_npn(self):
+        """
+        Genera un reporte contando cuántos registros únicos hay por el carácter 22 del campo 'Npn'
+        y lo agrega a la hoja 'Reporte' en el archivo consolidado.
+        """
+        # Lee el archivo consolidado
+        archivo_excel = 'ERRORES_CONSOLIDADOS.xlsx'
+        hoja_reporte = 'Reporte'
+
+        try:
+            # Carga todos los datos de las hojas del archivo consolidado
+            with pd.ExcelFile(archivo_excel) as xls:
+                dataframes = {sheet_name: xls.parse(sheet_name) for sheet_name in xls.sheet_names}
+
+            # Crear un DataFrame vacío para acumular los resultados
+            conteo_npn = pd.DataFrame(columns=['Digito_22', 'Cantidad'])
+
+            # Procesar cada hoja
+            for nombre_hoja, df in dataframes.items():
+                if 'Npn' in df.columns:
+                    # Extraer el carácter 22 de 'Npn' y contar
+                    df['Digito_22'] = df['Npn'].astype(str).str[21]
+                    conteo = df['Digito_22'].value_counts().reset_index()
+                    conteo.columns = ['Digito_22', 'Cantidad']
+                    conteo['Hoja'] = nombre_hoja
+
+                    # Acumular los resultados
+                    conteo_npn = pd.concat([conteo_npn, conteo], ignore_index=True)
+
+            # Guardar los resultados en la hoja 'Reporte'
+            with pd.ExcelWriter(archivo_excel, mode='a', if_sheet_exists='replace') as writer:
+                conteo_npn.to_excel(writer, sheet_name=hoja_reporte, index=False)
+                print(f"Reporte de Npn por carácter 22 agregado a la hoja '{hoja_reporte}'.")
+
+        except Exception as e:
+            print(f"Error al generar el reporte de Npn: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error al generar el reporte: {str(e)}")
+    
     def agregar_reporte(self, writer):
         """
         Agrega la hoja 'Reporte' con el conteo de observaciones al archivo Excel.
         """
         if hasattr(self, 'reporte'):
-            self.reporte.to_excel(writer, sheet_name='Reporte', index=False)
+            self.reporte.to_excel(writer, sheet_name='Validaciones', index=False)
             print("Reporte de observaciones agregado a la hoja 'Reporte'.")
         else:
             print("No hay observaciones para generar el reporte.")
@@ -1042,4 +1093,4 @@ class Propietarios:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
-      
+    

@@ -432,7 +432,7 @@ class Ficha:
                 # Verificar que 'valor_a' tiene al menos 22 caracteres antes de acceder al índice 21
                 if len(valor_a) > 21:
                     # Verificar las condiciones
-                    if valor_a[21] == '2' and valor_b != '2|POSESIÓN':
+                    if valor_a[21] == '2' and (valor_b in ['5|OCUPACIÓN', '2|POSESIÓN']):
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
@@ -467,7 +467,65 @@ class Ficha:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}") 
             
-            
+    def validar_modo_adquisicion_caracteristica(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"funcion: validar_modo_adquisicion_caracteristica")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df.iterrows():
+                modo_adquisicion = row.get('ModoAdquisicion', None)
+                caracteristica_predio = row.get('CaracteristicaPredio', None)
+
+                # Verificar que ModoAdquisicion sea igual a '2|POSESIÓN'
+                if modo_adquisicion in ['2|POSESIÓN', '5|OCUPACIÓN']:
+                    # Si CaracteristicaPredio es diferente de '12|INFORMAL (2)', generar error
+                    if caracteristica_predio != '12|INFORMAL (2)':
+                        resultado = {
+                            'NroFicha': row.get('NroFicha', 'Sin valor'),
+                            'ModoAdquisicion': modo_adquisicion,
+                            'CaracteristicaPredio': caracteristica_predio,
+                            'Observacion': 'Caracteristica incorrecta para Modo de Aquisicion Ocupacion o Posesion',
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index} cumple las condiciones de error. Agregado: {resultado}")
+
+            print(f"Total de resultados encontrados: {len(resultados)}")
+
+            # Crear un nuevo DataFrame con los resultados
+            df_resultado = pd.DataFrame(resultados)
+            '''
+            # Guardar el resultado en un nuevo archivo Excel
+            output_file = 'VALIDACION_MODO_CARACTERISTICA.xlsx'
+            sheet_name = 'VALIDACION_MODO_CARACTERISTICA'
+            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+            print(f"Archivo guardado: {output_file}")
+            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+
+            messagebox.showinfo("Éxito",
+                                f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
+            '''
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+           
             
     def ficha_repetida(self):
         archivo_excel = self.archivo_entry.get()
