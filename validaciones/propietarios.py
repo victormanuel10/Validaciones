@@ -39,7 +39,7 @@ class Propietarios:
         self.agregar_resultados(reportes.contar_unidades_prediales())
         self.agregar_resultados(reportes.contar_nph())
         self.agregar_resultados(reportes.contar_nph_calidad_propietario())
-        '''
+    
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.tomo_mejora())
@@ -149,7 +149,7 @@ class Propietarios:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        '''
+        
         
        
         
@@ -274,6 +274,7 @@ class Propietarios:
         """
         if hasattr(self, 'reporte'):
             self.reporte.to_excel(writer, sheet_name='Validaciones', index=False)
+            self.reporte.to_excel(writer, sheet_name='Resumen', index=False)
             print("Reporte de observaciones agregado a la hoja 'Reporte'.")
         else:
             print("No hay observaciones para generar el reporte.")

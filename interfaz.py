@@ -564,7 +564,6 @@ class InterfazGrafica:
                 fichas_df['NumCedulaCatastral'].str[14:19]  # Extraer desde el carácter 15 en adelante
             )
 
-
             fichas_df['Cp'] = fichas_df['Npn'].str[21]  # Índice 21 para el dígito 22
 
             fichas_df['Edificio'] = fichas_df['Npn'].str[22:24]  # Índices 22 y 23 para los dígitos 23 y 24
@@ -573,13 +572,7 @@ class InterfazGrafica:
 
             fichas_df['Unidad Predial'] = fichas_df['Npn'].str[26:30]  # Índices 26 a 29 para los dígitos 27 a 30
 
-            cols = list(fichas_df.columns)
-            npn_index = cols.index('Npn') + 1
-            cols.insert(npn_index, cols.pop(cols.index('Cp')))  # Mover 'Cp' después de 'Npn'
-            cols.insert(npn_index + 1, cols.pop(cols.index('Edificio')))  # Mover 'Edificio' después de 'Cp'
-            cols.insert(npn_index + 2, cols.pop(cols.index('Piso')))  # Mover 'Piso' después de 'Edificio'
-            cols.insert(npn_index + 3, cols.pop(cols.index('Unidad Predial')))  # Mover 'Unidad Predial' después de 'Piso'
-            fichas_df = fichas_df[cols] 
+                   
 
         if 'Fichas' in consolidado and 'Propietarios' in consolidado:
             fichas_df = consolidado['Fichas']
@@ -587,7 +580,7 @@ class InterfazGrafica:
 
             # Realizar merge entre Fichas y Propietarios usando NroFicha
             propietarios_df = propietarios_df.merge(
-                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo','NpnTerreno']],
+                fichas_df[['NroFicha', 'MatriculaInmobiliaria','Tomo']],
                 on='NroFicha',
                 how='left'
             )
