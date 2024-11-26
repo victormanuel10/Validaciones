@@ -660,55 +660,61 @@ class FichasRPH:
             return
 
         try:
-            # Leer el archivo Excel, especificando la hoja
+            # Leer el archivo Excel
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
-            print(f"funcion: validar_npn_numero_final")
+            print(f"funcion: validar_informalidad_con_piso")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
-            # Lista para almacenar los resultados
             resultados = []
 
             # Iterar sobre cada fila del DataFrame
-            for _, row in df.iterrows():
-                npn = str(row['Npn'])
-                if len(npn) >= 30:
-                    # Validar el dígito 22 y las condiciones de los dígitos 25-26 y 27-30
-                    if npn[21] == '2':  # Dígito 22 es igual a '2'
-                        suma_digitos_25_26 = int(npn[24]) + int(npn[25])
-                        numero_27_30 = int(npn[26:30])  # Número formado por los dígitos 27 a 30
-                        
-                        if suma_digitos_25_26 > 0 and numero_27_30 > 100:
+            for index, row in df.iterrows():
+                npn = str(row.get('Npn', ''))  # Manejar valores nulos con get
+                if len(npn) >= 30:  # Validar longitud mínima
+                    try:
+                        # Obtener el número formado por los últimos 4 dígitos
+                        ultimos_cuatro_digitos = int(npn[-4:])
+
+                        # Verificar condición
+                        if ultimos_cuatro_digitos >= 1000:
                             resultado = {
-                                'NroFicha': row['NroFicha'],
-                                'Npn': row['Npn'],
-                                'Observacion': 'Ultimos 4 digitos incorrectos',
+                                'NroFicha': row.get('NroFicha', 'Sin dato'),
+                                'Npn': npn,
+                                'Observacion': 'Ultimos 4 Digitos Incorrectos',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)
-                            print(f"Condición de error encontrada: {resultado}")
-            '''
-            # Agregar los resultados al consolidado
+                            print(f"Fila {index}: Error encontrado: {resultado}")
+                    except ValueError as ve:
+                        print(f"Error al procesar fila {index}: {ve} - Npn: {npn}")
+                else:
+                    print(f"Fila {index}: Npn no cumple con la longitud mínima (30 caracteres)")
+
+            print(f"Total de errores encontrados: {len(resultados)}")
+
             if resultados:
-                    df_resultado = pd.DataFrame(resultados)
-                    output_file = 'InformalidadConpiso.xlsx'
-                    sheet_name = 'Fichas Faltantes'
-                    df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                    print(f"Archivo guardado: {output_file}")
-                    messagebox.showinfo("Éxito", f"NroFicha en CARTOGRAFIA no está en FICHAS: {len(resultados)} registros.")
+                # Crear DataFrame con resultados
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'InformalidadConpiso.xlsx'
+                sheet_name = 'ErroresInformalidadConPiso'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} errores.")
             else:
-                    messagebox.showinfo("Información", "No faltan fichas de cartografia en Fichas.")
-            '''
+                print("No se encontraron errores.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+
             return resultados
-            
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            print(f"Error general: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
-        
+    '''
+    
     def validar_digitos_informalidad(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
@@ -747,7 +753,7 @@ class FichasRPH:
                             }
                             resultados.append(resultado)
                             print(f"Condición de error encontrada: {resultado}")
-            '''
+            
             if resultados:
                     df_resultado = pd.DataFrame(resultados)
                     output_file = 'UltimosdigitosINformaildad.xlsx'
@@ -757,7 +763,7 @@ class FichasRPH:
                     messagebox.showinfo("Éxito", f"NroFicha en CARTOGRAFIA no está en FICHAS: {len(resultados)} registros.")
             else:
                         messagebox.showinfo("Información", "No faltan fichas de cartografia en Fichas.")
-            '''
+            
             return resultados
             
 
@@ -765,5 +771,5 @@ class FichasRPH:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
-            
+    '''
     

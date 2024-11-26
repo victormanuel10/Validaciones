@@ -30,18 +30,14 @@ class Propietarios:
     def procesar_errores(self):
         
         
-        reportes=Reportes(self.archivo_entry)
-        self.agregar_resultados(reportes.matriz_con_matricula())
-        self.agregar_resultados(reportes.matriz_sin_matricula())
-        self.agregar_resultados(reportes.matriz_sin_circulo())
-        self.agregar_resultados(reportes.matriz_con_circulo())
-        self.agregar_resultados(reportes.contar_rph_matriz())
-        self.agregar_resultados(reportes.contar_unidades_prediales())
-        self.agregar_resultados(reportes.contar_nph())
-        self.agregar_resultados(reportes.contar_nph_calidad_propietario())
+        
     
         
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_area_construida())
+        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
+        
+        
         self.agregar_resultados(ficha.tomo_mejora())
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
@@ -63,7 +59,7 @@ class Propietarios:
         self.agregar_resultados(ficha.validar_npn())
         self.agregar_resultados(ficha.porcentaje_litigiocero())
         self.agregar_resultados(ficha.areaterrenocero())
-        self.agregar_resultados(ficha.areaconstruccioncero())
+        
         self.agregar_resultados(ficha.destino_economico_mayorcero())
         self.agregar_resultados(ficha.matricula_mejora())
         self.agregar_resultados(ficha.terreno_cero())
@@ -96,9 +92,8 @@ class Propietarios:
         
         
         fichasrph=FichasRPH(self.archivo_entry)
-        self.agregar_resultados(fichasrph.validar_informalidad_edificio())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
-        self.agregar_resultados(fichasrph.validar_digitos_informalidad())
+        self.agregar_resultados(fichasrph.validar_informalidad_edificio())
         self.agregar_resultados(fichasrph.validar_area_total_lote_npn())
         self.agregar_resultados(fichasrph.validar_area_comun())
         self.agregar_resultados(fichasrph.validar_unidades_rph())
@@ -149,7 +144,15 @@ class Propietarios:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        
+        reportes=Reportes(self.archivo_entry)
+        self.agregar_resultados(reportes.matriz_con_matricula())
+        self.agregar_resultados(reportes.matriz_sin_matricula())
+        self.agregar_resultados(reportes.matriz_sin_circulo())
+        self.agregar_resultados(reportes.matriz_con_circulo())
+        self.agregar_resultados(reportes.contar_rph_matriz())
+        self.agregar_resultados(reportes.contar_unidades_prediales())
+        self.agregar_resultados(reportes.contar_nph())
+        self.agregar_resultados(reportes.contar_nph_calidad_propietario())
         
        
         
@@ -273,7 +276,7 @@ class Propietarios:
         Agrega la hoja 'Reporte' con el conteo de observaciones al archivo Excel.
         """
         if hasattr(self, 'reporte'):
-            self.reporte.to_excel(writer, sheet_name='Validaciones', index=False)
+            
             self.reporte.to_excel(writer, sheet_name='Resumen', index=False)
             print("Reporte de observaciones agregado a la hoja 'Reporte'.")
         else:

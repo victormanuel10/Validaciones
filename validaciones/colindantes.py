@@ -121,7 +121,7 @@ class Colindantes:
                 if orientaciones_faltantes:
                     resultado = {
                         'NroFicha': nro_ficha,
-                        'Observacion Predial': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)} en Rph",
+                        'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)} en Rph",
                         'Nombre Hoja': hoja_colindantes
                     }
                     resultados.append(resultado)

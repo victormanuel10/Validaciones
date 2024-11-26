@@ -383,6 +383,7 @@ class Ficha:
 
             print(f"Total de resultados encontrados: {len(resultados)}")
             
+            '''
             
             # Crear un nuevo DataFrame con los resultados
             df_resultado = pd.DataFrame(resultados)
@@ -396,7 +397,7 @@ class Ficha:
 
             messagebox.showinfo("Éxito",
                                 f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
-            
+            '''
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -752,64 +753,89 @@ class Ficha:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
         
-    def areaconstruccioncero(self):
-        
+    def validar_area_construida(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-        
-        
+
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
-        
+
         try:
-        
+            # Leer el archivo Excel
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
+            # Normalizar la columna 'DestinoEcconomico' (convertir a cadena y eliminar inconsistencias)
+            df['DestinoEcconomico'] = df['DestinoEcconomico'].astype(str).str.strip().str.upper()
+
+            # Lista de valores de DestinoEconomico a excluir (convertidos a mayúsculas)
+            excluir_destinos = [
+                "12|LOTE_URBANIZADO_NO_CONSTRUIDO",
+                "13|LOTE_URBANIZABLE_NO_URBANIZADO",
+                "14|LOTE_NO_URBANIZABLE",
+                "0|NA",
+                "NAN"
+            ]
+            excluir_destinos = [destino.upper() for destino in excluir_destinos]
+
+            # Mostrar los valores únicos de DestinoEcconomico para depuración
+            print(f"Valores únicos en 'DestinoEcconomico': {df['DestinoEcconomico'].unique()}")
+
+            # Filtrar el DataFrame eliminando los registros con los destinos a excluir
+            df_filtrado = df[~df['DestinoEcconomico'].isin(excluir_destinos)]
+            print(df_filtrado)
+            # Verificar si hay errores en el filtrado
+            destinos_incluidos = df[df['DestinoEcconomico'].isin(excluir_destinos)]
+            if not destinos_incluidos.empty:
+                print("Los siguientes destinos económicos no fueron excluidos correctamente:")
+                print(destinos_incluidos[['DestinoEcconomico', 'NroFicha']])
+            else:
+                print("Los destinos económicos se excluyeron correctamente.")
+
+            # Lista para almacenar los resultados
             resultados = []
 
-            # Iterar sobre las filas del DataFrame
-            for index, row in df.iterrows():
-                areatotalterreno = row['AreaTotalTerreno']
+            # Iterar sobre las filas del DataFrame filtrado
+            for index, row in df_filtrado.iterrows():
                 area_total_construida = row['AreaTotalConstruida']
 
-                if area_total_construida <= 0 or pd.isna(areatotalterreno):
+                # Validar si AreaTotalConstruida es cero o null
+                if area_total_construida <= 0 or pd.isna(area_total_construida):
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'AreaTotalTerreno':areatotalterreno,
                         'AreaTotalConstruida': area_total_construida,
-                        'Observacion': 'Area total Construida es cero o null',
+                        'Observacion': f'Área Total Construida es cero o null para destino económico: {row["DestinoEcconomico"]}',
+                        'DestinoEcconomico': row['DestinoEcconomico'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
                     print(f"Fila {index}: Agregado a resultados: {resultado}")
 
+            # Mostrar el total de errores encontrados
             print(f"Total de errores encontrados: {len(resultados)}")
+            '''
             
             if resultados:
                 # Crear un nuevo DataFrame con los resultados
                 df_resultado = pd.DataFrame(resultados)
-                '''
-                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
-                sheet_name = 'ErroresDestinoEconomico'
+                output_file = 'ERRORES_AREA_CONSTRUIDA.xlsx'
+                sheet_name = 'ErroresAreaConstruida'
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"AreatotalConstruida es cero o null {len(resultados)} errores.")
-            
-                '''
-                
+                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} errores en Área Total Construida.")
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
+            '''
             return resultados
+
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
             
             
     def predios_con_direcciones_invalidas(self):
@@ -833,7 +859,7 @@ class Ficha:
             # Lista de palabras no permitidas
             palabras_no_permitidas = ['ZONA', 'BLOQUE', 'Bloque', 'EDIFICIO', 'Edificio', 'LOS', 'BARRIO', 'Barrio', 
                                     'VIA', 'Via', 'Lote', 'LOTE', 'CALLE', 'calle', 'AVENIDA', 'avenida', 
-                                    'CRA', 'Cra', 'KL', 'CARRERA', 'Carrera', 'Diagonal']
+                                    'CRA', 'Cra', 'KL', 'CARRERA', 'Carrera', 'Diagonal','S.N','S.N.','SN']
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
@@ -1307,6 +1333,7 @@ class Ficha:
                         'NroFicha': row['NroFicha'],
                         'NumCedulaCatastral': num_cedula_catastral,
                         'Observacion': 'NumCedulaCatastral no tiene 28 dígitos',
+                        'DestinoEconomico':destino_economico,
                         'Nombre Hoja': 'Fichas'
                     })
 
@@ -1968,3 +1995,106 @@ class Ficha:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    def validar_destino_economico_nulo_o_0na(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return []
+
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"función: validar_destino_economico_nulo_o_0na")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre cada fila del DataFrame
+            for _, row in df.iterrows():
+                destino_economico = row.get('DestinoEcconomico', None)  # Si no existe, es None
+
+                # Validar si DestinoEcconomico es nulo o igual a '0|NA'
+                if destino_economico is None or str(destino_economico).strip() == '0|NA':
+                    resultado = {
+                        'NroFicha': row.get('NroFicha', ''),  # Si no existe, devuelve vacío
+                        'DestinoEcconomico': destino_economico,
+                        'Observacion': 'DestinoEconómico nulo o igual a 0|NA',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Error encontrado: {resultado}")
+
+            # Si se encontraron resultados, mostrarlos
+            if resultados:
+                for error in resultados:
+                    print(error)
+                messagebox.showinfo("Errores encontrados", f"Se encontraron {len(resultados)} errores en DestinoEconómico.")
+            else:
+                messagebox.showinfo("Información", "No se encontraron errores en DestinoEconómico.")
+            
+            # Retornar la lista de resultados
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        
+    def validar_destino_economico_nulo_o_0na(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return []
+
+        try:
+            # Leer el archivo Excel, especificando la hoja
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            print(f"función: validar_destino_economico_nulo_o_0na")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre cada fila del DataFrame
+            for _, row in df.iterrows():
+                destino_economico = row.get('DestinoEcconomico', None)  # Si no existe, es None
+
+                # Validar si DestinoEcconomico es NaN o igual a '0|NA'
+                if pd.isna(destino_economico) or str(destino_economico).strip() == '0|NA':
+                    resultado = {
+                        'NroFicha': row.get('NroFicha', ''),  # Si no existe, devuelve vacío
+                        'DestinoEcconomico': destino_economico,
+                        'Observacion': 'DestinoEconómico NaN o igual a 0|NA',
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    print(f"Error encontrado: {resultado}")
+            '''
+            # Si se encontraron resultados, mostrarlos
+            if resultados:
+                for error in resultados:
+                    print(error)
+                messagebox.showinfo("Errores encontrados", f"Se encontraron {len(resultados)} errores en DestinoEconómico.")
+            else:
+                messagebox.showinfo("Información", "No se encontraron errores en DestinoEconómico.")
+            
+            # Retornar la lista de resultados
+            '''
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
