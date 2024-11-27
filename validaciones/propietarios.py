@@ -30,11 +30,14 @@ class Propietarios:
     def procesar_errores(self):
         
         
+        fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.validar_area_privada())
+        self.agregar_resultados(fichasrph.validar_area_comun())
+        
         
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_area_construida())
-        '''
         
        
         self.agregar_resultados(ficha.modo_adquisicion_informal())
@@ -102,13 +105,13 @@ class Propietarios:
         
         
         
-        fichasrph=FichasRPH(self.archivo_entry)
+       
+        
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
         self.agregar_resultados(fichasrph.validar_informalidad_edificio())
         self.agregar_resultados(fichasrph.validar_area_total_lote_npn())
-        self.agregar_resultados(fichasrph.validar_area_privada())
-        self.agregar_resultados(fichasrph.validar_area_comun())
+        
         self.agregar_resultados(fichasrph.validar_unidades_rph())
         self.agregar_resultados(fichasrph.validar_npn_num_cedula())
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
@@ -166,7 +169,7 @@ class Propietarios:
         self.agregar_resultados(reportes.contar_nph())
         self.agregar_resultados(reportes.contar_nph_calidad_propietario())
         
-        '''
+        
         
         
         self.generar_reporte_observaciones()  

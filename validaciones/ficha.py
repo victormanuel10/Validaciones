@@ -1617,7 +1617,8 @@ class Ficha:
                 if pd.isnull(row['DireccionReferencia']):
                     resultados.append({
                         'NroFicha': row['NroFicha'],
-                        'Columna': 'DireccionReferencia',
+                        'DireccionReferencia': row['DireccionReferencia'],
+                        'DireccionNombre':row['DireccionNombre'],
                         'Observacion': 'DireccionReferencia no está diligenciada',
                         'Nombre Hoja': 'FichasPrediales'
                     })
@@ -1625,7 +1626,8 @@ class Ficha:
                 if pd.isnull(row['DireccionNombre']):
                     resultados.append({
                         'NroFicha': row['NroFicha'],
-                        'Columna': 'DireccionNombre',
+                        'DireccionReferencia': row['DireccionReferencia'],
+                        'DireccionNombre':row['DireccionNombre'],
                         'Observacion': 'DireccionNombre no está diligenciada',
                         'Nombre Hoja': 'FichasPrediales'
                     })

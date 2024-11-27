@@ -551,7 +551,7 @@ class FichasRPH:
             # Iterar sobre cada fila para verificar las condiciones
             for index, row in df_fichas.iterrows():
                 npn = str(row.get('Npn', '')).strip()  # Convertir a cadena y quitar espacios
-                area_lote_comun = row.get('AreaLotePrivada', None)
+                arealoteprivada = row.get('AreaLotePrivada', None)
 
                 # Verificar si el 22º dígito de 'Npn' es '9' y la suma de los dígitos 27 a 30 es 0
                 if len(npn) >= 30 and npn[21] == '9':
@@ -560,13 +560,13 @@ class FichasRPH:
                     # Verificar que los dígitos son números y sumarlos
                     if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) > 0:
                         # Generar error si 'AreaTotalLote' está vacío
-                        if pd.isna(area_lote_comun) or area_lote_comun == '' or area_lote_comun==0:
+                        if pd.isna(arealoteprivada) or arealoteprivada == '' or arealoteprivada==0:
                             resultado = {
                                 'NroFicha': row['NroFicha'],
                                 'AreaLoteComun':row['AreaLoteComun'],
                                 'AreaLotePrivada':row['AreaLotePrivada'],
                                 'Npn': npn,
-                                'Observacion': 'AreaLoteComun no debe estar vacío en Unidad Predial',
+                                'Observacion': 'AreaLotePrivada no debe estar vacío en Unidad Predial',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)

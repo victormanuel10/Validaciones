@@ -465,7 +465,7 @@ class InterfazGrafica:
         if "FichasPrediales" in data_archivo_2:
             data_archivo_2["FichasPrediales"].rename(columns={'DestinoEconomico': 'DestinoEcconomico'}, inplace=True)
         if "ConstruccionesFicha" in data_archivo_2:
-            data_archivo_2["ConstruccionesFicha"].rename(columns={'Secuencia': 'secuencia', 'IdentificadorUso': 'IdUso', 'PorcentajeConstruccion': 'PorcentajeConstruido','Puntos':'Puntos'}, inplace=True)        
+            data_archivo_2["ConstruccionesFicha"].rename(columns={'Secuencia': 'secuencia', 'IdentificadorUso': 'IdUso', 'PorcentajeConstruccion': 'PorcentajeConstruido','Puntos':'Puntos '}, inplace=True)        
         if "CalificacionesConstrucciones" in data_archivo_2:
             data_archivo_2["CalificacionesConstrucciones"].rename(columns={'CubrimientoMuro': 'Cubrimiento Muro'}, inplace=True)
             data_archivo_2["CalificacionesConstrucciones"].rename(columns={'CubrimientoMuro': 'Cubrimiento Muro'}, inplace=True)
