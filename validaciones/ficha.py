@@ -2059,39 +2059,35 @@ class Ficha:
             # Leer el archivo Excel, especificando la hoja
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
-            print(f"función: validar_destino_economico_nulo_o_0na")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
             # Lista para almacenar los resultados
             resultados = []
 
             # Iterar sobre cada fila del DataFrame
             for _, row in df.iterrows():
                 destino_economico = row.get('DestinoEcconomico', None)  # Si no existe, es None
+                condicion = row.get('Cp', None)
+                unidad = row.get('Unidad Predial', None)
+                npn = str(row.get('Npn', '')).strip()  # Convertir a string y limpiar espacios
+                
+                # Excluir las filas donde:
+                # 1. condicion == 9 y unidad == 0000
+                # 2. El dígito 22 de Npn es igual a 9 y los últimos 8 caracteres son ceros
+                if not  (len(npn) >= 22 and npn[21] == '9' and npn[-8:] == '00000000'):
+                    # Validar si DestinoEcconomico es NaN o igual a '0|NA'
+                    if pd.isna(destino_economico) or str(destino_economico).strip() == '0|NA':
+                        resultado = {
+                            'NroFicha': row.get('NroFicha', ''),  # Si no existe, devuelve vacío
+                            'DestinoEcconomico': destino_economico,
+                            'Npn': npn,
+                            'Observacion': 'Destino económico sin diligenciar',
+                            'MatriculaInmobiliaria': row.get('MatriculaInmobiliaria', ''),
+                            'CaracteristicaPredio': row.get('CaracteristicaPredio', ''),
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Error encontrado: {resultado}")
 
-                # Validar si DestinoEcconomico es NaN o igual a '0|NA'
-                if pd.isna(destino_economico) or str(destino_economico).strip() == '0|NA':
-                    resultado = {
-                        'NroFicha': row.get('NroFicha', ''),  # Si no existe, devuelve vacío
-                        'DestinoEcconomico': destino_economico,
-                        'Observacion': 'DestinoEconómico NaN o igual a 0|NA',
-                        'Nombre Hoja': nombre_hoja
-                    }
-                    resultados.append(resultado)
-                    print(f"Error encontrado: {resultado}")
-            '''
-            # Si se encontraron resultados, mostrarlos
-            if resultados:
-                for error in resultados:
-                    print(error)
-                messagebox.showinfo("Errores encontrados", f"Se encontraron {len(resultados)} errores en DestinoEconómico.")
-            else:
-                messagebox.showinfo("Información", "No se encontraron errores en DestinoEconómico.")
-            
             # Retornar la lista de resultados
-            '''
             return resultados
 
         except Exception as e:

@@ -37,6 +37,7 @@ class Propietarios:
         self.agregar_resultados(ficha.validar_area_construida())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         
+        '''
         
         self.agregar_resultados(ficha.tomo_mejora())
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
@@ -154,7 +155,7 @@ class Propietarios:
         self.agregar_resultados(reportes.contar_nph())
         self.agregar_resultados(reportes.contar_nph_calidad_propietario())
         
-       
+        '''
         
         
         
