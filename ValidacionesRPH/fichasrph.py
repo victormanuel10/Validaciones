@@ -165,21 +165,24 @@ class FichasRPH:
                 grupo['Npn_24_digitos'] = grupo['Npn'].apply(lambda x: x.zfill(24))
                 
                 # Filtrar registros con dígito 22 igual a 8 o 9
-                grupo = grupo[grupo['Npn_24_digitos'].str[21].isin(['9'])]
+                grupo = grupo[grupo['Npn_24_digitos'].str[21] == '9']
 
                 # Separar los registros donde los dígitos 23 y 24 son '00'
                 npn_con_cero = grupo[grupo['Npn_24_digitos'].str[22:24] == '00']
-                
+
                 # Si hay más de un registro con '00' en los dígitos 23 y 24 en el mismo grupo, genera error
                 if len(npn_con_cero) > 1:
                     for _, row in npn_con_cero.iterrows():
-                        resultado = {
-                            'NroFicha': row['NroFicha'],
-                            'Npn': row['Npn'],
-                            'Observacion': 'Edificio no puede ser 00 en RPH',
-                            'Nombre Hoja': 'FichasPrediales'
-                        }
-                        resultados.append(resultado)
+                        npn = row['Npn']
+                        digitos_27_30 = npn[26:30]
+                        if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) > 0:
+                            resultado = {
+                                'NroFicha': row['NroFicha'],
+                                'Npn': npn,
+                                'Observacion': 'Edificio no puede ser 00 en RPH',
+                                'Nombre Hoja': 'FichasPrediales'
+                            }
+                            resultados.append(resultado)
 
                 # Para los otros registros en el grupo, verificar que la suma de los dígitos 23 y 24 sea mayor o igual a 1
                 npn_no_cero = grupo[grupo['Npn_24_digitos'].str[22:24] != '00']
@@ -194,17 +197,7 @@ class FichasRPH:
                             'Nombre Hoja': 'FichasPrediales'
                         }
                         resultados.append(resultado)
-            '''
-            # Guardar los resultados en un archivo Excel si hay errores
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Errores_Digitos_Npn_FichasPrediales.xlsx'
-                df_resultado.to_excel(output_file, index=False)
-                print(f"Archivo de errores guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros.")
-            else:
-                messagebox.showinfo("Sin errores", "No se encontraron registros que cumplan con la condición especificada en 'Npn'.")
-            '''
+
             return resultados
 
         except Exception as e:
@@ -447,7 +440,7 @@ class FichasRPH:
                     # Verificar que los dígitos son números y sumarlos
                     if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) == 0:
                         # Generar error si 'AreaTotalLote' está vacío
-                        if pd.isna(area_total_lote) or area_total_lote == '':
+                        if pd.isna(area_total_lote) or area_total_lote == '' or area_total_lote==0:
                             resultado = {
                                 'NroFicha': row['NroFicha'],
                                 'AreaTotalLote':row['AreaTotalLote'],
@@ -498,21 +491,21 @@ class FichasRPH:
             # Iterar sobre cada fila para verificar las condiciones
             for index, row in df_fichas.iterrows():
                 npn = str(row.get('Npn', '')).strip()  # Convertir a cadena y quitar espacios
-                area_total_lote = row.get('AreaLoteComun', None)
+                area_lote_comun = row.get('AreaLoteComun', None)
 
                 # Verificar si el 22º dígito de 'Npn' es '9' y la suma de los dígitos 27 a 30 es 0
                 if len(npn) >= 30 and npn[21] == '9':
                     digitos_27_30 = npn[26:30]  # Obtener los dígitos 27, 28, 29, 30
                     
                     # Verificar que los dígitos son números y sumarlos
-                    if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) == 0:
+                    if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) > 0:
                         # Generar error si 'AreaTotalLote' está vacío
-                        if pd.isna(area_total_lote) or area_total_lote == '':
+                        if pd.isna(area_lote_comun) or area_lote_comun == '' or area_lote_comun==0:
                             resultado = {
                                 'NroFicha': row['NroFicha'],
                                 'AreaLoteComun':row['AreaLoteComun'],
                                 'Npn': npn,
-                                'Observacion': 'AreaTotalLote no debe estar vacío en ficha resumen',
+                                'Observacion': 'AreaLoteComun no debe estar vacío en Unidad Predial',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)
@@ -536,6 +529,66 @@ class FichasRPH:
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
         
+    
+    def validar_area_privada(self):
+        """
+        Verifica en la hoja 'Fichas' que cuando el 22º dígito de 'Npn' es '9' y la suma de los
+        dígitos 27, 28, 29 y 30 es 0, el campo 'AreaTotalLote' no esté vacío. Si está vacío, genera un error.
+        """
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Fichas'
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja 'Fichas'
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+
+            resultados = []
+
+            # Iterar sobre cada fila para verificar las condiciones
+            for index, row in df_fichas.iterrows():
+                npn = str(row.get('Npn', '')).strip()  # Convertir a cadena y quitar espacios
+                area_lote_comun = row.get('AreaLotePrivada', None)
+
+                # Verificar si el 22º dígito de 'Npn' es '9' y la suma de los dígitos 27 a 30 es 0
+                if len(npn) >= 30 and npn[21] == '9':
+                    digitos_27_30 = npn[26:30]  # Obtener los dígitos 27, 28, 29, 30
+                    
+                    # Verificar que los dígitos son números y sumarlos
+                    if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) > 0:
+                        # Generar error si 'AreaTotalLote' está vacío
+                        if pd.isna(area_lote_comun) or area_lote_comun == '' or area_lote_comun==0:
+                            resultado = {
+                                'NroFicha': row['NroFicha'],
+                                'AreaLoteComun':row['AreaLoteComun'],
+                                'AreaLotePrivada':row['AreaLotePrivada'],
+                                'Npn': npn,
+                                'Observacion': 'AreaLoteComun no debe estar vacío en Unidad Predial',
+                                'Nombre Hoja': nombre_hoja
+                            }
+                            resultados.append(resultado)
+                            print(f"Fila {index} cumple las condiciones para error. Agregado: {resultado}")
+            '''
+            
+            # Guardar los resultados en un archivo Excel si hay errores
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_AreaLoteComun_Npn_Fichas.xlsx'
+                df_resultado.to_excel(output_file, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con Npn cuyo 22º dígito es 9 y sin AreaTotalLote.")
+            else:
+                messagebox.showinfo("Sin errores", "Todos los registros cumplen con las condiciones o tienen AreaTotalLote lleno.")
+            '''
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
     
     def validar_unidades_rph(self):
         """
@@ -713,63 +766,5 @@ class FichasRPH:
             print(f"Error general: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
-    '''
-    
-    def validar_digitos_informalidad(self):
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Fichas'
-
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
-            return
-
-        try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
-            print(f"funcion: validar_digitos_finales_cero")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
-            # Lista para almacenar los resultados
-            resultados = []
-
-            # Iterar sobre cada fila del DataFrame
-            for _, row in df.iterrows():
-                npn = str(row['Npn'])
-                if len(npn) >= 30:
-                    # Validar el dígito 22 y las condiciones de los dígitos 25-26 y 27-30
-                    if npn[21] == '2' and int(npn[24:26]) == 00:  # Dígito 22 es '2' y dígitos 25-26 son '00'
-                        digitos_27_30 = npn[26:30]  # Dígitos 27 a 30
-
-                        # Si los dígitos 27-30 no son '0000', registrar el error
-                        if digitos_27_30 != '0000':
-                            resultado = {
-                                'NroFicha': row['NroFicha'],
-                                'Npn': row['Npn'],
-                                'Observacion': 'Si el campo piso es 00, los ultimos 4 digitos deben ser 0000',
-                                'Nombre Hoja': nombre_hoja
-                            }
-                            resultados.append(resultado)
-                            print(f"Condición de error encontrada: {resultado}")
-            
-            if resultados:
-                    df_resultado = pd.DataFrame(resultados)
-                    output_file = 'UltimosdigitosINformaildad.xlsx'
-                    sheet_name = 'Fichas Faltantes'
-                    df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                    print(f"Archivo guardado: {output_file}")
-                    messagebox.showinfo("Éxito", f"NroFicha en CARTOGRAFIA no está en FICHAS: {len(resultados)} registros.")
-            else:
-                        messagebox.showinfo("Información", "No faltan fichas de cartografia en Fichas.")
-            
-            return resultados
-            
-
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
-    '''
+   
     

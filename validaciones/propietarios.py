@@ -31,13 +31,23 @@ class Propietarios:
         
         
         
-    
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_area_construida())
-        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
-        
         '''
+        
+       
+        self.agregar_resultados(ficha.modo_adquisicion_informal())
+        self.agregar_resultados(ficha.informal_matricula())
+        
+        
+        
+       
+        
+        
+        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
+        self.agregar_resultados(ficha.areaterrenocero())
+        
         
         self.agregar_resultados(ficha.tomo_mejora())
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
@@ -59,15 +69,15 @@ class Propietarios:
         self.agregar_resultados(ficha.validar_npn14a17())
         self.agregar_resultados(ficha.validar_npn())
         self.agregar_resultados(ficha.porcentaje_litigiocero())
-        self.agregar_resultados(ficha.areaterrenocero())
+        
         
         self.agregar_resultados(ficha.destino_economico_mayorcero())
         self.agregar_resultados(ficha.matricula_mejora())
         self.agregar_resultados(ficha.terreno_cero())
         self.agregar_resultados(ficha.terreno_null())
-        self.agregar_resultados(ficha.informal_matricula())
+        
         self.agregar_resultados(ficha.circulo_mejora())
-        self.agregar_resultados(ficha.modo_adquisicion_informal())
+        
         self.agregar_resultados(ficha.ficha_repetida())
         self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
         
@@ -93,14 +103,15 @@ class Propietarios:
         
         
         fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
         self.agregar_resultados(fichasrph.validar_informalidad_edificio())
         self.agregar_resultados(fichasrph.validar_area_total_lote_npn())
+        self.agregar_resultados(fichasrph.validar_area_privada())
         self.agregar_resultados(fichasrph.validar_area_comun())
         self.agregar_resultados(fichasrph.validar_unidades_rph())
         self.agregar_resultados(fichasrph.validar_npn_num_cedula())
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
-        self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_duplicados_npn())
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
         
@@ -156,8 +167,6 @@ class Propietarios:
         self.agregar_resultados(reportes.contar_nph_calidad_propietario())
         
         '''
-        
-        
         
         
         self.generar_reporte_observaciones()  
