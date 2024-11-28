@@ -3,14 +3,7 @@ import pandas as pd
 from tkinter import messagebox
 from collections import Counter
 from datetime import datetime
-from validaciones.ficha import Ficha
-from validaciones.construcciones import Construcciones
-from validaciones.califconstrucciones import CalificaionesConstrucciones
-from validaciones.zonashomogeneas import ZonasHomogeneas
-from validaciones.colindantes import Colindantes
-from validaciones.cartografia import Cartografia
-from ValidacionesRPH.fichasrph import FichasRPH
-from reportes import Reportes
+
 
 class Propietarios:
     def __init__(self, archivo_entry):
@@ -844,3 +837,132 @@ class Propietarios:
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
     
+    def contar_nph_calidad_propietario(self):
+        archivo_excel = self.archivo_entry.get()
+        hoja_fichas = 'Fichas'
+        hoja_propietarios = 'Propietarios'
+
+        if not archivo_excel or not hoja_fichas or not hoja_propietarios:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de las hojas.")
+            return
+
+        try:
+            # Leer ambas hojas del archivo Excel
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=hoja_propietarios)
+
+            print(f"funcion: validar_calidad_propietario")
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Hoja Fichas: {hoja_fichas}, Dimensiones: {df_fichas.shape}")
+            print(f"Hoja Propietarios: {hoja_propietarios}, Dimensiones: {df_propietarios.shape}")
+
+            resultados = []
+            # Contador de registros que cumplen las condiciones
+            
+
+            # Iterar sobre las filas del DataFrame de Fichas
+            for index, row in df_fichas.iterrows():
+                npn = row.get('Npn')
+                matricula = row.get('MatriculaInmobiliaria')
+                nro_ficha = row.get('NroFicha')
+
+                # Verificar condiciones en la hoja Fichas
+                if pd.notna(npn) and len(str(npn)) > 21:
+                    npn = str(npn)  # Convertir a string si no lo es
+                    digito_22 = npn[21]
+
+                    if digito_22 == '0' and (pd.isna(matricula) or matricula == '' or matricula == 0):
+                        # Buscar el mismo NroFicha en la hoja Propietarios
+                        propietarios_ficha = df_propietarios[df_propietarios['NroFicha'] == nro_ficha]
+
+                        # Validar que CalidadPropietarioOficial no sea '4|MUNICIPAL' ni '2|NACIONAL'
+                        for _, propietario in propietarios_ficha.iterrows():
+                            calidad = propietario.get('CalidadPropietarioOficial')
+                            matricula=propietario.get('MatriculaInmobiliaria')
+                            if calidad not in ['4|MUNICIPAL', '2|NACIONAL']:
+                                resultado = {
+                                'NroFicha': row.get('NroFicha'),
+                                'Observacion': 'El predio es NPH , la matricula es 0 o vacia y el propietario es diferente de la Nacion o el municipio',
+                                'CalidadPropietarioOficial':calidad,
+                                'MatriculaInmobiliaria':matricula,
+                                'Nombre Hoja': 'Propietarios'
+                                }
+                                resultados.append(resultado)
+                        
+                      # Contar solo una vez por NroFicha si cumple
+
+           
+
+            '''
+            # Guardar los resultados en un archivo Excel
+            output_file = 'VALIDACION_CALIDAD_PROPIETARIO.xlsx'
+            sheet_name = 'Resumen'
+            df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+            print(f"Archivo guardado: {output_file}")
+            print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+
+            messagebox.showinfo("Éxito",
+                                f"Proceso completado. Se ha creado el archivo '{output_file}' con un resumen del total de registros.")
+            '''
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+            
+    def validar_tipo_documento(self):
+        """
+        Verifica que en la hoja 'Fichas', los valores en la columna 'TipoDocumento' no sean
+        '10|CEDULA CIUDADANIA HOMBRE' o '10|CEDULA CIUDADANIA MUJER'.
+        Si se encuentran estos valores, genera un error indicando que deben ser '10|CEDULA DE CIUDADANIA'.
+        """
+        archivo_excel = self.archivo_entry.get()
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja 'Fichas'
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Propietarios')
+
+            # Valores no permitidos en 'TipoDocumento'
+            valores_invalidos = [
+                "10|CEDULA CIUDADANIA HOMBRE",
+                "10|CEDULA CIUDADANIA MUJER"
+            ]
+            
+            # Lista para almacenar los errores encontrados
+            resultados = []
+
+            # Validar cada fila en la columna 'TipoDocumento'
+            for index, row in df_fichas.iterrows():
+                tipo_documento = row.get('TipoDocumento', '')
+                  
+                # Si 'TipoDocumento' contiene un valor no permitido
+                if tipo_documento in valores_invalidos:
+                    resultados.append({
+                        'NroFicha': row['NroFicha'],
+                        'TipoDocumento': tipo_documento,
+                        'Observacion': "Debe ser '10|CEDULA DE CIUDADANIA'",
+                        'Nombre Hoja': 'Propietarios'
+                    })
+                    
+            '''
+            
+            # Guardar los resultados en un archivo Excel si hay errores
+            if resultados:
+                df_resultado = pd.DataFrame(resultados)
+                output_file = 'Errores_TipoDocumento_Fichas.xlsx'
+                df_resultado.to_excel(output_file, index=False)
+                print(f"Archivo de errores guardado: {output_file}")
+                messagebox.showinfo("Errores encontrados", f"Se encontraron {len(resultados)} registros con valores incorrectos en 'TipoDocumento'.")
+            else:
+                messagebox.showinfo("Sin errores", "No se encontraron valores incorrectos en la columna 'TipoDocumento' en la hoja 'Fichas'.")
+            '''
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+        

@@ -28,13 +28,18 @@ class Procesar:
     def procesar_errores(self):
         
         
-        fichasrph=FichasRPH(self.archivo_entry)
-        self.agregar_resultados(fichasrph.validar_area_privada())
-        self.agregar_resultados(fichasrph.validar_area_comun())
+        
+        
+        
+       
         
         
         
         ficha = Ficha(self.archivo_entry)
+        
+        
+        
+        
         self.agregar_resultados(ficha.validar_area_construida())
         self.agregar_resultados(ficha.modo_adquisicion_informal())
         self.agregar_resultados(ficha.informal_matricula())
@@ -52,10 +57,11 @@ class Procesar:
         self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
         self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
         self.agregar_resultados(ficha.Validar_Longitud_NPN())
-        self.agregar_resultados(ficha.validar_tipo_documento())
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
         self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
         self.agregar_resultados(ficha.ultimo_digito())
+        
+        
         self.agregar_resultados(ficha.validar_npn14a17())
         self.agregar_resultados(ficha.validar_npn())
         self.agregar_resultados(ficha.porcentaje_litigiocero())
@@ -70,7 +76,8 @@ class Procesar:
         
         
         propietarios = Propietarios(self.archivo_entry)
-
+        self.agregar_resultados(propietarios.validar_tipo_documento())
+        self.agregar_resultados(propietarios.contar_nph_calidad_propietario())
         self.agregar_resultados(propietarios.validar_matricula_entidad())
         self.agregar_resultados(propietarios.derecho_diferente_cien())
         self.agregar_resultados(propietarios.validar_documento_inicia_con_cero())
@@ -84,6 +91,10 @@ class Procesar:
         self.agregar_resultados(propietarios.documento_blanco_cod_asig())
         self.agregar_resultados(propietarios.fecha_escritura_inferior())
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
+        
+        fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.validar_area_privada())
+        self.agregar_resultados(fichasrph.validar_area_comun())
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
         self.agregar_resultados(fichasrph.validar_informalidad_edificio())
@@ -143,7 +154,7 @@ class Procesar:
         self.agregar_resultados(reportes.contar_rph_matriz())
         self.agregar_resultados(reportes.contar_unidades_prediales())
         self.agregar_resultados(reportes.contar_nph())
-        self.agregar_resultados(reportes.contar_nph_calidad_propietario())
+        
         
         self.generar_reporte_observaciones()  
         

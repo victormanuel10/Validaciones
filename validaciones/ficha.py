@@ -882,7 +882,7 @@ class Ficha:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             
-                            'Observacion': 'Area terreno invalida para caracteristica direferente a Rph o Condominio',
+                            'Observacion': 'Area terreno invalida para caracteristica diferente a Rph o Condominio',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1454,7 +1454,7 @@ class Ficha:
 
         try:
             # Leer la hoja específica 'Fichas'
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja) 
             
             # Convertir 'Npn' a cadena y asegurar que tenga al menos 24 caracteres
             df['Npn'] = df['Npn'].astype(str).str.zfill(24)
@@ -1651,74 +1651,7 @@ class Ficha:
             return []
         
 
-    def validar_tipo_documento(self):
-        """
-        Verifica que en la hoja 'Fichas', los valores en la columna 'TipoDocumento' no sean
-        '10|CEDULA CIUDADANIA HOMBRE' o '10|CEDULA CIUDADANIA MUJER'.
-        Si se encuentran estos valores, genera un error indicando que deben ser '10|CEDULA DE CIUDADANIA'.
-        """
-        archivo_excel = self.archivo_entry.get()
-        if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
-            return []
-
-        try:
-            # Leer la hoja 'Fichas'
-            df_fichas = pd.read_excel(archivo_excel, sheet_name='Propietarios')
-
-            # Valores no permitidos en 'TipoDocumento'
-            valores_invalidos = [
-                "10|CEDULA CIUDADANIA HOMBRE",
-                "10|CEDULA CIUDADANIA MUJER"
-            ]
-            
-            # Lista para almacenar los errores encontrados
-            resultados = []
-
-            # Validar cada fila en la columna 'TipoDocumento'
-            for index, row in df_fichas.iterrows():
-                tipo_documento = row.get('TipoDocumento', '')
-
-                # Si 'TipoDocumento' contiene un valor no permitido
-                if tipo_documento in valores_invalidos:
-                    resultados.append({
-                        'NroFicha': row['NroFicha'],
-                        'TipoDocumento': tipo_documento,
-                        'Observacion': "Debe ser '10|CEDULA DE CIUDADANIA'",
-                        'Npn':row['Npn'],
-                        'DestinoEconomico': row['DestinoEcconomico'],
-                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
-                        'CaracteristicaPredio':row['CaracteristicaPredio'],
-                        'AreaTotalTerreno':row['AreaTotalTerreno'],
-                        'ModoAdquisicion':row['ModoAdquisicion'],
-                        'Tomo':row['Tomo'],
-                        'PredioLcTipo':row['PredioLcTipo'],
-                        'NumCedulaCatastral':row['NumCedulaCatastral'],
-                        'AreaTotalLote':row['AreaTotalLote'],
-                        'AreaLoteComun':row['AreaLoteComun'],
-                        'AreaLotePrivada':row['AreaLotePrivada'],
-                        'Nombre Hoja': 'Propietarios'
-                    })
-            '''
-            
-            # Guardar los resultados en un archivo Excel si hay errores
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Errores_TipoDocumento_Fichas.xlsx'
-                df_resultado.to_excel(output_file, index=False)
-                print(f"Archivo de errores guardado: {output_file}")
-                messagebox.showinfo("Errores encontrados", f"Se encontraron {len(resultados)} registros con valores incorrectos en 'TipoDocumento'.")
-            else:
-                messagebox.showinfo("Sin errores", "No se encontraron valores incorrectos en la columna 'TipoDocumento' en la hoja 'Fichas'.")
-            '''
-            return resultados
-
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            return []
-        
+    
         
     def Validar_Longitud_NPN(self):
         archivo_excel = self.archivo_entry.get()
@@ -2094,7 +2027,8 @@ class Ficha:
                         }
                         resultados.append(resultado)
                         print(f"Error encontrado: {resultado}")
-
+            '''
+            
             # Manejar resultados
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
@@ -2105,7 +2039,7 @@ class Ficha:
                 messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores en MatriculaInmobiliaria.")
             else:
                 messagebox.showinfo("Información", "Todos los valores en MatriculaInmobiliaria son numéricos o vacíos.")
-
+            '''
             return resultados
 
         except Exception as e:
