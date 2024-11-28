@@ -3,7 +3,7 @@ import tkinter as tk
 import warnings
 from tkinter import filedialog, messagebox
 from interfaz import InterfazGrafica
-from validaciones.propietarios import Propietarios
+from procesar import Procesar
 import traceback    
 import logging
 
@@ -21,7 +21,7 @@ class Application:
     
 
     def procesar_archivo(self):
-        processor = Propietarios(self.interfaz.archivo_entry_nph)
+        processor = Procesar(self.interfaz.archivo_entry_nph)
         processor.procesar_errores()
            
 try:
