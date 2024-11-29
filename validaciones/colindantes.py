@@ -47,19 +47,19 @@ class Colindantes:
                     }
                     resultados.append(resultado)
                     print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
-            
+            '''
             # Si se encuentran errores, se guardan en un archivo Excel
             if resultados:
-                '''
+                
                 df_resultado = pd.DataFrame(resultados)
                 output_file = 'ERRORES_ORIENTACIONES_COLINDANTES.xlsx'
                 df_resultado.to_excel(output_file, sheet_name='ErroresOrientaciones', index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
-                '''
+                
             else:
                 messagebox.showinfo("Sin errores", "Todos los NroFicha tienen las orientaciones 'ESTE', 'NORTE', 'SUR', y 'OESTE'.")
-            
+            '''    
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -126,7 +126,8 @@ class Colindantes:
                     }
                     resultados.append(resultado)
                     print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
-
+            '''
+            
             # Guardar resultados si hay errores
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
@@ -136,7 +137,7 @@ class Colindantes:
                 messagebox.showinfo("Errores encontrados", f"Se encontraron errores. Archivo guardado en '{output_file}'.")
             else:
                 messagebox.showinfo("Sin errores", "Todas las NroFicha cumplen con las orientaciones requeridas.")
-
+            '''
             return resultados
 
         except Exception as e:

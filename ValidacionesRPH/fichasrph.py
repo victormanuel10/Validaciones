@@ -193,7 +193,7 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
-                            'Observacion': 'Npn debe tener suma de dígitos 23 y 24 mayor o igual a 1.',
+                            'Observacion': 'Edificio en 0 para condición de predio 9',
                             'Nombre Hoja': 'FichasPrediales'
                         }
                         resultados.append(resultado)
@@ -253,7 +253,7 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
-                            'Observacion': 'No pueden haber unidades prediales en 0',
+                            'Observacion': 'Unidades prediales en 0 para condicion de predio 8 o 9',
                             'Nombre Hoja': 'Fichas'
                         }
                         resultados.append(resultado)
@@ -470,65 +470,7 @@ class FichasRPH:
             return []
         
 
-    def validar_area_comun(self):
-        """
-        Verifica en la hoja 'Fichas' que cuando el 22º dígito de 'Npn' es '9' y la suma de los
-        dígitos 27, 28, 29 y 30 es 0, el campo 'AreaTotalLote' no esté vacío. Si está vacío, genera un error.
-        """
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Fichas'
-        
-        if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
-            return []
-
-        try:
-            # Leer la hoja 'Fichas'
-            df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
-            resultados = []
-
-            # Iterar sobre cada fila para verificar las condiciones
-            for index, row in df_fichas.iterrows():
-                npn = str(row.get('Npn', '')).strip()  # Convertir a cadena y quitar espacios
-                area_lote_comun = row.get('AreaLoteComun', None)
-
-                # Verificar si el 22º dígito de 'Npn' es '9' y la suma de los dígitos 27 a 30 es 0
-                if len(npn) >= 30 and npn[21] == '9':
-                    digitos_27_30 = npn[26:30]  # Obtener los dígitos 27, 28, 29, 30
-                    
-                    # Verificar que los dígitos son números y sumarlos
-                    if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) > 0:
-                        # Generar error si 'AreaTotalLote' está vacío
-                        if pd.isna(area_lote_comun) or area_lote_comun == '' or area_lote_comun==0:
-                            resultado = {
-                                'NroFicha': row['NroFicha'],
-                                'AreaLoteComun':row['AreaLoteComun'],
-                                'Npn': npn,
-                                'Observacion': 'AreaLoteComun no debe estar vacío en Unidad Predial',
-                                'Nombre Hoja': nombre_hoja
-                            }
-                            resultados.append(resultado)
-                            print(f"Fila {index} cumple las condiciones para error. Agregado: {resultado}")
-            '''
-            
-            # Guardar los resultados en un archivo Excel si hay errores
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Errores_AreaLoteComun_Npn_Fichas.xlsx'
-                df_resultado.to_excel(output_file, index=False)
-                print(f"Archivo de errores guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con Npn cuyo 22º dígito es 9 y sin AreaTotalLote.")
-            else:
-                messagebox.showinfo("Sin errores", "Todos los registros cumplen con las condiciones o tienen AreaTotalLote lleno.")
-            '''
-            return resultados
-
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            return []
-        
+    
     
     def validar_area_privada(self):
         """
@@ -627,7 +569,7 @@ class FichasRPH:
                             'Npn': row['Npn'],
                             'UnidadesEnRPH': row['UnidadesEnRPH'],
                             'Unidades Prediales': conteo_npn_relacionados,
-                            'Observacion': 'Unidades Prediales en ficha resumen no coincide con el total de Unidades.',
+                            'Observacion': 'Unidades Prediales en ficha resumen no coinciden con el total de Unidades.',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -736,7 +678,7 @@ class FichasRPH:
                             resultado = {
                                 'NroFicha': row.get('NroFicha', 'Sin dato'),
                                 'Npn': npn,
-                                'Observacion': 'Ultimos 4 Digitos Incorrectos',
+                                'Observacion': 'Unidad predial superior a mil',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)
@@ -747,7 +689,8 @@ class FichasRPH:
                     print(f"Fila {index}: Npn no cumple con la longitud mínima (30 caracteres)")
 
             print(f"Total de errores encontrados: {len(resultados)}")
-
+            '''
+            
             if resultados:
                 # Crear DataFrame con resultados
                 df_resultado = pd.DataFrame(resultados)
@@ -759,7 +702,7 @@ class FichasRPH:
             else:
                 print("No se encontraron errores.")
                 messagebox.showinfo("Información", "No se encontraron registros con errores.")
-
+            '''
             return resultados
 
         except Exception as e:

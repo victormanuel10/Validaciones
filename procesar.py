@@ -31,17 +31,21 @@ class Procesar:
         
         
         
-       
         
+        
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        #self.agregar_resultados(calificonstrucciones.validar_banios()) 
+        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
         
         
         ficha = Ficha(self.archivo_entry)
         
+        self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
         
         
-        
-        self.agregar_resultados(ficha.validar_area_construida())
         self.agregar_resultados(ficha.modo_adquisicion_informal())
+        
+        
         self.agregar_resultados(ficha.informal_matricula())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         self.agregar_resultados(ficha.areaterrenocero())
@@ -88,13 +92,13 @@ class Procesar:
         self.agregar_resultados(propietarios.entidadvacio())
         self.agregar_resultados(propietarios.primer_apellido_blanco())
         self.agregar_resultados(propietarios.primer_nombre_blanco())
-        self.agregar_resultados(propietarios.documento_blanco_cod_asig())
+       #self.agregar_resultados(propietarios.documento_blanco_cod_asig())
         self.agregar_resultados(propietarios.fecha_escritura_inferior())
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
         self.agregar_resultados(fichasrph.validar_area_privada())
-        self.agregar_resultados(fichasrph.validar_area_comun())
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
         self.agregar_resultados(fichasrph.validar_informalidad_edificio())
@@ -103,7 +107,7 @@ class Procesar:
         self.agregar_resultados(fichasrph.validar_npn_num_cedula())
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
         self.agregar_resultados(fichasrph.validar_duplicados_npn())
-        self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
+        
         
         construcciones = Construcciones(self.archivo_entry)
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
@@ -122,11 +126,10 @@ class Procesar:
         
         
         
-        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
+        
+       
         self.agregar_resultados(calificonstrucciones.validar_sinCocina())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
-        self.agregar_resultados(calificonstrucciones.validar_banios()) 
         self.agregar_resultados(calificonstrucciones.Validar_armazon())
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         
@@ -142,18 +145,9 @@ class Procesar:
         self.agregar_resultados(colindantes.validar_orientaciones_rph())
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
-        
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        reportes=Reportes(self.archivo_entry)
-        self.agregar_resultados(reportes.matriz_con_matricula())
-        self.agregar_resultados(reportes.matriz_sin_matricula())
-        self.agregar_resultados(reportes.matriz_sin_circulo())
-        self.agregar_resultados(reportes.matriz_con_circulo())
-        self.agregar_resultados(reportes.contar_rph_matriz())
-        self.agregar_resultados(reportes.contar_unidades_prediales())
-        self.agregar_resultados(reportes.contar_nph())
         
         
         self.generar_reporte_observaciones()  
@@ -175,12 +169,49 @@ class Procesar:
                 
                 # Asegúrate de que el reporte se agrega al archivo después de los errores
                 self.agregar_reporte(writer)
-    
+                self.agregar_hoja_reportes(writer)
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
         else:
             messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
     
-    
+    def agregar_hoja_reportes(self, writer):
+        """
+        Genera y agrega una hoja llamada 'Reportes' al archivo Excel con las funciones de la clase Reportes.
+        """
+        try:
+            # Instanciar la clase Reportes
+            reportes = Reportes(self.archivo_entry)
+
+            # Obtener resultados de las funciones de la clase Reportes
+            resultados_reportes = []
+            funciones_reportes = [
+                reportes.matriz_con_matricula,
+                reportes.matriz_sin_matricula,
+                reportes.matriz_sin_circulo,
+                reportes.matriz_con_circulo,
+                reportes.contar_rph_matriz,
+                reportes.contar_unidades_prediales,
+                reportes.contar_nph
+            ]
+
+            # Ejecutar cada función y agregar resultados
+            for funcion in funciones_reportes:
+                resultado = funcion()
+                if isinstance(resultado, pd.DataFrame):
+                    # Concatenar los resultados
+                    resultados_reportes.append(resultado)
+
+            # Concatenar todos los DataFrames en uno solo
+            if resultados_reportes:
+                df_reportes = pd.concat(resultados_reportes, ignore_index=True)
+                df_reportes.to_excel(writer, sheet_name='Reportes', index=False)
+                print("Hoja 'Reportes' agregada con las funciones de la clase Reportes.")
+            else:
+                print("No se generaron resultados para la hoja 'Reportes'.")
+
+        except Exception as e:
+            print(f"Error al generar la hoja 'Reportes': {e}")
+            
     
     def leer_archivo(self):
         archivo_excel = self.archivo_entry.get()
@@ -202,7 +233,9 @@ class Procesar:
     
     def generar_reporte_observaciones(self):
         """
-        Genera un reporte con el conteo de las observaciones y lo guarda en la hoja 'Reporte'.
+        Genera un reporte con:
+        1. El conteo de las observaciones y lo guarda en la hoja 'Resumen'.
+        2. Una agrupación por cada 'NroFicha' con las observaciones asociadas y lo guarda en otra hoja.
         """
         if not self.resultados_generales:
             print("No hay resultados generales para generar el reporte.")
@@ -212,6 +245,7 @@ class Procesar:
         print("Estructura de resultados generales:")
         print(self.resultados_generales)  # Imprime los resultados para ver qué contiene
 
+        # --- Reporte 1: Conteo de Observaciones ---
         # Asegúrate de que todos los diccionarios tengan la clave 'Observacion'
         for resultado in self.resultados_generales:
             if 'Observacion' not in resultado:
@@ -223,20 +257,45 @@ class Procesar:
         # Crear el DataFrame con el conteo
         df_reporte = pd.DataFrame(contador_observaciones.items(), columns=['Observacion', 'Cantidad'])
 
-        # Agregar la hoja 'Reporte' al archivo Excel con los errores
+        # Almacenar el reporte de observaciones
         self.reporte = df_reporte
+
+        # --- Reporte 2: Agrupación por NroFicha ---
+        # Crear un DataFrame de los resultados generales
+        df_resultados = pd.DataFrame(self.resultados_generales)
+
+        # Verificar si las columnas necesarias existen
+        if 'NroFicha' in df_resultados.columns and 'Observacion' in df_resultados.columns:
+            # Agrupar observaciones por NroFicha
+            agrupacion_fichas = (
+                df_resultados.groupby('NroFicha')['Observacion']
+                .apply(lambda x: '; '.join(map(str, x.unique())))  # Convertir cada valor a cadena
+                .reset_index()
+            )
+            agrupacion_fichas.columns = ['NroFicha', 'Observaciones']
+            self.agrupacion_fichas = agrupacion_fichas
+        else:
+            print("No se encontraron las columnas 'NroFicha' o 'Observacion' en los resultados.")
+            self.agrupacion_fichas = None
 
         # Verificación
         print("Reporte generado:")
         print(self.reporte)  # Esto debería mostrar el DataFrame con las observaciones
+        print("Agrupación por NroFicha:")
+        print(self.agrupacion_fichas)  # Esto debería mostrar la agrupación por NroFicha
 
     def agregar_reporte(self, writer):
         """
-        Agrega la hoja 'Reporte' con el conteo de observaciones al archivo Excel.
+        Agrega las hojas 'Resumen' y 'Agrupación por Fichas' al archivo Excel.
         """
         if hasattr(self, 'reporte'):
-            
             self.reporte.to_excel(writer, sheet_name='Resumen', index=False)
-            print("Reporte de observaciones agregado a la hoja 'Reporte'.")
+            print("Reporte de observaciones agregado a la hoja 'Resumen'.")
         else:
             print("No hay observaciones para generar el reporte.")
+
+        if hasattr(self, 'agrupacion_fichas') and self.agrupacion_fichas is not None:
+            self.agrupacion_fichas.to_excel(writer, sheet_name='Errores por Ficha', index=False)
+            print("Agrupación por NroFicha agregada a la hoja 'Agrupación por Fichas'.")
+        else:
+            print("No hay agrupación por NroFicha para generar el reporte.")

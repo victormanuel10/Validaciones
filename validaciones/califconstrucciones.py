@@ -41,7 +41,7 @@ class CalificaionesConstrucciones:
                     resultado = {
                         'secuencia':row['secuencia'],
                         'Tamaño baño': row['TamanioBanio'],
-                        'Observacion': 'No puede tener EnchapesBanio, MobiliarioBanio, ConservacionBanio ',
+                        'Observacion': 'No puede tener EnchapesBanio, MobiliarioBanio, ConservacionBanio (aviso) ',
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -103,7 +103,7 @@ class CalificaionesConstrucciones:
                     if ( TamanioCocina == '411|SIN COCINA') and (pd.notna(Enchape) or pd.notna(MobiliarioCocina) or pd.notna(ConservacionCocina)):
                         resultado = {
                             'secuencia':row['secuencia'],
-                            'Observacion': 'No puede tener Enchape, MobiliarioCocina, ConservacionCocina ',
+                            'Observacion': 'No puede tener Enchape, MobiliarioCocina, ConservacionCocina (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -170,7 +170,7 @@ class CalificaionesConstrucciones:
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
-                            'Observacion': 'Muro invalido para armazon',
+                            'Observacion': 'Muro invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -181,7 +181,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Armazon':row['Armazon'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Piso invalido para armazon',
+                            'Observacion': 'Piso invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -191,7 +191,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Piso': row['Piso'],
                             'Cubierta':row['Cubierta'],
-                            'Observacion': 'Cubierta invalido para armazon',
+                            'Observacion': 'Cubierta invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -206,7 +206,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta': row['Cubierta'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Muro invalido para armazon',
+                            'Observacion': 'Muro invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -220,7 +220,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta': row['Cubierta'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Cubierta invalida para armazon',
+                            'Observacion': 'Cubierta invalida para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -236,7 +236,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
                             'Piso':row['Piso'],
-                            'Observacion': 'Muro invalido para armazon',
+                            'Observacion': 'Muro invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
 
@@ -249,7 +249,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
                             'Piso':row['Piso'],
-                            'Observacion': 'Cubierta invalido para armazon',
+                            'Observacion': 'Cubierta invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                     
@@ -262,7 +262,7 @@ class CalificaionesConstrucciones:
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
-                            'Observacion': 'Muro invalido para armazon',
+                            'Observacion': 'Muro invalido para armazon (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                     
@@ -273,7 +273,7 @@ class CalificaionesConstrucciones:
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
-                            'Observacion': 'Cubierta invalido para armazon',
+                            'Observacion': 'Cubierta invalido para armazon(aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -357,7 +357,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
-                            'Observacion': 'Cubrimiento Muro invalido para fachada',
+                            'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -368,7 +368,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Piso invalido para fachada',
+                            'Observacion': 'Piso invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -379,7 +379,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
-                            'Observacion': 'Cubrimiento Muro invalido para fachada',
+                            'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -389,7 +389,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Piso invalido para fachada',
+                            'Observacion': 'Piso invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -401,7 +401,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
-                            'Observacion': 'Cubrimiento Muro invalido para fachada',
+                            'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -411,7 +411,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Piso invalido para fachada',
+                            'Observacion': 'Piso invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -422,7 +422,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
-                            'Observacion': 'Cubrimiento Muro invalido para fachada',
+                            'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -432,7 +432,7 @@ class CalificaionesConstrucciones:
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
-                            'Observacion': 'Piso invalido para fachada',
+                            'Observacion': 'Piso invalido para fachada (aviso)',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -491,7 +491,7 @@ class CalificaionesConstrucciones:
                         resultado = {
                             'secuencia': secuencia,
                             'Conservacion': conservacion,
-                            'Observacion': 'La edad de la construcción es mayor o igual a 20 años',
+                            'Observacion': 'La edad de la construcción es mayor o igual a 20 años (aviso)',
                             'Nombre Hoja': nombre_hoja_calificaciones
                         }
                         resultados.append(resultado)
@@ -556,7 +556,7 @@ class CalificaionesConstrucciones:
                             'secuencia': secuencia,
                             'Cubierta': fila_calificaciones['Cubierta'],
                             'NumeroPisos': numero_pisos,
-                            'Observacion': 'Número de pisos menor a 3 para la cubierta azotea ',
+                            'Observacion': 'Número de pisos menor a 3 para la cubierta azotea (aviso)',
                             'Nombre Hoja': hoja_calificaciones
                             
                         }

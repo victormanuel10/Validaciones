@@ -48,7 +48,7 @@ class Ficha:
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -118,7 +118,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -196,11 +196,11 @@ class Ficha:
                 if valor_b == '2|POSESIÓN' and (valor_a != '' and pd.notna(valor_a)):
                     resultado = {
                         'NroFicha': row.get('NroFicha', ''),
-                        'Observacion': 'Modo de adquisicion posesion con matricula',
+                        'Observacion': 'Modo de adquisición posesión con matrícula',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -217,11 +217,11 @@ class Ficha:
                 if valor_b == '5|OCUPACIÓN' and (valor_a != '' and pd.notna(valor_a)):
                     resultado = {
                         'NroFicha': row.get('NroFicha', ''),                        
-                        'Observacion': 'Modo de adquisicion Ocupacion con matricula',
+                        'Observacion': 'Modo de adquisición Ocupacion con matrícula',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -298,11 +298,11 @@ class Ficha:
                     if valor_a[21] == '2' and pd.notna(valor_b) or valor_b=='':
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Condicion de predio 2 con matricula',
+                            'Observacion': 'Condición de predio 2 con matrícula',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -385,7 +385,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -461,7 +461,7 @@ class Ficha:
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -537,7 +537,7 @@ class Ficha:
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -607,11 +607,11 @@ class Ficha:
                     if caracteristica_predio != '12|INFORMAL (2)':
                         resultado = {
                             'NroFicha': row.get('NroFicha', 'Sin valor'),
-                            'Observacion': 'Caracteristica incorrecta para Modo de Aquisicion Ocupacion o Posesion',
+                            'Observacion': 'Caracteristica incorrecta para Modo de Aquisición Ocupación o Posesión',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -677,7 +677,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -744,7 +744,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -807,15 +807,14 @@ class Ficha:
 
                 if destino_economico in ['12|Lote_Urbanizado_No_Construido', 
                                         '13|Lote_Urbanizable_No_Urbanizado', 
-                                        '14|Lote_No_Urbanizable',
-                                        '19|USO PUBLICO'] and area_total_construida > 0:
+                                        '14|Lote_No_Urbanizable',] and area_total_construida > 0:
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'Observacion': 'Destino económico no debe tener área construida mayor a cero',
+                        'Observacion': 'Destino económico 12, 13 y 14 no debe tener área construida mayor a cero',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -882,11 +881,11 @@ class Ficha:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             
-                            'Observacion': 'Area terreno invalida para caracteristica diferente a Rph o Condominio',
+                            'Observacion': 'Área de terreno invalida para característica diferente a RPH o Condominio',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -917,7 +916,88 @@ class Ficha:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-        
+    
+    
+    def validar_area_construida_fichas_construcciones(self):
+        archivo_excel = self.archivo_entry.get()
+        hoja_fichas = 'Fichas'
+        hoja_construcciones = 'Construcciones'
+
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return
+
+        try:
+            # Leer las hojas Fichas y Construcciones
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
+
+            # Validar columnas necesarias
+            columnas_necesarias_fichas = ['NroFicha', 'AreaTotalConstruida', 'Npn']
+            columnas_necesarias_construcciones = ['NroFicha']
+
+            for columna in columnas_necesarias_fichas:
+                if columna not in df_fichas.columns:
+                    messagebox.showerror("Error", f"La columna '{columna}' no existe en la hoja {hoja_fichas}.")
+                    return
+            for columna in columnas_necesarias_construcciones:
+                if columna not in df_construcciones.columns:
+                    messagebox.showerror("Error", f"La columna '{columna}' no existe en la hoja {hoja_construcciones}.")
+                    return
+
+            # Obtener los NroFicha que están en la hoja Construcciones
+            fichas_con_construcciones = df_construcciones['NroFicha'].unique()
+
+            # Filtrar las filas en Fichas con esas NroFichas
+            fichas_validar = df_fichas[df_fichas['NroFicha'].isin(fichas_con_construcciones)]
+
+            # Excluir registros donde el 22.º carácter de Npn sea igual a 9 o 8
+            fichas_validar = fichas_validar[
+                ~fichas_validar['Npn'].str[21].isin(['8', '9'])
+            ]
+
+            # Filtrar las filas donde AreaTotalConstruida <= 0 o es nulo
+            errores = fichas_validar[
+                (fichas_validar['AreaTotalConstruida'] <= 0) |
+                (fichas_validar['AreaTotalConstruida'].isna())
+            ]
+
+            # Resultados a mostrar
+            resultados = []
+            for _, row in errores.iterrows():
+                resultado = {
+                    'NroFicha': row['NroFicha'],
+                    'Observacion': 'Área Total Construida en fichas debe ser mayor a 0 para las fichas con construcciones',
+                    'Npn': row['Npn'],
+                    'DestinoEconomico': row['DestinoEcconomico'],
+                    'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
+                    'AreaTotalConstruida': row['AreaTotalConstruida'],
+                    'CaracteristicaPredio': row['CaracteristicaPredio'],
+                    'AreaTotalTerreno': row['AreaTotalTerreno'],
+                    'ModoAdquisicion': row['ModoAdquisicion'],
+                    'Tomo': row['Tomo'],
+                    'PredioLcTipo': row['PredioLcTipo'],
+                    'NumCedulaCatastral': row['NumCedulaCatastral'],
+                    'AreaTotalLote': row['AreaTotalLote'],
+                    'AreaLoteComun': row['AreaLoteComun'],
+                    'AreaLotePrivada': row['AreaLotePrivada'],
+                    'Nombre Hoja': 'Fichas'
+                }
+                resultados.append(resultado)
+                print(f"Error encontrado: {resultado}")
+
+            # Retornar los resultados
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+    
+    '''    
     def validar_area_construida(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
@@ -943,6 +1023,12 @@ class Ficha:
                 "13|LOTE_URBANIZABLE_NO_URBANIZADO",
                 "14|LOTE_NO_URBANIZABLE",
                 "0|NA",
+                "24|AGRICOLA",
+                "61|AGROFORESTAL",
+                "30|FORESTAL",
+                "60|ACUICOLA",
+                "63|INFRAESTRUCTURA_HIDRAULICA",
+                "19|USO_PUBLICO",
                 ""
             ]
             excluir_destinos = [destino.upper() for destino in excluir_destinos]
@@ -989,7 +1075,7 @@ class Ficha:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
+    '''        
             
     def predios_con_direcciones_invalidas(self):
         archivo_excel = self.archivo_entry.get()
@@ -1023,7 +1109,7 @@ class Ficha:
                     observacion = 'Predio sin dirección'
                 # Validar si los primeros 8 caracteres contienen palabras no permitidas
                 elif any(palabra in DireccionReal[:8] for palabra in palabras_no_permitidas):
-                    observacion = 'Contiene palabras no permitidas en direccion'
+                    observacion = 'Contiene palabras no permitidas en dirección'
                 else:
                     continue
 
@@ -1241,11 +1327,11 @@ class Ficha:
                 if row['PorcentajeLitigio'] != 0 and pd.notna(row['PorcentajeLitigio']):
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'Observacion': 'PorcentajeLitigio No puede ser diferente de cero',
+                        'Observacion': 'PorcentajeLitigio diferente de cero',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1318,11 +1404,11 @@ class Ficha:
                             error = {
                                 'NroFicha': row['NroFicha'],
                                 
-                                'Observacion': 'El carácter 22 es 0 pero los caracteres restantes no son todos ceros',
+                                'Observacion': 'Condición de predio NPH con número de piso, o edificio, o unidad',
                                 'Npn':row['Npn'],
                                 'DestinoEconomico': row['DestinoEcconomico'],
                                 'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                                'AreaTotalConstruida':row['AreaTotalTerreno'],
+                                'AreaTotalConstruida':row['AreaTotalConstruida'],
                                 'CaracteristicaPredio':row['CaracteristicaPredio'],
                                 'AreaTotalTerreno':row['AreaTotalTerreno'],
                                 'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1394,11 +1480,11 @@ class Ficha:
                     if subcadena_npn == "0000":
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Npn contiene 0000 en las posiciones 14-17',
+                            'Observacion': 'NPN contiene 0000 en las posiciones 14-17',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1474,11 +1560,11 @@ class Ficha:
                     if suma_ultimos_cuatro > 0:
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Ultimos dígitos de Npn no es 0 para predio Normal',
+                            'Observacion': 'Predio NPH con número de unidad predial ',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1554,7 +1640,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1574,7 +1660,7 @@ class Ficha:
                         'NroFicha': row['NroFicha'],
                         'NumCedulaCatastral': num_cedula_catastral,
                         'DestinoEconomico': destino_economico,
-                        'Observacion': 'Destino Economico no valido para ficha Rural',
+                        'Observacion': 'Destino Económico no válido para ficha Rural',
                         'Nombre Hoja': 'Fichas'
                     })
             '''
@@ -1725,11 +1811,11 @@ class Ficha:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         
-                        'Observacion': 'Npn contiene "0000" en posiciones 14-17',
+                        'Observacion': 'NPN contiene "0000" en posiciones 14-17',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1797,7 +1883,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1817,7 +1903,7 @@ class Ficha:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'Npn': row['Npn'],
-                        'Observacion': 'Npn debe terminar en 300000000 cuando el dígito 22 es 3',
+                        'Observacion': 'NPN debe terminar en 300000000 cuando el dígito 22 es 3',
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -1873,11 +1959,11 @@ class Ficha:
             for _, row in duplicados.iterrows():
                 resultado = {
                     'NroFicha': row.get('NroFicha', 'No especificado'),
-                    'Observacion': 'Npn esta duplicado',
+                    'Observacion': 'NPN duplicado',
                     'Npn':row['Npn'],
                     'DestinoEconomico': row['DestinoEcconomico'],
                     'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                    'AreaTotalConstruida':row['AreaTotalTerreno'],
+                    'AreaTotalConstruida':row['AreaTotalConstruida'],
                     'CaracteristicaPredio':row['CaracteristicaPredio'],
                     'AreaTotalTerreno':row['AreaTotalTerreno'],
                     'ModoAdquisicion':row['ModoAdquisicion'],
@@ -1946,7 +2032,7 @@ class Ficha:
                 resultado = {
                     'NroFicha': row.get('NroFicha', 'No especificado'),
                     
-                    'Observacion': 'Matricula no puede estar vacia en predio privado y derecho dominio',
+                    'Observacion': 'Matricula vacía en predio privado y derecho dominio',
                     'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
                     'ModoAdquisicion':row['ModoAdquisicion'],                  
                     'PredioLcTipo':row['PredioLcTipo'],
@@ -2013,7 +2099,7 @@ class Ficha:
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -2078,7 +2164,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -2147,7 +2233,7 @@ class Ficha:
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],
@@ -2224,7 +2310,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -2293,7 +2379,7 @@ class Ficha:
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                        'AreaTotalConstruida':row['AreaTotalTerreno'],
+                        'AreaTotalConstruida':row['AreaTotalConstruida'],
                         'CaracteristicaPredio':row['CaracteristicaPredio'],
                         'AreaTotalTerreno':row['AreaTotalTerreno'],
                         'ModoAdquisicion':row['ModoAdquisicion'],
@@ -2359,7 +2445,7 @@ class Ficha:
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
                             'CaracteristicaPredio':row['CaracteristicaPredio'],
                             'AreaTotalTerreno':row['AreaTotalTerreno'],
                             'ModoAdquisicion':row['ModoAdquisicion'],

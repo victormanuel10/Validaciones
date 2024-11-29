@@ -413,8 +413,8 @@ class Propietarios:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
-    def documento_blanco_cod_asig(self):
+    '''        
+    def documento_blanco_cod_asig(self): COMENTADO PORQUE NO SE USA
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'
 
@@ -468,7 +468,7 @@ class Propietarios:
             df_resultado = pd.DataFrame(resultados)
 
             # Guardar el resultado en un nuevo archivo Excel
-            '''
+            
             output_file = 'DOCUMENTO_CODIGO_ASIGNADO.xlsx'
             sheet_name = 'DOCUMENTO_CODIGO_ASIGNADO'
             df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
@@ -477,12 +477,14 @@ class Propietarios:
 
             
             messagebox.showinfo("Éxito", f"Proceso completado Codigo Asignado. con {len(resultados)} registros.")
-            '''
+            
             print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+
+            '''
             
     def fecha_escritura_inferior(self):
         archivo_excel = self.archivo_entry.get()
@@ -528,7 +530,7 @@ class Propietarios:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'FechaEscritura': fecha_obj.strftime("%d/%m/%Y"),
-                        'Observacion': 'Fecha anterior a 1778',
+                        'Observacion': 'Fecha de escritura inferior al año 1778',
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
