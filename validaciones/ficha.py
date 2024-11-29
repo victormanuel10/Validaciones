@@ -1012,7 +1012,7 @@ class Ficha:
             # Lista de palabras no permitidas
             palabras_no_permitidas = ['ZONA', 'BLOQUE', 'Bloque', 'EDIFICIO', 'Edificio', 'LOS', 'BARRIO', 'Barrio', 
                                     'VIA', 'Via', 'Lote', 'LOTE', 'CALLE', 'calle', 'AVENIDA', 'avenida', 
-                                    'CRA', 'Cra', 'KL', 'CARRERA', 'Carrera', 'Diagonal','S.N','S.N.','SN']
+                                    'CRA', 'Cra', 'KL', 'CARRERA', 'Carrera', 'Diagonal','S.N','S.N.','SN','S.D','s.d']
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
