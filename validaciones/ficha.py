@@ -196,7 +196,7 @@ class Ficha:
                 if valor_b == '2|POSESIÓN' and (valor_a != '' and pd.notna(valor_a)):
                     resultado = {
                         'NroFicha': row.get('NroFicha', ''),
-                        'Observacion': 'Modo de adquisicion posesion con matricula',
+                        'Observacion': 'Modo de adquisición posesión con matrícula',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -217,7 +217,7 @@ class Ficha:
                 if valor_b == '5|OCUPACIÓN' and (valor_a != '' and pd.notna(valor_a)):
                     resultado = {
                         'NroFicha': row.get('NroFicha', ''),                        
-                        'Observacion': 'Modo de adquisicion Ocupacion con matricula',
+                        'Observacion': 'Modo de adquisición Ocupacion con matrícula',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -298,7 +298,7 @@ class Ficha:
                     if valor_a[21] == '2' and pd.notna(valor_b) or valor_b=='':
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Condicion de predio 2 con matricula',
+                            'Observacion': 'Condición de predio 2 con matrícula',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -607,7 +607,7 @@ class Ficha:
                     if caracteristica_predio != '12|INFORMAL (2)':
                         resultado = {
                             'NroFicha': row.get('NroFicha', 'Sin valor'),
-                            'Observacion': 'Caracteristica incorrecta para Modo de Aquisicion Ocupacion o Posesion',
+                            'Observacion': 'Caracteristica incorrecta para Modo de Aquisición Ocupación o Posesión',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -807,11 +807,10 @@ class Ficha:
 
                 if destino_economico in ['12|Lote_Urbanizado_No_Construido', 
                                         '13|Lote_Urbanizable_No_Urbanizado', 
-                                        '14|Lote_No_Urbanizable',
-                                        '19|USO PUBLICO'] and area_total_construida > 0:
+                                        '14|Lote_No_Urbanizable',] and area_total_construida > 0:
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'Observacion': 'Destino económico no debe tener área construida mayor a cero',
+                        'Observacion': 'Destino económico 12, 13 y 14 no debe tener área construida mayor a cero',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -882,7 +881,7 @@ class Ficha:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             
-                            'Observacion': 'Area terreno invalida para caracteristica diferente a Rph o Condominio',
+                            'Observacion': 'Área de terreno invalida para característica diferente a RPH o Condominio',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -943,6 +942,12 @@ class Ficha:
                 "13|LOTE_URBANIZABLE_NO_URBANIZADO",
                 "14|LOTE_NO_URBANIZABLE",
                 "0|NA",
+                "24|AGRICOLA",
+                "61|AGROFORESTAL",
+                "30|FORESTAL",
+                "60|ACUICOLA",
+                "63|INFRAESTRUCTURA_HIDRAULICA",
+                "19|USO_PUBLICO",
                 ""
             ]
             excluir_destinos = [destino.upper() for destino in excluir_destinos]
@@ -1023,7 +1028,7 @@ class Ficha:
                     observacion = 'Predio sin dirección'
                 # Validar si los primeros 8 caracteres contienen palabras no permitidas
                 elif any(palabra in DireccionReal[:8] for palabra in palabras_no_permitidas):
-                    observacion = 'Contiene palabras no permitidas en direccion'
+                    observacion = 'Contiene palabras no permitidas en dirección'
                 else:
                     continue
 
@@ -1241,7 +1246,7 @@ class Ficha:
                 if row['PorcentajeLitigio'] != 0 and pd.notna(row['PorcentajeLitigio']):
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'Observacion': 'PorcentajeLitigio No puede ser diferente de cero',
+                        'Observacion': 'PorcentajeLitigio diferente de cero',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1318,7 +1323,7 @@ class Ficha:
                             error = {
                                 'NroFicha': row['NroFicha'],
                                 
-                                'Observacion': 'El carácter 22 es 0 pero los caracteres restantes no son todos ceros',
+                                'Observacion': 'Condición de predio NPH con número de piso, o edificio, o unidad',
                                 'Npn':row['Npn'],
                                 'DestinoEconomico': row['DestinoEcconomico'],
                                 'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1394,7 +1399,7 @@ class Ficha:
                     if subcadena_npn == "0000":
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Npn contiene 0000 en las posiciones 14-17',
+                            'Observacion': 'NPN contiene 0000 en las posiciones 14-17',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1474,7 +1479,7 @@ class Ficha:
                     if suma_ultimos_cuatro > 0:
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            'Observacion': 'Ultimos dígitos de Npn no es 0 para predio Normal',
+                            'Observacion': 'Predio NPH con número de unidad predial ',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
                             'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1574,7 +1579,7 @@ class Ficha:
                         'NroFicha': row['NroFicha'],
                         'NumCedulaCatastral': num_cedula_catastral,
                         'DestinoEconomico': destino_economico,
-                        'Observacion': 'Destino Economico no valido para ficha Rural',
+                        'Observacion': 'Destino Económico no válido para ficha Rural',
                         'Nombre Hoja': 'Fichas'
                     })
             '''
@@ -1725,7 +1730,7 @@ class Ficha:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         
-                        'Observacion': 'Npn contiene "0000" en posiciones 14-17',
+                        'Observacion': 'NPN contiene "0000" en posiciones 14-17',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1817,7 +1822,7 @@ class Ficha:
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'Npn': row['Npn'],
-                        'Observacion': 'Npn debe terminar en 300000000 cuando el dígito 22 es 3',
+                        'Observacion': 'NPN debe terminar en 300000000 cuando el dígito 22 es 3',
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -1873,7 +1878,7 @@ class Ficha:
             for _, row in duplicados.iterrows():
                 resultado = {
                     'NroFicha': row.get('NroFicha', 'No especificado'),
-                    'Observacion': 'Npn esta duplicado',
+                    'Observacion': 'NPN duplicado',
                     'Npn':row['Npn'],
                     'DestinoEconomico': row['DestinoEcconomico'],
                     'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
@@ -1946,7 +1951,7 @@ class Ficha:
                 resultado = {
                     'NroFicha': row.get('NroFicha', 'No especificado'),
                     
-                    'Observacion': 'Matricula no puede estar vacia en predio privado y derecho dominio',
+                    'Observacion': 'Matricula vacía en predio privado y derecho dominio',
                     'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
                     'ModoAdquisicion':row['ModoAdquisicion'],                  
                     'PredioLcTipo':row['PredioLcTipo'],

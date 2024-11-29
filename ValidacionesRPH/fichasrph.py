@@ -193,7 +193,7 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
-                            'Observacion': 'Npn debe tener suma de dígitos 23 y 24 mayor o igual a 1.',
+                            'Observacion': 'Edificio en 0 para condición de predio 9',
                             'Nombre Hoja': 'FichasPrediales'
                         }
                         resultados.append(resultado)
@@ -253,7 +253,7 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
-                            'Observacion': 'No pueden haber unidades prediales en 0',
+                            'Observacion': 'Unidades prediales en 0 para condicion de predio 8 o 9',
                             'Nombre Hoja': 'Fichas'
                         }
                         resultados.append(resultado)
@@ -627,7 +627,7 @@ class FichasRPH:
                             'Npn': row['Npn'],
                             'UnidadesEnRPH': row['UnidadesEnRPH'],
                             'Unidades Prediales': conteo_npn_relacionados,
-                            'Observacion': 'Unidades Prediales en ficha resumen no coincide con el total de Unidades.',
+                            'Observacion': 'Unidades Prediales en ficha resumen no coinciden con el total de Unidades.',
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -736,7 +736,7 @@ class FichasRPH:
                             resultado = {
                                 'NroFicha': row.get('NroFicha', 'Sin dato'),
                                 'Npn': npn,
-                                'Observacion': 'Ultimos 4 Digitos Incorrectos',
+                                'Observacion': 'Unidad predial superior a mil',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)

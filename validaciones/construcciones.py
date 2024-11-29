@@ -156,7 +156,7 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'secuencia':row['secuencia'],
                         'AreaConstruida': row['AreaConstruida'],
-                        'Observacion': 'El area construida es mayor a 1000 mts',
+                        'Observacion': 'El área construida es mayor a 1000 mts (verificar)',
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -300,7 +300,7 @@ class Construcciones:
             df_construcciones = pd.read_excel(archivo_excel, sheet_name='Construcciones')
             
             # Filtrar registros donde 'PorcentajeConstruido' es menor o igual a 0
-            errores = df_construcciones[df_construcciones['PorcentajeConstruido'] <= 0]
+            errores = df_construcciones[df_construcciones['PorcentajeConstruido'] < 100]
             
             resultados = []
 
@@ -309,7 +309,7 @@ class Construcciones:
                 resultado = {
                     'NroFicha': row['NroFicha'],
                     'PorcentajeConstruido': row['PorcentajeConstruido'],
-                    'Observacion': 'El valor de PorcentajeConstruido es igual o menor a 0',
+                    'Observacion': 'El valor de PorcentajeConstruido es menor a 100',
                     'Nombre Hoja': 'Construcciones'
                 }
                 resultados.append(resultado)

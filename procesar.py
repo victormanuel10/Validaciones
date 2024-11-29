@@ -88,7 +88,7 @@ class Procesar:
         self.agregar_resultados(propietarios.entidadvacio())
         self.agregar_resultados(propietarios.primer_apellido_blanco())
         self.agregar_resultados(propietarios.primer_nombre_blanco())
-        self.agregar_resultados(propietarios.documento_blanco_cod_asig())
+       #self.agregar_resultados(propietarios.documento_blanco_cod_asig())
         self.agregar_resultados(propietarios.fecha_escritura_inferior())
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
