@@ -34,7 +34,7 @@ class Procesar:
         
         
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        #self.agregar_resultados(calificonstrucciones.validar_banios()) 
+        self.agregar_resultados(calificonstrucciones.validar_banios()) 
         self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
         
         
