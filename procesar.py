@@ -26,26 +26,16 @@ class Procesar:
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
        
     def procesar_errores(self):
+
         
         
         
-        
-        
-        
-        
-        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        self.agregar_resultados(calificonstrucciones.validar_banios()) 
-        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
-        
+       
         
         ficha = Ficha(self.archivo_entry)
         
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
-        
-        
         self.agregar_resultados(ficha.modo_adquisicion_informal())
-        
-        
         self.agregar_resultados(ficha.informal_matricula())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         self.agregar_resultados(ficha.areaterrenocero())
@@ -124,14 +114,14 @@ class Procesar:
         self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
         self.agregar_resultados(construcciones.validar_secuencia_calificaciones_vs_construcciones())
         
-        
-        
-        
-       
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_banios())
+        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
         self.agregar_resultados(calificonstrucciones.validar_sinCocina())
-        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         self.agregar_resultados(calificonstrucciones.Validar_armazon())
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
+        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
+        
         
         
         

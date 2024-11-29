@@ -13,7 +13,7 @@ class CalificaionesConstrucciones:
         
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'CalificacionesConstrucciones' 
-        
+        hoja_construcciones = 'Construcciones'
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return 
@@ -22,12 +22,17 @@ class CalificaionesConstrucciones:
         try:
             
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+            
             print(f"funcion: Validar_baños")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
+            
+            if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
+                messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
+                return
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
             
             resultados = []
 
@@ -39,6 +44,7 @@ class CalificaionesConstrucciones:
                 
                 if ( Tamaniobanio == '311|SIN BAÑO') and (pd.notna(EnchapesBanio) or pd.notna(MobiliarioBanio) or pd.notna(ConservacionBanio)):
                     resultado = {
+                        'NroFicha': row['NroFicha'],
                         'secuencia':row['secuencia'],
                         'Tamaño baño': row['TamanioBanio'],
                         'Observacion': 'No puede tener EnchapesBanio, MobiliarioBanio, ConservacionBanio (aviso) ',
@@ -77,6 +83,7 @@ class CalificaionesConstrucciones:
             
             archivo_excel = self.archivo_entry.get()
             nombre_hoja = 'CalificacionesConstrucciones' 
+            hoja_construcciones = 'Construcciones'
             
             if not archivo_excel or not nombre_hoja:
                 messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
@@ -85,12 +92,16 @@ class CalificaionesConstrucciones:
             try:
                 
                 df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
+                df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
                 print(f"funcion: Validar_baños")
                 print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
                 print(f"Dimensiones del DataFrame: {df.shape}")
                 print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
+                if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
+                    messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
+                    return
+                df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
                 
                 resultados = []
 
@@ -102,6 +113,7 @@ class CalificaionesConstrucciones:
                     
                     if ( TamanioCocina == '411|SIN COCINA') and (pd.notna(Enchape) or pd.notna(MobiliarioCocina) or pd.notna(ConservacionCocina)):
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia':row['secuencia'],
                             'Observacion': 'No puede tener Enchape, MobiliarioCocina, ConservacionCocina (aviso)',
                             'Nombre Hoja': nombre_hoja
@@ -138,19 +150,25 @@ class CalificaionesConstrucciones:
     def Validar_armazon(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'CalificacionesConstrucciones'
-
+        hoja_construcciones = 'Construcciones'
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
         
         try:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
             print(f"funcion: Validar_armazon")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
+            
+            if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
+                    messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
+                    return
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
+            
             resultados = []
 
             for index, row in df.iterrows():
@@ -166,6 +184,7 @@ class CalificaionesConstrucciones:
                 if Armazon == '111|MADERA, TAPIA':
                     if Muro not in muros_validos_Madera_Tapia:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -178,6 +197,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso == '235|TABLETA, CAUCHO, ACRÍLICO, GRANITO, BALDOSAS FINA, CERÁMICA':
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon':row['Armazon'],
                             'Piso': row['Piso'],
@@ -188,6 +208,7 @@ class CalificaionesConstrucciones:
                         
                     if Cubierta not in Cubierta_validas_Madera_Tapia:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Piso': row['Piso'],
                             'Cubierta':row['Cubierta'],
@@ -201,6 +222,7 @@ class CalificaionesConstrucciones:
                     # Validación para el campo Muro
                     if Muro == '122|BAHAREQUE,ADOBE, TAPIA' or Muro == '121|MATERIALES DE DESECHOS,ESTERILLA':
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -215,6 +237,7 @@ class CalificaionesConstrucciones:
                     cubiertas_invalidas_prefabricado = ['121|MATERIALES DE DESECHOS', '135|AZOTEA, ALUMINIO,PLACAS CON ETERNIT', '136|PLACA IMPERMEABILI, CUBIERTA DE LUJO']
                     if Cubierta in cubiertas_invalidas_prefabricado:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -231,6 +254,7 @@ class CalificaionesConstrucciones:
                 elif Armazon == '113|LADRILLO,BLOQUE, MADERA INMUNIZADA':
                     if Muro=='122|BAHAREQUE,ADOBE, TAPIA':
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -244,6 +268,7 @@ class CalificaionesConstrucciones:
 
                     if Cubierta=='131|MATERIALES DE DESECHO':
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -258,6 +283,7 @@ class CalificaionesConstrucciones:
                 elif Armazon == '114|CONCRETO HASTA TRES PISOS':
                     if (Muro=='121|MATERIALES DE DESECHOS,ESTERILLA' or Muro=='123|MADERA' or Muro=='122|BAHAREQUE,ADOBE, TAPIA'):
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -269,6 +295,7 @@ class CalificaionesConstrucciones:
                         resultados.append(resultado)
                     if (Cubierta=='131|MATERIALES DE DESECHO'):
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Armazon': row['Armazon'],
                             'Muro': row['Muro'],
@@ -303,19 +330,26 @@ class CalificaionesConstrucciones:
     def Validar_fachada(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'CalificacionesConstrucciones'
-
+        hoja_construcciones = 'Construcciones'
+        
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
         
         try:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+            
             print(f"funcion: Validar_fachada")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
+            
+            if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
+                    messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
+                    return
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
+            
             resultados = []
 
             for index, row in df.iterrows():
@@ -354,6 +388,7 @@ class CalificaionesConstrucciones:
                     # Validación para Cubrimiento Muro
                     if Cubrimiento_Muro in cubrimiento_invalidos:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
@@ -365,6 +400,7 @@ class CalificaionesConstrucciones:
                     # Validación para Piso
                     if Piso in pisos_invalidos:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
@@ -376,6 +412,7 @@ class CalificaionesConstrucciones:
                 elif Fachada == '212|SENCILLA':
                     if Cubrimiento_Muro in cubrimiento_invalidos_sencilla:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
@@ -386,6 +423,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso in pisos_invalidos_sencilla:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
@@ -398,6 +436,7 @@ class CalificaionesConstrucciones:
                 elif Fachada == '213|REGULAR':
                     if Cubrimiento_Muro in cubrimiento_invalidos_regular:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
@@ -408,6 +447,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso in pisos_invalidos_regular:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
@@ -419,6 +459,7 @@ class CalificaionesConstrucciones:
                 elif Fachada == '214|BUENA':
                     if Cubrimiento_Muro in cubrimiento_invalidos_bueno:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
@@ -429,6 +470,7 @@ class CalificaionesConstrucciones:
                     
                     if Piso in pisos_invalidos_bueno:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
@@ -474,7 +516,12 @@ class CalificaionesConstrucciones:
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones del DataFrame de Calificaciones: {df_calificaciones.shape}")
             print(f"Dimensiones del DataFrame de Construcciones: {df_construcciones.shape}")
-
+            
+            if 'secuencia' not in df_calificaciones.columns or 'secuencia' not in df_construcciones.columns:
+                    messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
+                    return
+            df_calificaciones = pd.merge(df_calificaciones, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
+            
             resultados = []
 
             for index, row in df_calificaciones.iterrows():
@@ -489,6 +536,7 @@ class CalificaionesConstrucciones:
 
                     if not construccion_row.empty and construccion_row.iloc[0]['EdadConstruccion'] >= 20:
                         resultado = {
+                            'NroFicha':row['NroFicha'],
                             'secuencia': secuencia,
                             'Conservacion': conservacion,
                             'Observacion': 'La edad de la construcción es mayor o igual a 20 años (aviso)',
@@ -530,11 +578,11 @@ class CalificaionesConstrucciones:
             df_calificaciones = pd.read_excel(archivo_excel, sheet_name=hoja_calificaciones)
             df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
 
-            print(f"funcion: validar_cubierta_numero_pisos")
+            print(f"función: validar_cubierta_numero_pisos")
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones Hoja Calificaciones: {df_calificaciones.shape}")
             print(f"Dimensiones Hoja Construcciones: {df_construcciones.shape}")
-
+            
             # Lista para almacenar los resultados
             resultados = []
 
@@ -543,38 +591,27 @@ class CalificaionesConstrucciones:
 
             for _, fila_calificaciones in calificaciones_filtradas.iterrows():
                 secuencia = fila_calificaciones['secuencia']
-
-                # Buscar la misma secuencia en la hoja Construcciones
+                
+                # Buscar la misma secuencia en la hoja Construcciones para obtener el NroFicha
                 construccion_filtrada = df_construcciones[df_construcciones['secuencia'] == secuencia]
 
                 if not construccion_filtrada.empty:
+                    nro_ficha = construccion_filtrada.iloc[0]['NroFicha']  # Obtener el NroFicha
                     numero_pisos = construccion_filtrada.iloc[0]['NumeroPisos']
 
                     # Validar que el Número de Pisos sea menor a 3
                     if numero_pisos < 3:
                         resultado = {
+                            'NroFicha': nro_ficha,  # Incluir NroFicha en los resultados
                             'secuencia': secuencia,
                             'Cubierta': fila_calificaciones['Cubierta'],
                             'NumeroPisos': numero_pisos,
                             'Observacion': 'Número de pisos menor a 3 para la cubierta azotea (aviso)',
                             'Nombre Hoja': hoja_calificaciones
-                            
                         }
                         resultados.append(resultado)
                         print(f"Error encontrado: {resultado}")
-            '''
-            
-            # Manejar resultados
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Errores_Cubierta_NumeroPisos.xlsx'
-                sheet_name = 'Errores'
-                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores en Cubierta y Número de Pisos.")
-            else:
-                messagebox.showinfo("Información", "No se encontraron errores en Cubierta y Número de Pisos.")
-            '''
+
             return resultados
 
         except Exception as e:

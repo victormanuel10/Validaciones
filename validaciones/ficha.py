@@ -527,6 +527,10 @@ class Ficha:
 
                 print(f"Fila {index}: Valor A = '{valor_a}'")
 
+                # Convertir valor_a a cadena si no lo es
+                if not isinstance(valor_a, str):
+                    valor_a = str(valor_a)
+
                 # Verificar que 'valor_a' tiene al menos 22 caracteres antes de acceder al índice 21
                 if len(valor_a) > 21:
                     # Verificar las condiciones
@@ -534,26 +538,26 @@ class Ficha:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Observacion': 'Condición de predio 2 con modo de adquisición diferente a posesión u ocupacion',
-                            'Npn':row['Npn'],
+                            'Npn': row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
-                            'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                            'AreaTotalConstruida':row['AreaTotalConstruida'],
-                            'CaracteristicaPredio':row['CaracteristicaPredio'],
-                            'AreaTotalTerreno':row['AreaTotalTerreno'],
-                            'ModoAdquisicion':row['ModoAdquisicion'],
-                            'Tomo':row['Tomo'],
-                            'PredioLcTipo':row['PredioLcTipo'],
-                            'NumCedulaCatastral':row['NumCedulaCatastral'],
-                            'AreaTotalLote':row['AreaTotalLote'],
-                            'AreaLoteComun':row['AreaLoteComun'],
-                            'AreaLotePrivada':row['AreaLotePrivada'],
+                            'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
+                            'AreaTotalConstruida': row['AreaTotalConstruida'],
+                            'CaracteristicaPredio': row['CaracteristicaPredio'],
+                            'AreaTotalTerreno': row['AreaTotalTerreno'],
+                            'ModoAdquisicion': row['ModoAdquisicion'],
+                            'Tomo': row['Tomo'],
+                            'PredioLcTipo': row['PredioLcTipo'],
+                            'NumCedulaCatastral': row['NumCedulaCatastral'],
+                            'AreaTotalLote': row['AreaTotalLote'],
+                            'AreaLoteComun': row['AreaLoteComun'],
+                            'AreaLotePrivada': row['AreaLotePrivada'],
                             'Condicion de predio': valor_a[21],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
                         print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
                 else:
-                    print(f"El valor de 'NumCedulaCatastral' en la fila {index} no tiene suficientes caracteres.")
+                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
