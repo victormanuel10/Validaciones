@@ -33,6 +33,8 @@ class Procesar:
        
         
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_matricula_repetida())
+        
         
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
         self.agregar_resultados(ficha.modo_adquisicion_informal())
@@ -43,7 +45,7 @@ class Procesar:
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_nrofichas_propietarios())
-        self.agregar_resultados(ficha.validar_matricula_repetida())
+        
         self.agregar_resultados(ficha.validar_matricula_numerica())
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
         self.agregar_resultados(ficha.validar_duplicados_npn())

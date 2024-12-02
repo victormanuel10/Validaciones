@@ -298,7 +298,8 @@ class Propietarios:
                     'SegundoNombre': row['SegundoNombre'],
                     'PrimerApellido': row['PrimerApellido'],
                     'SegundoApellido': row['SegundoApellido'],
-                    'Observacion': 'Primer apellido en blanco'
+                    'Observacion': 'Primer apellido en blanco',
+                    'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
                 
