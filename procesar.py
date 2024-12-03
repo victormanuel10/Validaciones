@@ -29,11 +29,7 @@ class Procesar:
 
         
         
-        colindantes=Colindantes(self.archivo_entry)
-        self.agregar_resultados(colindantes.validar_orientaciones_rph())
-        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
-        cartografia=Cartografia(self.archivo_entry)
-        self.agregar_resultados(cartografia.validar_fichas_faltantes())
+        
         
         
             
@@ -135,9 +131,12 @@ class Procesar:
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         
         
+        colindantes=Colindantes(self.archivo_entry)
+        self.agregar_resultados(colindantes.validar_orientaciones_rph())
+        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
-        
-        
+        cartografia=Cartografia(self.archivo_entry)
+        self.agregar_resultados(cartografia.validar_fichas_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_columnas())
         
