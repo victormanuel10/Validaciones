@@ -313,88 +313,105 @@ class InterfazGrafica:
 
                 # Proceso normal de consolidación para las demás hojas
                 consolidated_sheet = consolidated_wb.create_sheet(title=sheet_name)
+                
                 dfs = []
+                
                 data_validations = []
 
+                
                 for excel_file in excel_files:
-                    df = self.read_excel_preserve_numbers(excel_file, sheet_name)
+                    try:
+                        # Verificar si la hoja existe en el archivo
+                        source_wb = openpyxl.load_workbook(excel_file, data_only=False)
+                        if sheet_name not in source_wb.sheetnames:
+                            continue  # Si no existe la hoja, saltar al siguiente archivo
+                        
+                        print(f"Procesando archivo: {excel_file.name}")    
+                        df = self.read_excel_preserve_numbers(excel_file, sheet_name)
 
-                    # Asegurar que los nombres de las columnas sean únicos
-                    df = self.make_unique_columns(df)
+                        # Asegurar que los nombres de las columnas sean únicos
+                        df = self.make_unique_columns(df)
 
-                    # Resetear el índice para evitar duplicados
-                    df.reset_index(drop=True, inplace=True)
+                        # Resetear el índice para evitar duplicados
+                        df.reset_index(drop=True, inplace=True)
 
-                    # Eliminar filas duplicadas
-                    df = df.drop_duplicates().reset_index(drop=True)
+                        # Eliminar filas duplicadas
+                        df = df.drop_duplicates().reset_index(drop=True)
 
-                    
-                    # Agregar la columna 'Radicado' a todas las hojas
-                    df['Radicado'] = os.path.basename(excel_file)
+                        # Agregar la columna 'Radicado' a todas las hojas
+                        df['Radicado'] = os.path.basename(excel_file)
 
-                    # Si la columna 'Npn' existe, crear la columna 'NPN_TERRENO'
-                    if 'Npn' in df.columns:
-                        df['NPN_TERRENO'] = df['Npn'].astype(str).str[:21]
+                        # Si la columna 'Npn' existe, crear la columna 'NPN_TERRENO'
+                        if 'Npn' in df.columns:
+                            df['NPN_TERRENO'] = df['Npn'].astype(str).str[:21]
 
-                    # Agregar el DataFrame procesado a la lista
-                    dfs.append(df)
-                   
+                        # Agregar un índice único basado en el archivo para evitar conflictos de índice
+                        df['Unique_Index'] = f"{os.path.basename(excel_file)}_{df.index}"
 
-                    # Cargar el libro fuente para copiar validaciones de datos
-                    source_wb = openpyxl.load_workbook(excel_file, data_only=False)
-                    source_sheet = source_wb[sheet_name]
+                        # Agregar el DataFrame procesado a la lista
+                        dfs.append(df)
 
-                    # Copiar validaciones de datos, evitando duplicados
-                    for dv in source_sheet.data_validations.dataValidation:
-                        if dv not in data_validations:
-                            data_validations.append(dv)
+                        # Copiar validaciones de datos, evitando duplicados
+                        source_sheet = source_wb[sheet_name]
+                        for dv in source_sheet.data_validations.dataValidation:
+                            if dv not in data_validations:
+                                data_validations.append(dv)
+
+                    except Exception as e:
+                        # Si hay un error con un archivo, muestra un mensaje
+                        messagebox.showerror(
+                            "Error en archivo",
+                            f"Error al procesar el archivo: {excel_file.name}\nError: {str(e)}"
+                        )
+                        continue  # Saltar al siguiente archivo si ocurre un error
 
                 # Concatenar todos los DataFrames asegurando índices únicos
-                consolidated_df = pd.concat(dfs, ignore_index=True, sort=False)
+                if dfs:
+                    consolidated_df = pd.concat(dfs, ignore_index=True, sort=False)
 
-                # Aplicar formato de número para evitar notación científica
-                for column in consolidated_df.columns:
-                    consolidated_df[column] = consolidated_df[column].apply(self.format_number)
+                    # Aplicar formato de número para evitar notación científica
+                    for column in consolidated_df.columns:
+                        consolidated_df[column] = consolidated_df[column].apply(self.format_number)
 
-                # Guardar en un archivo Excel temporal
-                with pd.ExcelWriter("temp_consolidated.xlsx", engine='openpyxl') as writer:
-                    consolidated_df.to_excel(writer, sheet_name=sheet_name, index=False)
+                    # Guardar el archivo consolidado temporal
+                    with pd.ExcelWriter("temp_consolidated.xlsx", engine='openpyxl') as writer:
+                        consolidated_df.to_excel(writer, sheet_name=sheet_name, index=False)
 
-                # Cargar desde el archivo temporal y transferir a la hoja consolidada
-                temp_wb = openpyxl.load_workbook("temp_consolidated.xlsx")
-                temp_sheet = temp_wb[sheet_name]
+                    # Cargar desde el archivo temporal y transferir a la hoja consolidada
+                    temp_wb = openpyxl.load_workbook("temp_consolidated.xlsx")
+                    temp_sheet = temp_wb[sheet_name]
 
-                for row in temp_sheet.iter_rows():
-                    for cell in row:
-                        consolidated_sheet.cell(
-                            row=cell.row,
-                            column=cell.column,
-                            value=cell.value
+                    for row in temp_sheet.iter_rows():
+                        for cell in row:
+                            consolidated_sheet.cell(
+                                row=cell.row,
+                                column=cell.column,
+                                value=cell.value
+                            )
+
+                    # Aplicar validaciones de datos a la hoja consolidada
+                    for dv in data_validations:
+                        consolidated_dv = DataValidation(
+                            type=dv.type,
+                            formula1=dv.formula1,
+                            formula2=dv.formula2,
+                            allow_blank=dv.allow_blank,
+                            showDropDown=dv.showDropDown,
+                            showErrorMessage=dv.showErrorMessage,
+                            errorTitle=dv.errorTitle,
+                            error=dv.error,
+                            promptTitle=dv.promptTitle,
+                            prompt=dv.prompt
                         )
+                        consolidated_sheet.add_data_validation(consolidated_dv)
+                        for range in dv.ranges:
+                            consolidated_dv.add(range)
 
-                # Aplicar validaciones de datos a la hoja consolidada
-                for dv in data_validations:
-                    consolidated_dv = DataValidation(
-                        type=dv.type,
-                        formula1=dv.formula1,
-                        formula2=dv.formula2,
-                        allow_blank=dv.allow_blank,
-                        showDropDown=dv.showDropDown,
-                        showErrorMessage=dv.showErrorMessage,
-                        errorTitle=dv.errorTitle,
-                        error=dv.error,
-                        promptTitle=dv.promptTitle,
-                        prompt=dv.prompt
-                    )
-                    consolidated_sheet.add_data_validation(consolidated_dv)
-                    for range in dv.ranges:
-                        consolidated_dv.add(range)
-
-                # Ajustar el ancho de las columnas basado en la longitud máxima de las celdas
-                for column in temp_sheet.columns:
-                    max_length = max(len(str(cell.value)) if cell.value else 0 for cell in column)
-                    adjusted_width = (max_length + 2)
-                    consolidated_sheet.column_dimensions[column[0].column_letter].width = adjusted_width
+                    # Ajustar el ancho de las columnas basado en la longitud máxima de las celdas
+                    for column in temp_sheet.columns:
+                        max_length = max(len(str(cell.value)) if cell.value else 0 for cell in column)
+                        adjusted_width = (max_length + 2)
+                        consolidated_sheet.column_dimensions[column[0].column_letter].width = adjusted_width
 
             # Guardar el libro consolidado final
             output_path = folder / "Consolidado.xlsx"

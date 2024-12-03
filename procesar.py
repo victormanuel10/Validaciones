@@ -33,7 +33,12 @@ class Procesar:
        
         
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_caracteristica_predio())
+        self.agregar_resultados(ficha.validar_agricola_urb())
+        '''
+        
         self.agregar_resultados(ficha.validar_matricula_repetida())
+        
         
         
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
@@ -81,7 +86,6 @@ class Procesar:
         self.agregar_resultados(propietarios.validar_tipo_documento_sexo())
         self.agregar_resultados(propietarios.validar_documento_sexo_femenino())
         self.agregar_resultados(propietarios.numerofallocero())
-        self.agregar_resultados(propietarios.entidadvacio())
         self.agregar_resultados(propietarios.primer_apellido_blanco())
         self.agregar_resultados(propietarios.primer_nombre_blanco())
        #self.agregar_resultados(propietarios.documento_blanco_cod_asig())
@@ -90,7 +94,7 @@ class Procesar:
         
         fichasrph=FichasRPH(self.archivo_entry)
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
-        self.agregar_resultados(fichasrph.validar_area_privada())
+        
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
         self.agregar_resultados(fichasrph.validar_informalidad_edificio())
@@ -140,7 +144,7 @@ class Procesar:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        
+        '''
         
         self.generar_reporte_observaciones()  
         

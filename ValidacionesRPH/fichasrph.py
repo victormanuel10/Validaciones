@@ -445,7 +445,7 @@ class FichasRPH:
                                 'NroFicha': row['NroFicha'],
                                 'AreaTotalLote':row['AreaTotalLote'],
                                 'Npn': npn,
-                                'Observacion': 'AreaTotalLote no debe estar vacío en ficha resumen',
+                                'Observacion': 'AreaTotalLote no debe ser CERO o VACIO en ficha resumen',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)
@@ -471,6 +471,7 @@ class FichasRPH:
         
 
     
+    '''
     
     def validar_area_privada(self):
         """
@@ -513,7 +514,7 @@ class FichasRPH:
                             }
                             resultados.append(resultado)
                             print(f"Fila {index} cumple las condiciones para error. Agregado: {resultado}")
-            '''
+            
             
             # Guardar los resultados en un archivo Excel si hay errores
             if resultados:
@@ -524,14 +525,14 @@ class FichasRPH:
                 messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros con Npn cuyo 22º dígito es 9 y sin AreaTotalLote.")
             else:
                 messagebox.showinfo("Sin errores", "Todos los registros cumplen con las condiciones o tienen AreaTotalLote lleno.")
-            '''
+            
             return resultados
 
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
-    
+        '''
     def validar_unidades_rph(self):
         """
         Valida que para los registros donde el dígito 22 en 'Npn' es '9' y la suma de los últimos 4 dígitos es cero,
@@ -570,6 +571,7 @@ class FichasRPH:
                             'UnidadesEnRPH': row['UnidadesEnRPH'],
                             'Unidades Prediales': conteo_npn_relacionados,
                             'Observacion': 'Unidades Prediales en ficha resumen no coinciden con el total de Unidades.',
+                            
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -678,7 +680,7 @@ class FichasRPH:
                             resultado = {
                                 'NroFicha': row.get('NroFicha', 'Sin dato'),
                                 'Npn': npn,
-                                'Observacion': 'Unidad predial superior a mil',
+                                'Observacion': 'Mejora mal diligenciada',
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)

@@ -650,6 +650,7 @@ class Propietarios:
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
                
                
+    '''
     
     def entidadvacio(self):
         
@@ -690,7 +691,7 @@ class Propietarios:
                     resultados.append(resultado)
                     
                     print(f"Fila {index}: Agregado a resultados: {resultado}")
-            '''        
+                    
             print(f"Entidades vacias: {len(resultados)}")
             
             if len(resultados) > 0:
@@ -709,12 +710,12 @@ class Propietarios:
             else:
                 print("No se encontraron Entidades vacias.")
                 messagebox.showinfo("Información", "No se encontraron registros con fechas superiores a la fecha actual.")
-            '''
+            
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
+        '''  
     def numerofallocero(self):
         
         archivo_excel= self.archivo_entry.get()
