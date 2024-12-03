@@ -2349,7 +2349,7 @@ class Ficha:
                         for _, fila in grupo.iterrows():
                             error = {
                                 'MatriculaInmobiliaria': matricula,
-                                'NumeroDocumento': fila['Documento'],
+                                'Documento': fila['Documento'],
                                 'NroFicha': fila.get('NroFicha', 'N/A'),
                                 'Observacion': 'Matricula inmobiliaria repetida',
                                 'Radicado':fila['Radicado'],
