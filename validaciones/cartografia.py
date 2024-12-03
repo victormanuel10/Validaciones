@@ -35,9 +35,11 @@ class Cartografia:
 
             # Crear resultados para las fichas que faltan
             for nro_ficha in fichas_faltantes_en_cartografia:
+                radicados = ', '.join(df_fichas[df_fichas['NroFicha'] == nro_ficha]['Radicado'].dropna().astype(str).unique())
                 resultado = {
                     'NroFicha': nro_ficha,
                     'Observacion': 'NroFicha en FICHAS no está en CARTOGRAFIA',
+                    'Radicado': radicados,
                     'Nombre Hoja': 'CartografiaInformacionGrafica'
                 }
                 resultados.append(resultado)

@@ -54,7 +54,6 @@ class FichasRPH:
                         'Npn': npn,
                         'Suma CoeficienteCopropiedad': coeficiente_suma,
                         'Observacion': 'La suma de CoeficienteCopropiedad no es 100',
-                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     }
                     resultados.append(resultado)

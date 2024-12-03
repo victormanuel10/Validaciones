@@ -40,10 +40,11 @@ class Colindantes:
                 orientaciones_faltantes = orientaciones_requeridas - orientaciones_presentes
                 
                 if orientaciones_faltantes:
+                    radicados = ', '.join(grupo['Radicado'].dropna().astype(str).unique())
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)}",
-                        'Radicado':grupo['Radicado'],
+                        'Radicado':radicados,
                         'Nombre Hoja':nombre_hoja
                     }
                     resultados.append(resultado)
@@ -120,10 +121,11 @@ class Colindantes:
                 orientaciones_faltantes = orientaciones_requeridas - orientaciones_presentes
 
                 if orientaciones_faltantes:
+                    radicados = ', '.join(grupo['Radicado'].dropna().astype(str).unique())
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)} en Rph",
-                        'Radicado':grupo['Radicado'],
+                        'Radicado':radicados,
                         'Nombre Hoja': hoja_colindantes
                     }
                     resultados.append(resultado)

@@ -29,9 +29,14 @@ class Procesar:
 
         
         
+        colindantes=Colindantes(self.archivo_entry)
+        self.agregar_resultados(colindantes.validar_orientaciones_rph())
+        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        cartografia=Cartografia(self.archivo_entry)
+        self.agregar_resultados(cartografia.validar_fichas_faltantes())
         
-       
         
+            
         ficha = Ficha(self.archivo_entry)
         
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
@@ -132,15 +137,12 @@ class Procesar:
         
         
         
-        cartografia=Cartografia(self.archivo_entry)
-        self.agregar_resultados(cartografia.validar_fichas_faltantes())
+        
         self.agregar_resultados(cartografia.validar_cartografia_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_columnas())
         
         
-        colindantes=Colindantes(self.archivo_entry)
-        self.agregar_resultados(colindantes.validar_orientaciones_rph())
-        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        
         
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
