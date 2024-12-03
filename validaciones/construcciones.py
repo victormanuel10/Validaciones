@@ -40,6 +40,7 @@ class Construcciones:
                         'ConvencionalNoConvencional': row['ConvencionalNoConvencional'],
                         'calificacionNoConvencional': row['calificacionNoConvencional'],
                         'Observacion': 'Calificación no convencional es nula para Noconvencional',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     }
                     resultados.append(resultado)
@@ -99,6 +100,7 @@ class Construcciones:
                         'ConvencionalNoConvencional': row['ConvencionalNoConvencional'],
                         'calificacionNoConvencional': row['calificacionNoConvencional'],
                         'Observacion': 'TipoConstruccion debe ser vacío o "N" si es No convencional',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -157,6 +159,7 @@ class Construcciones:
                         'secuencia':row['secuencia'],
                         'AreaConstruida': row['AreaConstruida'],
                         'Observacion': 'El área construida es mayor a 1000 mts (verificar)',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -269,6 +272,7 @@ class Construcciones:
                         'secuencia': row.get('secuencia', 'Sin secuencia'),
                         'EdadConstruccion': edad_construccion,
                         'Observacion': 'Edad de construcción inválida (<= 0)',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja':'Construcciones'
                     }
                     resultados.append(resultado)
@@ -310,6 +314,7 @@ class Construcciones:
                     'NroFicha': row['NroFicha'],
                     'PorcentajeConstruido': row['PorcentajeConstruido'],
                     'Observacion': 'El valor de PorcentajeConstruido es menor a 100',
+                    'Radicado':row['Radicado'],
                     'Nombre Hoja': 'Construcciones'
                 }
                 resultados.append(resultado)
@@ -355,6 +360,7 @@ class Construcciones:
                         'Puntos':row ['Puntos '],
                         'Observacion': "La columna 'Puntos' contiene valores nulos.",
                         'NroFicha': row['NroFicha'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
                 
@@ -364,6 +370,7 @@ class Construcciones:
                         'Puntos':row ['Puntos '],
                         'Observacion': "La columna 'Puntos' contiene valores menores a 1.",
                         'NroFicha': row['NroFicha'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
 
@@ -416,6 +423,7 @@ class Construcciones:
                 resultado = {
                     'secuencia': secuencia,
                     'Observacion': 'secuencia está en CalificacionesConstrucciones pero no en Construcciones',
+                    
                     'Nombre Hoja': 'CalificacionesConstrucciones'
                 }
                 resultados.append(resultado)
@@ -471,6 +479,7 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'secuencia': secuencia,
                         'Observacion': "secuencia 'Convencional' no encontrada en 'ConstruccionesGenerales'",
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
             '''
@@ -525,6 +534,7 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'secuencia': secuencia,
                         'Observacion': "secuencia 'Convencional' no encontrada en 'CalificacionesConstrucciones'",
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
             '''
@@ -579,6 +589,7 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'secuencia': secuencia,
                         'Observacion': "secuencia 'No Convencional' encontrada en 'CalificacionesConstrucciones'",
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
             '''
@@ -629,6 +640,7 @@ class Construcciones:
                 resultado = {
                     'secuencia': secuencia,
                     'Observacion': 'secuencia duplicada en ambas hojas',
+                    
                     'Nombre Hoja': 'Construcciones'
                 }
                 resultados.append(resultado)
@@ -685,6 +697,7 @@ class Construcciones:
                             'NroFicha': row['NroFicha'],
                             'secuencia': row['secuencia'],
                             'Observacion': 'Secuencia duplicada para el mismo NroFicha',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)

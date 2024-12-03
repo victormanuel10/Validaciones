@@ -54,6 +54,7 @@ class FichasRPH:
                         'Npn': npn,
                         'Suma CoeficienteCopropiedad': coeficiente_suma,
                         'Observacion': 'La suma de CoeficienteCopropiedad no es 100',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     }
                     resultados.append(resultado)
@@ -114,6 +115,7 @@ class FichasRPH:
                             'NroFicha': fila['NroFicha'],
                             'Npn': fila['Npn'],
                             'Observacion': 'No existe Unidades prediales para la ficha resumen',
+                            
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -180,6 +182,7 @@ class FichasRPH:
                                 'NroFicha': row['NroFicha'],
                                 'Npn': npn,
                                 'Observacion': 'Edificio no puede ser 00 en RPH',
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': 'FichasPrediales'
                             }
                             resultados.append(resultado)
@@ -204,7 +207,79 @@ class FichasRPH:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
-        
+
+    
+    def piso_en_cero_rph(self):
+        """
+        Valida que en la columna 'Npn' de la hoja 'FichasPrediales', el dígito 22 sea 8 o 9.
+        Solo un registro en cada grupo de Npn con los mismos primeros 22 dígitos puede tener '00' en los dígitos 23 y 24.
+        Si hay más de un registro con '00' en esos dígitos, se genera un error.
+        """
+        archivo_excel = self.archivo_entry.get()
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
+            return []
+
+        try:
+            # Leer la hoja específica 'FichasPrediales'
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
+            
+            resultados = []
+
+            # Asegurarse de que los valores en 'Npn' sean cadenas de texto y llenar valores nulos
+            df_fichas['Npn'] = df_fichas['Npn'].fillna('').astype(str)
+
+            # Agrupar registros por los primeros 22 dígitos de 'Npn'
+            df_fichas['Npn_22_digitos'] = df_fichas['Npn'].str[:22]
+            grupos_npn = df_fichas.groupby('Npn_22_digitos')
+
+            for npn_22, grupo in grupos_npn:
+                # Convertir los valores de 'Npn' en el grupo a cadenas de 24 caracteres
+                grupo['Npn_24_digitos'] = grupo['Npn'].apply(lambda x: x.zfill(24))
+                
+                # Filtrar registros con dígito 22 igual a 8 o 9
+                grupo = grupo[grupo['Npn_24_digitos'].str[21] == '9']
+
+                # Separar los registros donde los dígitos 23 y 24 son '00'
+                npn_con_cero = grupo[grupo['Npn_24_digitos'].str[24:26] == '00']
+
+                # Si hay más de un registro con '00' en los dígitos 23 y 24 en el mismo grupo, genera error
+                if len(npn_con_cero) > 1:
+                    for _, row in npn_con_cero.iterrows():
+                        npn = row['Npn']
+                        digitos_27_30 = npn[26:30]
+                        if digitos_27_30.isdigit() and sum(int(d) for d in digitos_27_30) > 0:
+                            resultado = {
+                                'NroFicha': row['NroFicha'],
+                                'Npn': npn,
+                                'Observacion': 'Piso no puede ser 00 en RPH',
+                                'Radicado':row['Radicado'],
+                                'Nombre Hoja': 'FichasPrediales'
+                            }
+                            resultados.append(resultado)
+
+                # Para los otros registros en el grupo, verificar que la suma de los dígitos 23 y 24 sea mayor o igual a 1
+                npn_no_cero = grupo[grupo['Npn_24_digitos'].str[24:26] != '00']
+                for _, row in npn_no_cero.iterrows():
+                    ultimos_dos_digitos = row['Npn_24_digitos'][24:26]
+                    suma_digitos = sum(int(d) for d in ultimos_dos_digitos if d.isdigit())
+                    if suma_digitos < 1:
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'Npn': row['Npn'],
+                            'Observacion': 'Piso en 0 para condición de predio 9',
+                            'Radicado':row['Radicado'],
+                            'Nombre Hoja': 'FichasPrediales'
+                        }
+                        resultados.append(resultado)
+
+            return resultados
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []
+    
     def validar_npn_suma_cero_unico(self):
         """
         Valida en la hoja 'Fichas' que:
@@ -254,6 +329,8 @@ class FichasRPH:
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
                             'Observacion': 'Unidades prediales en 0 para condicion de predio 8 o 9',
+                            'Radicado':row['Radicado'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': 'Fichas'
                         }
                         resultados.append(resultado)
@@ -323,6 +400,7 @@ class FichasRPH:
                                 'CaracteristicaPredio': row['CaracteristicaPredio'],
                                 'CaracteristicaPredioEsperada': caracteristica_referencia,
                                 'Observacion': 'CaracteristicaPredio no coincide con la ficha resumen',
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': 'Fichas'
                             }
                             resultados.append(resultado)
@@ -391,6 +469,7 @@ class FichasRPH:
                                 'Npn': row['Npn'],
                                 'NumCedulaCatastral': row['NumCedulaCatastral'],
                                 'Observacion': 'NumCedulaCatastral ya existe en ficha resumen',
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': 'Fichas'
                             }
                             resultados.append(resultado)
@@ -446,6 +525,7 @@ class FichasRPH:
                                 'AreaTotalLote':row['AreaTotalLote'],
                                 'Npn': npn,
                                 'Observacion': 'AreaTotalLote no debe ser CERO o VACIO en ficha resumen',
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)
@@ -571,7 +651,7 @@ class FichasRPH:
                             'UnidadesEnRPH': row['UnidadesEnRPH'],
                             'Unidades Prediales': conteo_npn_relacionados,
                             'Observacion': 'Unidades Prediales en ficha resumen no coinciden con el total de Unidades.',
-                            
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -625,6 +705,7 @@ class FichasRPH:
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
                             'Observacion': 'Informalidad Con edificio: Dígitos 23 y 24 deben ser 00',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -681,6 +762,7 @@ class FichasRPH:
                                 'NroFicha': row.get('NroFicha', 'Sin dato'),
                                 'Npn': npn,
                                 'Observacion': 'Mejora mal diligenciada',
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': nombre_hoja
                             }
                             resultados.append(resultado)

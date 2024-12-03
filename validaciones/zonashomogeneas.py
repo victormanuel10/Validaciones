@@ -40,6 +40,7 @@ class ZonasHomogeneas:
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Observacion': ', '.join(observacion),
+                        'Radicado':grupo['Radicado'],
                         'Nombre Hoja':nombre_hoja
                     }
                     resultados.append(resultado)

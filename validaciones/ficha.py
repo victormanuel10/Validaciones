@@ -58,6 +58,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -129,6 +130,7 @@ class Ficha:
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],    
                         'Condicion de predio': valor_a[21],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -209,7 +211,8 @@ class Ficha:
                         'NumCedulaCatastral':row['NumCedulaCatastral'],
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
-                        'AreaLotePrivada':row['AreaLotePrivada'],    
+                        'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],    
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -231,7 +234,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],    
-                        
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -313,6 +316,7 @@ class Ficha:
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
                             'Condicion de predio': valor_a[21],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                             
                         }
@@ -396,6 +400,7 @@ class Ficha:
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
                         'Condicion de predio': valor_a[21],
+                        'Radicado':row['Radicado'],
                         'circulo': row['circulo'],
                         'Nombre Hoja': nombre_hoja
                     }
@@ -472,6 +477,7 @@ class Ficha:
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
                             'Condicion de predio': valor_a[21],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -552,6 +558,7 @@ class Ficha:
                             'AreaLoteComun': row['AreaLoteComun'],
                             'AreaLotePrivada': row['AreaLotePrivada'],
                             'Condicion de predio': valor_a[21],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -604,11 +611,11 @@ class Ficha:
             for index, row in df.iterrows():
                 modo_adquisicion = row.get('ModoAdquisicion', None)
                 caracteristica_predio = row.get('CaracteristicaPredio', None)
-
+                PredioLcTipo=row.get('PredioLcTipo',None)
                 # Verificar que ModoAdquisicion sea igual a '2|POSESIÓN'
                 if modo_adquisicion in ['2|POSESIÓN', '5|OCUPACIÓN']:
                     # Si CaracteristicaPredio es diferente de '12|INFORMAL (2)', generar error
-                    if caracteristica_predio != '12|INFORMAL (2)':
+                    if caracteristica_predio != '12|INFORMAL (2)' and PredioLcTipo!='Predio.Publico.Presunto_Baldio':
                         resultado = {
                             'NroFicha': row.get('NroFicha', 'Sin valor'),
                             'Observacion': 'Caracteristica incorrecta para Modo de Aquisición Ocupación o Posesión',
@@ -625,6 +632,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -691,7 +699,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
-                        
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Fichas'
                     }
                     resultados.append(resultado)
@@ -758,6 +766,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -828,6 +837,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                         
                     }
@@ -899,6 +909,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -907,8 +918,9 @@ class Ficha:
                             'NroFicha': row['NroFicha'],
                             'AreaTotalTerreno': areatotalterreno,
                             'AreaTotalConstruida': area_total_construida,
-                            'Observacion': 'Area terreno menor a 4',
+                            'Observacion': 'Area terreno menor a 4 (aviso)',
                             'Npn': row['Npn'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -989,6 +1001,7 @@ class Ficha:
                     'AreaTotalLote': row['AreaTotalLote'],
                     'AreaLoteComun': row['AreaLoteComun'],
                     'AreaLotePrivada': row['AreaLotePrivada'],
+                    'Radicado':row['Radicado'],
                     'Nombre Hoja': 'Fichas'
                 }
                 resultados.append(resultado)
@@ -1106,41 +1119,44 @@ class Ficha:
 
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
-                DireccionReal = row['DireccionReal']
+                MatriculaInmobiliaria = str(row['NumCedulaCatastral']).strip()
+                print(f"Fila {index}: NumCedulaCatastral = '{MatriculaInmobiliaria}'")
+                if len(MatriculaInmobiliaria) >= 4 and MatriculaInmobiliaria[3] == '1':
+                        DireccionReal = row['DireccionReal']
+                        # Validar si la dirección está vacía
+                        if not DireccionReal or pd.isna(DireccionReal):
+                            observacion = 'Predio sin dirección'
+                        # Validar si los primeros 8 caracteres contienen palabras no permitidas
+                        elif any(palabra in DireccionReal[:8] for palabra in palabras_no_permitidas):
+                            observacion = 'Contiene palabras no permitidas en dirección'
+                        else:
+                            continue
 
-                # Validar si la dirección está vacía
-                if not DireccionReal or pd.isna(DireccionReal):
-                    observacion = 'Predio sin dirección'
-                # Validar si los primeros 8 caracteres contienen palabras no permitidas
-                elif any(palabra in DireccionReal[:8] for palabra in palabras_no_permitidas):
-                    observacion = 'Contiene palabras no permitidas en dirección'
-                else:
-                    continue
+                        # Agregar a resultados
+                        resultado = {
+                            'NroFicha': row['NroFicha'],
+                            'Direccion': DireccionReal if not pd.isna(DireccionReal) else '',
+                            'Observacion': observacion,
+                            'Npn':row['Npn'],
+                            'DestinoEconomico': row['DestinoEcconomico'],
+                            'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                            'AreaTotalConstruida':row['AreaTotalTerreno'],
+                            'CaracteristicaPredio':row['CaracteristicaPredio'],
+                            'AreaTotalTerreno':row['AreaTotalTerreno'],
+                            'ModoAdquisicion':row['ModoAdquisicion'],
+                            'Tomo':row['Tomo'],
+                            'PredioLcTipo':row['PredioLcTipo'],
+                            'NumCedulaCatastral':row['NumCedulaCatastral'],
+                            'AreaTotalLote':row['AreaTotalLote'],
+                            'AreaLoteComun':row['AreaLoteComun'],
+                            'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-                # Agregar a resultados
-                resultado = {
-                    'NroFicha': row['NroFicha'],
-                    'Direccion': DireccionReal if not pd.isna(DireccionReal) else '',
-                    'Observacion': observacion,
-                    'Npn':row['Npn'],
-                    'DestinoEconomico': row['DestinoEcconomico'],
-                    'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
-                    'AreaTotalConstruida':row['AreaTotalTerreno'],
-                    'CaracteristicaPredio':row['CaracteristicaPredio'],
-                    'AreaTotalTerreno':row['AreaTotalTerreno'],
-                    'ModoAdquisicion':row['ModoAdquisicion'],
-                    'Tomo':row['Tomo'],
-                    'PredioLcTipo':row['PredioLcTipo'],
-                    'NumCedulaCatastral':row['NumCedulaCatastral'],
-                    'AreaTotalLote':row['AreaTotalLote'],
-                    'AreaLoteComun':row['AreaLoteComun'],
-                    'AreaLotePrivada':row['AreaLotePrivada'],
-                    'Nombre Hoja': nombre_hoja
-                }
-                resultados.append(resultado)
-                print(f"Fila {index}: Agregado a resultados: {resultado}")
-
-            print(f"Total de errores encontrados: {len(resultados)}")
+                print(f"Total de errores encontrados: {len(resultados)}")
             '''
             
             if resultados:
@@ -1192,7 +1208,7 @@ class Ficha:
                 resultado = {
                     'NroFicha': nro_ficha,
                     'Observacion': 'NroFicha en Propietarios no está en Fichas',
-        
+
                     'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
@@ -1247,7 +1263,8 @@ class Ficha:
 
                 # Filtrar registros donde el dígito 22 de 'Npn' sea 9 y termine con tres ceros
                 condicion_excepcion = (
-                    (df_fichas['Npn'].str[21:22] == '9') & 
+                    (df_fichas['Npn'].str[21:22] == '9') |
+                    (df_fichas['Npn'].str[21:22] == '8') &
                     (df_fichas['Npn'].str[-3:] == '000') |
                     (df_fichas['Npn'].str[21:22] == '2')
                 )
@@ -1346,6 +1363,7 @@ class Ficha:
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
                         'PorcentajeLitigio':row['PorcentajeLitigio'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -1422,6 +1440,7 @@ class Ficha:
                                 'AreaTotalLote':row['AreaTotalLote'],
                                 'AreaLoteComun':row['AreaLoteComun'],
                                 'AreaLotePrivada':row['AreaLotePrivada'],
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': nombre_hoja
                             }
                             errores.append(error)
@@ -1498,6 +1517,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -1578,6 +1598,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -1654,6 +1675,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Fichas'
                     })
 
@@ -1710,6 +1732,7 @@ class Ficha:
                         'DireccionReferencia': row['DireccionReferencia'],
                         'DireccionNombre':row['DireccionNombre'],
                         'Observacion': 'DireccionReferencia no está diligenciada',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     })
 
@@ -1719,6 +1742,7 @@ class Ficha:
                         'DireccionReferencia': row['DireccionReferencia'],
                         'DireccionNombre':row['DireccionNombre'],
                         'Observacion': 'DireccionNombre no está diligenciada',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     })
             '''
@@ -1829,6 +1853,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -1897,6 +1922,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -1977,6 +2003,7 @@ class Ficha:
                     'AreaTotalLote':row['AreaTotalLote'],
                     'AreaLoteComun':row['AreaLoteComun'],
                     'AreaLotePrivada':row['AreaLotePrivada'],
+                    'Radicado':row['Radicado'],
                     'Nombre Hoja': nombre_hoja
                 }
                 resultados.append(resultado)
@@ -2050,6 +2077,7 @@ class Ficha:
                     'AreaTotalLote':row['AreaTotalLote'],
                     'AreaLoteComun':row['AreaLoteComun'],
                     'AreaLotePrivada':row['AreaLotePrivada'],
+                    'Radicado':row['Radicado'],
                     'Nombre Hoja': nombre_hoja
                 }
                 resultados.append(resultado)
@@ -2123,6 +2151,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -2188,6 +2217,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -2256,7 +2286,8 @@ class Ficha:
                             'NumCedulaCatastral':row['NumCedulaCatastral'],
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
-                            'AreaLotePrivada':row['AreaLotePrivada'],    
+                            'AreaLotePrivada':row['AreaLotePrivada'], 
+                            'Radicado':row['Radicado'],   
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -2320,7 +2351,8 @@ class Ficha:
                                 'MatriculaInmobiliaria': matricula,
                                 'NumeroDocumento': fila['Documento'],
                                 'NroFicha': fila.get('NroFicha', 'N/A'),
-                                'Observacion': 'Matricula inmobiliaria repetida con el mismo número de documento',
+                                'Observacion': 'Matricula inmobiliaria repetida',
+                                'Radicado':fila['Radicado'],
                                 'Nombre Hoja': nombre_hoja
                             }
                             errores.append(error)
@@ -2343,7 +2375,8 @@ class Ficha:
 
             except Exception as e:
                 print(f"Error: {str(e)}")
-            
+    '''
+        
     def validar_destino_economico_nulo_o_0na(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
@@ -2406,7 +2439,7 @@ class Ficha:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
-        
+    '''
     def validar_destino_economico_nulo_o_0na(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
@@ -2430,7 +2463,8 @@ class Ficha:
                 # Excluir las filas donde:
                 # 1. condicion == 9 y unidad == 0000
                 # 2. El dígito 22 de Npn es igual a 9 y los últimos 8 caracteres son ceros
-                if not  (len(npn) >= 22 and npn[21] == '9' and npn[-8:] == '00000000'):
+                if not  (len(npn) >= 22 and (npn[21] in ['9', '8']) and npn[-8:] == '00000000'):
+                # Validar si DestinoEconomico es NaN o igual a and npn[-8:] == '00000000'):
                     # Validar si DestinoEcconomico es NaN o igual a '0|NA'
                     if pd.isna(destino_economico) or str(destino_economico).strip() == '0|NA' :
                         resultado = {
@@ -2450,6 +2484,7 @@ class Ficha:
                             'AreaTotalLote':row['AreaTotalLote'],
                             'AreaLoteComun':row['AreaLoteComun'],
                             'AreaLotePrivada':row['AreaLotePrivada'],
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -2502,6 +2537,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -2566,6 +2602,7 @@ class Ficha:
                         'AreaTotalLote':row['AreaTotalLote'],
                         'AreaLoteComun':row['AreaLoteComun'],
                         'AreaLotePrivada':row['AreaLotePrivada'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     errores.append(error)

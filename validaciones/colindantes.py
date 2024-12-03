@@ -43,6 +43,7 @@ class Colindantes:
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)}",
+                        'Radicado':grupo['Radicado'],
                         'Nombre Hoja':nombre_hoja
                     }
                     resultados.append(resultado)
@@ -122,6 +123,7 @@ class Colindantes:
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)} en Rph",
+                        'Radicado':grupo['Radicado'],
                         'Nombre Hoja': hoja_colindantes
                     }
                     resultados.append(resultado)

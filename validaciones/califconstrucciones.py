@@ -48,6 +48,7 @@ class CalificaionesConstrucciones:
                         'secuencia':row['secuencia'],
                         'Tamaño baño': row['TamanioBanio'],
                         'Observacion': 'No puede tener EnchapesBanio, MobiliarioBanio, ConservacionBanio (aviso) ',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -116,6 +117,7 @@ class CalificaionesConstrucciones:
                             'NroFicha':row['NroFicha'],
                             'secuencia':row['secuencia'],
                             'Observacion': 'No puede tener Enchape, MobiliarioCocina, ConservacionCocina (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -190,6 +192,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
                             'Observacion': 'Muro invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -202,6 +205,7 @@ class CalificaionesConstrucciones:
                             'Armazon':row['Armazon'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -213,6 +217,7 @@ class CalificaionesConstrucciones:
                             'Piso': row['Piso'],
                             'Cubierta':row['Cubierta'],
                             'Observacion': 'Cubierta invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -229,6 +234,7 @@ class CalificaionesConstrucciones:
                             'Cubierta': row['Cubierta'],
                             'Piso': row['Piso'],
                             'Observacion': 'Muro invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -244,6 +250,7 @@ class CalificaionesConstrucciones:
                             'Cubierta': row['Cubierta'],
                             'Piso': row['Piso'],
                             'Observacion': 'Cubierta invalida para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -261,6 +268,7 @@ class CalificaionesConstrucciones:
                             'Cubierta':row['Cubierta'],
                             'Piso':row['Piso'],
                             'Observacion': 'Muro invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
 
@@ -275,6 +283,7 @@ class CalificaionesConstrucciones:
                             'Cubierta':row['Cubierta'],
                             'Piso':row['Piso'],
                             'Observacion': 'Cubierta invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                     
@@ -289,6 +298,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
                             'Observacion': 'Muro invalido para armazon (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                     
@@ -301,6 +311,7 @@ class CalificaionesConstrucciones:
                             'Muro': row['Muro'],
                             'Cubierta':row['Cubierta'],
                             'Observacion': 'Cubierta invalido para armazon(aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -393,6 +404,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -405,6 +417,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -417,6 +430,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -428,6 +442,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -441,6 +456,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -452,6 +468,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -464,6 +481,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Cubrimiento Muro': row['Cubrimiento Muro'],
                             'Observacion': 'Cubrimiento Muro invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -475,6 +493,7 @@ class CalificaionesConstrucciones:
                             'Fachada': row['Fachada'],
                             'Piso': row['Piso'],
                             'Observacion': 'Piso invalido para fachada (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -540,6 +559,7 @@ class CalificaionesConstrucciones:
                             'secuencia': secuencia,
                             'Conservacion': conservacion,
                             'Observacion': 'La edad de la construcción es mayor o igual a 20 años (aviso)',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': nombre_hoja_calificaciones
                         }
                         resultados.append(resultado)

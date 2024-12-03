@@ -33,26 +33,26 @@ class Procesar:
        
         
         ficha = Ficha(self.archivo_entry)
+        
+        self.agregar_resultados(ficha.validar_fichas_en_propietarios())
+        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
+        self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
+        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
+        
         self.agregar_resultados(ficha.validar_caracteristica_predio())
         self.agregar_resultados(ficha.validar_agricola_urb())
-        '''
-        
         self.agregar_resultados(ficha.validar_matricula_repetida())
-        
-        
-        
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
         self.agregar_resultados(ficha.modo_adquisicion_informal())
         self.agregar_resultados(ficha.informal_matricula())
-        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
+        
         self.agregar_resultados(ficha.areaterrenocero())
         self.agregar_resultados(ficha.tomo_mejora())
-        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
-        self.agregar_resultados(ficha.validar_fichas_en_propietarios())
-        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
         
+        
+        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
         self.agregar_resultados(ficha.validar_matricula_numerica())
-        self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
+        
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
         self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
@@ -93,6 +93,7 @@ class Procesar:
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.piso_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
         
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
@@ -144,7 +145,7 @@ class Procesar:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        '''
+        
         
         self.generar_reporte_observaciones()  
         

@@ -33,8 +33,30 @@ class Propietarios:
             for _, row in errores.iterrows():
                 resultado = {
                     'NroFicha': row['NroFicha'],
-                    'Documento': row['Documento'],
                     'Observacion': 'El documento inicia con "0"',
+                    'TipoDocumento':row['TipoDocumento'],
+                    'Documento': row['Documento'],
+                    'CalidadPropietario':row['CalidadPropietario'],
+                    'Derecho':row['Derecho'],
+                    'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                    'Fecha':row['Fecha'],
+                    'CodigoFideicomiso':row['CodigoFideicomiso'],
+                    'Escritura':row['Escritura'],
+                    'Entidad':row['Entidad'],
+                    'EntidadDepartamento':row['EntidadDepartamento'],
+                    'EntidadMunicipio':row['EntidadMunicipio'],
+                    'NumeroFallo':row['NumeroFallo'],
+                    'RazonSocial':row['RazonSocial'],
+                    'PrimerNombre':row['PrimerNombre'],
+                    'SegundoNombre':row['SegundoNombre'],
+                    'PrimerApellido':row['PrimerApellido'],
+                    'SegundoApellido':row['SegundoApellido'],
+                    'Sexo':row['Sexo'],
+                    
+                    'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                    'Tomo':row['Tomo'],
+                    'Radicado':row['Radicado'],
+                    
                     'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
@@ -97,10 +119,30 @@ class Propietarios:
                     if (documento <= 20000000 or documento >= 70000000) and sexo == 'F|FEMENINO':
                         resultado = {
                             'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
-                            'TipoDocumento': row['TipoDocumento'],
-                            'Documento': row['Documento'],
-                            'Sexo': row['Sexo'],
                             'Observacion': 'Documento fuera del rango para Sexo Femenino',
+                            'TipoDocumento':row['TipoDocumento'],
+                            'Documento': row['Documento'],
+                            'CalidadPropietario':row['CalidadPropietario'],
+                            'Derecho':row['Derecho'],
+                            'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                            'Fecha':row['Fecha'],
+                            'CodigoFideicomiso':row['CodigoFideicomiso'],
+                            'Escritura':row['Escritura'],
+                            'Entidad':row['Entidad'],
+                            'EntidadDepartamento':row['EntidadDepartamento'],
+                            'EntidadMunicipio':row['EntidadMunicipio'],
+                            'NumeroFallo':row['NumeroFallo'],
+                            'RazonSocial':row['RazonSocial'],
+                            'PrimerNombre':row['PrimerNombre'],
+                            'SegundoNombre':row['SegundoNombre'],
+                            'PrimerApellido':row['PrimerApellido'],
+                            'SegundoApellido':row['SegundoApellido'],
+                            'Sexo':row['Sexo'],
+                            
+                            'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                            'Tomo':row['Tomo'],
+                            'Radicado':row['Radicado'],
+                            
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -166,9 +208,31 @@ class Propietarios:
                     if pd.notna(sexo):
                         resultado = {
                             'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
-                            'TipoDocumento': row['TipoDocumento'],
-                            'Sexo': row['Sexo'],
+                            
                             'Observacion': 'El tipo de documento es 3|NIT, pero el sexo no es Correcto',
+                            'TipoDocumento':row['TipoDocumento'],
+                            'Documento': row['Documento'],
+                            'CalidadPropietario':row['CalidadPropietario'],
+                            'Derecho':row['Derecho'],
+                            'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                            'Fecha':row['Fecha'],
+                            'CodigoFideicomiso':row['CodigoFideicomiso'],
+                            'Escritura':row['Escritura'],
+                            'Entidad':row['Entidad'],
+                            'EntidadDepartamento':row['EntidadDepartamento'],
+                            'EntidadMunicipio':row['EntidadMunicipio'],
+                            'NumeroFallo':row['NumeroFallo'],
+                            'RazonSocial':row['RazonSocial'],
+                            'PrimerNombre':row['PrimerNombre'],
+                            'SegundoNombre':row['SegundoNombre'],
+                            'PrimerApellido':row['PrimerApellido'],
+                            'SegundoApellido':row['SegundoApellido'],
+                            'Sexo':row['Sexo'],
+                            
+                            'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                            'Tomo':row['Tomo'],
+                            'Radicado':row['Radicado'],
+                    
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -238,10 +302,30 @@ class Propietarios:
                     if 20000000 <= documento <= 69999999 and sexo == 'M|MASCULINO':
                         resultado = {
                             'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
-                            'TipoDocumento': row['TipoDocumento'],
-                            'Documento': row['Documento'],
-                            'Sexo': row['Sexo'],
                             'Observacion': 'Documento en rango para Cédula de Ciudadanía y Sexo Masculino',
+                            'TipoDocumento':row['TipoDocumento'],
+                            'Documento': row['Documento'],
+                            'CalidadPropietario':row['CalidadPropietario'],
+                            'Derecho':row['Derecho'],
+                            'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                            'Fecha':row['Fecha'],
+                            'CodigoFideicomiso':row['CodigoFideicomiso'],
+                            'Escritura':row['Escritura'],
+                            'Entidad':row['Entidad'],
+                            'EntidadDepartamento':row['EntidadDepartamento'],
+                            'EntidadMunicipio':row['EntidadMunicipio'],
+                            'NumeroFallo':row['NumeroFallo'],
+                            'RazonSocial':row['RazonSocial'],
+                            'PrimerNombre':row['PrimerNombre'],
+                            'SegundoNombre':row['SegundoNombre'],
+                            'PrimerApellido':row['PrimerApellido'],
+                            'SegundoApellido':row['SegundoApellido'],
+                            'Sexo':row['Sexo'],
+                            
+                            'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                            'Tomo':row['Tomo'],
+                            'Radicado':row['Radicado'],
+                    
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -293,12 +377,30 @@ class Propietarios:
             if valor_b != '3|NIT' and (pd.isna(valor_a) or valor_a == ''):
                 resultado = {
                     'NroFicha': row['NroFicha'],
-                    'Documento': row['Documento'],
-                    'PrimerNombre': row['PrimerNombre'],
-                    'SegundoNombre': row['SegundoNombre'],
-                    'PrimerApellido': row['PrimerApellido'],
-                    'SegundoApellido': row['SegundoApellido'],
                     'Observacion': 'Primer apellido en blanco',
+                    'TipoDocumento':row['TipoDocumento'],
+                    'Documento': row['Documento'],
+                    'CalidadPropietario':row['CalidadPropietario'],
+                    'Derecho':row['Derecho'],
+                    'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                    'Fecha':row['Fecha'],
+                    'CodigoFideicomiso':row['CodigoFideicomiso'],
+                    'Escritura':row['Escritura'],
+                    'Entidad':row['Entidad'],
+                    'EntidadDepartamento':row['EntidadDepartamento'],
+                    'EntidadMunicipio':row['EntidadMunicipio'],
+                    'NumeroFallo':row['NumeroFallo'],
+                    'RazonSocial':row['RazonSocial'],
+                    'PrimerNombre':row['PrimerNombre'],
+                    'SegundoNombre':row['SegundoNombre'],
+                    'PrimerApellido':row['PrimerApellido'],
+                    'SegundoApellido':row['SegundoApellido'],
+                    'Sexo':row['Sexo'],
+                    
+                    'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                    'Tomo':row['Tomo'],
+                    'Radicado':row['Radicado'],
+                    
                     'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
@@ -336,12 +438,30 @@ class Propietarios:
             if valor_b != '3|NIT' and (valor_a == '' or pd.isna(valor_a)):
                 resultado = {
                     'NroFicha': row['NroFicha'],
+                    'Observacion': 'Primer nombre en blanco',
+                    'TipoDocumento':row['TipoDocumento'],
                     'Documento': row['Documento'],
-                    'PrimerNombre': row['PrimerNombre'],
-                    'SegundoNombre': row['SegundoNombre'],
-                    'PrimerApellido': row['PrimerApellido'],
-                    'SegundoApellido': row['SegundoApellido'],
-                    'Observacion': 'Primer nombre en blanco'
+                    'CalidadPropietario':row['CalidadPropietario'],
+                    'Derecho':row['Derecho'],
+                    'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                    'Fecha':row['Fecha'],
+                    'CodigoFideicomiso':row['CodigoFideicomiso'],
+                    'Escritura':row['Escritura'],
+                    'Entidad':row['Entidad'],
+                    'EntidadDepartamento':row['EntidadDepartamento'],
+                    'EntidadMunicipio':row['EntidadMunicipio'],
+                    'NumeroFallo':row['NumeroFallo'],
+                    'RazonSocial':row['RazonSocial'],
+                    'PrimerNombre':row['PrimerNombre'],
+                    'SegundoNombre':row['SegundoNombre'],
+                    'PrimerApellido':row['PrimerApellido'],
+                    'SegundoApellido':row['SegundoApellido'],
+                    'Sexo':row['Sexo'],
+                    
+                    'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                    'Tomo':row['Tomo'],
+                    'Radicado':row['Radicado'],
+                    'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
                 
@@ -532,6 +652,28 @@ class Propietarios:
                         'NroFicha': row['NroFicha'],
                         'FechaEscritura': fecha_obj.strftime("%d/%m/%Y"),
                         'Observacion': 'Fecha de escritura inferior al año 1778',
+                        'TipoDocumento':row['TipoDocumento'],
+                        'Documento': row['Documento'],
+                        'CalidadPropietario':row['CalidadPropietario'],
+                        'Derecho':row['Derecho'],
+                        'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                        'Fecha':row['Fecha'],
+                        'CodigoFideicomiso':row['CodigoFideicomiso'],
+                        'Escritura':row['Escritura'],
+                        'Entidad':row['Entidad'],
+                        'EntidadDepartamento':row['EntidadDepartamento'],
+                        'EntidadMunicipio':row['EntidadMunicipio'],
+                        'NumeroFallo':row['NumeroFallo'],
+                        'RazonSocial':row['RazonSocial'],
+                        'PrimerNombre':row['PrimerNombre'],
+                        'SegundoNombre':row['SegundoNombre'],
+                        'PrimerApellido':row['PrimerApellido'],
+                        'SegundoApellido':row['SegundoApellido'],
+                        'Sexo':row['Sexo'],
+                        
+                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                        'Tomo':row['Tomo'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -617,6 +759,28 @@ class Propietarios:
                         'NroFicha': row['NroFicha'],
                         'FechaEscritura': fecha_escritura.strftime("%d/%m/%Y"),
                         'Observacion': 'Fecha de escritura es superior a la fecha actual',
+                        'TipoDocumento':row['TipoDocumento'],
+                        'Documento': row['Documento'],
+                        'CalidadPropietario':row['CalidadPropietario'],
+                        'Derecho':row['Derecho'],
+                        'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                        'Fecha':row['Fecha'],
+                        'CodigoFideicomiso':row['CodigoFideicomiso'],
+                        'Escritura':row['Escritura'],
+                        'Entidad':row['Entidad'],
+                        'EntidadDepartamento':row['EntidadDepartamento'],
+                        'EntidadMunicipio':row['EntidadMunicipio'],
+                        'NumeroFallo':row['NumeroFallo'],
+                        'RazonSocial':row['RazonSocial'],
+                        'PrimerNombre':row['PrimerNombre'],
+                        'SegundoNombre':row['SegundoNombre'],
+                        'PrimerApellido':row['PrimerApellido'],
+                        'SegundoApellido':row['SegundoApellido'],
+                        'Sexo':row['Sexo'],
+                        
+                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                        'Tomo':row['Tomo'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -745,10 +909,29 @@ class Propietarios:
                if   NumeroFallo== '0' or NumeroFallo=='' or pd.isna(NumeroFallo):
                     resultado = {
                         'NroFicha': row['NroFicha'],
+                        'Observacion': 'El numero fallo es cero o vacio',
+                        'TipoDocumento':row['TipoDocumento'],
+                        'Documento': row['Documento'],
+                        'CalidadPropietario':row['CalidadPropietario'],
+                        'Derecho':row['Derecho'],
+                        'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                        'Fecha':row['Fecha'],
+                        'CodigoFideicomiso':row['CodigoFideicomiso'],
+                        'Escritura':row['Escritura'],
+                        'Entidad':row['Entidad'],
                         'EntidadDepartamento':row['EntidadDepartamento'],
                         'EntidadMunicipio':row['EntidadMunicipio'],
                         'NumeroFallo':row['NumeroFallo'],
-                        'Observacion': 'El numero fallo es cero o vacio',
+                        'RazonSocial':row['RazonSocial'],
+                        'PrimerNombre':row['PrimerNombre'],
+                        'SegundoNombre':row['SegundoNombre'],
+                        'PrimerApellido':row['PrimerApellido'],
+                        'SegundoApellido':row['SegundoApellido'],
+                        'Sexo':row['Sexo'],
+                        
+                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                        'Tomo':row['Tomo'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -812,10 +995,29 @@ class Propietarios:
                 if matricula_inmobiliaria and (entidad_departamento == 'null|null' or not entidad_municipio):
                     resultado = {
                         'NroFicha': row.get('NroFicha'),
-                        'MatriculaInmobiliaria': matricula_inmobiliaria,
-                        'EntidadDepartamento': entidad_departamento,
-                        'EntidadMunicipio': entidad_municipio,
                         'Observacion': 'EntidadDepartamento no puede ser null|null y EntidadMunicipio no puede ser vacío si MatriculaInmobiliaria tiene valor',
+                        'TipoDocumento':row['TipoDocumento'],
+                        'Documento': row['Documento'],
+                        'CalidadPropietario':row['CalidadPropietario'],
+                        'Derecho':row['Derecho'],
+                        'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                        'Fecha':row['Fecha'],
+                        'CodigoFideicomiso':row['CodigoFideicomiso'],
+                        'Escritura':row['Escritura'],
+                        'Entidad':row['Entidad'],
+                        'EntidadDepartamento':row['EntidadDepartamento'],
+                        'EntidadMunicipio':row['EntidadMunicipio'],
+                        'NumeroFallo':row['NumeroFallo'],
+                        'RazonSocial':row['RazonSocial'],
+                        'PrimerNombre':row['PrimerNombre'],
+                        'SegundoNombre':row['SegundoNombre'],
+                        'PrimerApellido':row['PrimerApellido'],
+                        'SegundoApellido':row['SegundoApellido'],
+                        'Sexo':row['Sexo'],
+                        
+                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                        'Tomo':row['Tomo'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -887,8 +1089,6 @@ class Propietarios:
                                 resultado = {
                                 'NroFicha': row.get('NroFicha'),
                                 'Observacion': 'El predio es NPH , la matricula es 0 o vacia y el propietario es diferente de la Nacion o el municipio',
-                                'CalidadPropietarioOficial':calidad,
-                                'MatriculaInmobiliaria':matricula,
                                 'Nombre Hoja': 'Propietarios'
                                 }
                                 resultados.append(resultado)
@@ -946,8 +1146,29 @@ class Propietarios:
                 if tipo_documento in valores_invalidos:
                     resultados.append({
                         'NroFicha': row['NroFicha'],
-                        'TipoDocumento': tipo_documento,
                         'Observacion': "Debe ser '10|CEDULA DE CIUDADANIA'",
+                        'TipoDocumento':tipo_documento,
+                        'Documento': row['Documento'],
+                        'CalidadPropietario':row['CalidadPropietario'],
+                        'Derecho':row['Derecho'],
+                        'CalidadPropietarioOficial':row['CalidadPropietarioOficial'],
+                        'Fecha':row['Fecha'],
+                        'CodigoFideicomiso':row['CodigoFideicomiso'],
+                        'Escritura':row['Escritura'],
+                        'Entidad':row['Entidad'],
+                        'EntidadDepartamento':row['EntidadDepartamento'],
+                        'EntidadMunicipio':row['EntidadMunicipio'],
+                        'NumeroFallo':row['NumeroFallo'],
+                        'RazonSocial':row['RazonSocial'],
+                        'PrimerNombre':row['PrimerNombre'],
+                        'SegundoNombre':row['SegundoNombre'],
+                        'PrimerApellido':row['PrimerApellido'],
+                        'SegundoApellido':row['SegundoApellido'],
+                        'Sexo':row['Sexo'],
+                        
+                        'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                        'Tomo':row['Tomo'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Propietarios'
                     })
                     
