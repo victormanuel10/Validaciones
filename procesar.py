@@ -31,13 +31,20 @@ class Procesar:
         
         
         
+        archivo_excel = self.archivo_entry.get()
         
-            
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return
+        
         ficha = Ficha(self.archivo_entry)
         
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
+        
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
+        '''
+        
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
         
         self.agregar_resultados(ficha.validar_caracteristica_predio())
@@ -146,9 +153,9 @@ class Procesar:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
+        '''
         
-        
-        self.generar_reporte_observaciones()  
+        self.generar_reporte_observaciones(archivo_excel)  
         
         errores_por_hoja = {}
 
@@ -229,58 +236,67 @@ class Procesar:
     
     
     
-    def generar_reporte_observaciones(self):
+    def generar_reporte_observaciones(self, archivo_excel):
         """
         Genera un reporte con:
         1. El conteo de las observaciones y lo guarda en la hoja 'Resumen'.
-        2. Una agrupación por cada 'NroFicha' con las observaciones asociadas y lo guarda en otra hoja.
+        2. Una agrupación por cada 'NroFicha' con las observaciones asociadas y lo guarda en otra hoja,
+        incluyendo la columna Npn de la hoja Fichas.
         """
         if not self.resultados_generales:
             print("No hay resultados generales para generar el reporte.")
             return  # Termina la función si no hay resultados
 
-        # Verifica la estructura de los datos
-        print("Estructura de resultados generales:")
-        print(self.resultados_generales)  # Imprime los resultados para ver qué contiene
+        try:
+            # --- Reporte 1: Conteo de Observaciones ---
+            contador_observaciones = Counter([resultado['Observacion'] for resultado in self.resultados_generales if 'Observacion' in resultado])
 
-        # --- Reporte 1: Conteo de Observaciones ---
-        # Asegúrate de que todos los diccionarios tengan la clave 'Observacion'
-        for resultado in self.resultados_generales:
-            if 'Observacion' not in resultado:
-                print("Falta la clave 'Observacion' en uno de los resultados:", resultado)
+            # Crear el DataFrame con el conteo
+            df_reporte = pd.DataFrame(contador_observaciones.items(), columns=['Observacion', 'Cantidad'])
 
-        # Filtra los resultados que contienen la clave 'Observacion'
-        contador_observaciones = Counter([resultado['Observacion'] for resultado in self.resultados_generales if 'Observacion' in resultado])
+            # Almacenar el reporte de observaciones
+            self.reporte = df_reporte
 
-        # Crear el DataFrame con el conteo
-        df_reporte = pd.DataFrame(contador_observaciones.items(), columns=['Observacion', 'Cantidad'])
+            # --- Reporte 2: Agrupación por NroFicha ---
+            # Crear un DataFrame de los resultados generales
+            df_resultados = pd.DataFrame(self.resultados_generales)
 
-        # Almacenar el reporte de observaciones
-        self.reporte = df_reporte
+            # Verificar si las columnas necesarias existen
+            if 'NroFicha' in df_resultados.columns and 'Observacion' in df_resultados.columns:
+                # Agrupar observaciones por NroFicha
+                agrupacion_fichas = (
+                    df_resultados.groupby('NroFicha')['Observacion']
+                    .apply(lambda x: '; '.join(map(str, x.unique())))  # Convertir cada valor a cadena
+                    .reset_index()
+                )
+                agrupacion_fichas.columns = ['NroFicha', 'Observaciones']
 
-        # --- Reporte 2: Agrupación por NroFicha ---
-        # Crear un DataFrame de los resultados generales
-        df_resultados = pd.DataFrame(self.resultados_generales)
+                # Leer la hoja Fichas del archivo Excel
+                df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
 
-        # Verificar si las columnas necesarias existen
-        if 'NroFicha' in df_resultados.columns and 'Observacion' in df_resultados.columns:
-            # Agrupar observaciones por NroFicha
-            agrupacion_fichas = (
-                df_resultados.groupby('NroFicha')['Observacion']
-                .apply(lambda x: '; '.join(map(str, x.unique())))  # Convertir cada valor a cadena
-                .reset_index()
-            )
-            agrupacion_fichas.columns = ['NroFicha', 'Observaciones']
-            self.agrupacion_fichas = agrupacion_fichas
-        else:
-            print("No se encontraron las columnas 'NroFicha' o 'Observacion' en los resultados.")
-            self.agrupacion_fichas = None
+                # Convertir NroFicha a numérico en ambas tablas
+                agrupacion_fichas['NroFicha'] = pd.to_numeric(agrupacion_fichas['NroFicha'], errors='coerce')
+                df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
 
-        # Verificación
-        print("Reporte generado:")
-        print(self.reporte)  # Esto debería mostrar el DataFrame con las observaciones
-        print("Agrupación por NroFicha:")
-        print(self.agrupacion_fichas)  # Esto debería mostrar la agrupación por NroFicha
+                # Realizar el merge para agregar la columna Npn
+                self.agrupacion_fichas = pd.merge(
+                    agrupacion_fichas,
+                    df_fichas[['NroFicha', 'Npn','Radicado']],
+                    on='NroFicha',
+                    how='left'
+                )
+            else:
+                print("No se encontraron las columnas 'NroFicha' o 'Observacion' en los resultados.")
+                self.agrupacion_fichas = None
+
+            # Verificación
+            print("Reporte generado:")
+            print(self.reporte)  # Esto debería mostrar el DataFrame con las observaciones
+            print("Agrupación por NroFicha:")
+            print(self.agrupacion_fichas)  # Esto debería mostrar la agrupación por NroFicha con la columna Npn
+
+        except Exception as e:
+            print(f"Error al generar el reporte: {e}")
 
     def agregar_reporte(self, writer):
         """
