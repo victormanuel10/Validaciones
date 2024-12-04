@@ -1281,7 +1281,9 @@ class Ficha:
                 print(f"Total registros en Fichas después de filtrar: {len(df_fichas)}")
                 print(df_fichas)
                 print(df_propietarios)
-
+                
+            df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
+            df_propietarios['NroFicha'] = pd.to_numeric(df_propietarios['NroFicha'], errors='coerce')
             # Obtener los valores únicos de NroFicha de ambas hojas
             nro_fichas_fichas = set(df_fichas['NroFicha'].dropna().unique())
             nro_fichas_propietarios = set(df_propietarios['NroFicha'].dropna().unique())
@@ -2349,9 +2351,9 @@ class Ficha:
                         for _, fila in grupo.iterrows():
                             error = {
                                 'MatriculaInmobiliaria': matricula,
-                                'Documento': fila['Documento'],
                                 'NroFicha': fila.get('NroFicha', 'N/A'),
                                 'Observacion': 'Matricula inmobiliaria repetida',
+                                'Documento': fila['Documento'],
                                 'Radicado':fila['Radicado'],
                                 'Nombre Hoja': nombre_hoja
                             }
@@ -2469,7 +2471,6 @@ class Ficha:
                     if pd.isna(destino_economico) or str(destino_economico).strip() == '0|NA' :
                         resultado = {
                             'NroFicha': row.get('NroFicha', ''),  # Si no existe, devuelve vacío
-                            
                             'Observacion': 'Destino económico sin diligenciar',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],

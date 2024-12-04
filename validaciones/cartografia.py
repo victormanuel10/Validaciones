@@ -24,6 +24,9 @@ class Cartografia:
             df_fichas['NroFicha'] = df_fichas['NroFicha'].astype(str).str.strip()
             df_cartografia['NroFicha'] = df_cartografia['NroFicha'].astype(str).str.strip()
 
+            df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
+            df_cartografia['NroFicha'] = pd.to_numeric(df_cartografia['NroFicha'], errors='coerce')
+            
             # Obtener los números de ficha únicos
             nro_ficha_fichas = set(df_fichas['NroFicha'].dropna().unique())
             nro_ficha_cartografia = set(df_cartografia['NroFicha'].dropna().unique())
@@ -79,6 +82,8 @@ class Cartografia:
             df_fichas['NroFicha'] = df_fichas['NroFicha'].astype(str).str.strip()
             df_cartografia['NroFicha'] = df_cartografia['NroFicha'].astype(str).str.strip()
 
+            df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
+            df_cartografia['NroFicha'] = pd.to_numeric(df_cartografia['NroFicha'], errors='coerce')
             # Obtener los números de ficha únicos
             nro_ficha_fichas = set(df_fichas['NroFicha'].dropna().unique())
             nro_ficha_cartografia = set(df_cartografia['NroFicha'].dropna().unique())
@@ -96,7 +101,8 @@ class Cartografia:
                     'Nombre Hoja': 'Fichas'
                 }
                 resultados.append(resultado)
-
+            '''
+            
             # Solo crear y guardar el DataFrame si hay resultados
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
@@ -107,7 +113,7 @@ class Cartografia:
                 messagebox.showinfo("Éxito", f"NroFicha en CARTOGRAFIA no está en FICHAS: {len(resultados)} registros.")
             else:
                 messagebox.showinfo("Información", "No faltan fichas de cartografia en Fichas.")
-
+            '''
             return resultados
 
         except Exception as e:
