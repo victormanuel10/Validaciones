@@ -43,7 +43,7 @@ class Procesar:
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())
-        '''
+        
         
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
         
@@ -153,7 +153,6 @@ class Procesar:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        '''
         
         self.generar_reporte_observaciones(archivo_excel)  
         
