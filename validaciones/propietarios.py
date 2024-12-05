@@ -509,12 +509,14 @@ class Propietarios:
                 # Si la suma de 'Derecho' no es 100, agregar una sola observación para el grupo
                 if round(valor_b_sum, 3) != 100:
                     falta_derecho = round(100 - valor_b_sum, 3)
+                    radicados = ', '.join(group['Radicado'].dropna().astype(str).unique())
                     resultado = {
                         'NroFicha': name,
+                        'Observacion': f'Porcentaje de derecho diferente a 100, falta: {falta_derecho}',
                         'TipoDocumento': group['TipoDocumento'].iloc[0],
                         'Documento': group['Documento'].iloc[0],
                         'Suma Derecho': valor_b_sum,
-                        'Observacion': f'Porcentaje de derecho diferente a 100, falta: {falta_derecho}',
+                        'Radicado':radicados,
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -1089,7 +1091,10 @@ class Propietarios:
                                 resultado = {
                                 'NroFicha': row.get('NroFicha'),
                                 'Observacion': 'El predio es NPH , la matricula es 0 o vacia y CalidadPropietarioOficial es diferente de la Nacion o el municipio',
+                                'Radicado':row['Radicado'],
                                 'Nombre Hoja': 'Propietarios'
+                                
+                                
                                 }
                                 resultados.append(resultado)
                         

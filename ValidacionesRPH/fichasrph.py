@@ -54,6 +54,7 @@ class FichasRPH:
                         'Npn': npn,
                         'Suma CoeficienteCopropiedad': coeficiente_suma,
                         'Observacion': 'La suma de CoeficienteCopropiedad no es 100',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     }
                     resultados.append(resultado)
@@ -647,6 +648,12 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
+                            'DestinoEconomico': row['DestinoEcconomico'],
+                            'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
+                            'AreaTotalConstruida':row['AreaTotalConstruida'],
+                            'CaracteristicaPredio':row['CaracteristicaPredio'],
+                            'AreaTotalTerreno':row['AreaTotalTerreno'],
+                            'ModoAdquisicion':row['ModoAdquisicion'],
                             'UnidadesEnRPH': row['UnidadesEnRPH'],
                             'Unidades Prediales': conteo_npn_relacionados,
                             'Observacion': 'Unidades Prediales en ficha resumen no coinciden con el total de Unidades.',
@@ -760,7 +767,7 @@ class FichasRPH:
                             resultado = {
                                 'NroFicha': row.get('NroFicha', 'Sin dato'),
                                 'Npn': npn,
-                                'Observacion': 'Mejora mal diligenciada',
+                                'Observacion': 'Informalidad mal diligenciada',
                                 'Radicado':row['Radicado'],
                                 'Nombre Hoja': nombre_hoja
                             }
