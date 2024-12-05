@@ -345,8 +345,6 @@ class InterfazGrafica:
                         if 'Npn' in df.columns:
                             df['NPN_TERRENO'] = df['Npn'].astype(str).str[:21]
 
-                        # Agregar un índice único basado en el archivo para evitar conflictos de índice
-                        df['Unique_Index'] = f"{os.path.basename(excel_file)}_{df.index}"
 
                         # Agregar el DataFrame procesado a la lista
                         dfs.append(df)

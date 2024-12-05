@@ -1088,7 +1088,7 @@ class Propietarios:
                             if calidad not in ['4|MUNICIPAL', '2|NACIONAL']:
                                 resultado = {
                                 'NroFicha': row.get('NroFicha'),
-                                'Observacion': 'El predio es NPH , la matricula es 0 o vacia y el propietario es diferente de la Nacion o el municipio',
+                                'Observacion': 'El predio es NPH , la matricula es 0 o vacia y CalidadPropietarioOficial es diferente de la Nacion o el municipio',
                                 'Nombre Hoja': 'Propietarios'
                                 }
                                 resultados.append(resultado)

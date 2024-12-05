@@ -327,7 +327,7 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
-                            'Observacion': 'Unidades prediales en 0 para condicion de predio 8 o 9',
+                            'Observacion': 'Ficha Resumen sin Unidades Prediales',
                             'Radicado':row['Radicado'],
                             'Radicado':row['Radicado'],
                             'Nombre Hoja': 'Fichas'

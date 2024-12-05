@@ -31,6 +31,7 @@ class ZonasHomogeneas:
                 
                 # Si falta alguno de los tipos, se agrega a los resultados
                 if not (tiene_fisica and tiene_geoeconomica):
+                    radicados = ', '.join(grupo['Radicado'].dropna().astype(str).unique())
                     observacion = []
                     if not tiene_fisica:
                         observacion.append("Falta tipo 'Fisica'")
@@ -38,9 +39,10 @@ class ZonasHomogeneas:
                         observacion.append("Falta tipo 'Geoeconomica'")
                     
                     resultado = {
+                        
                         'NroFicha': nro_ficha,
                         'Observacion': ', '.join(observacion),
-                        'Radicado':grupo['Radicado'],
+                        'Radicado':radicados,
                         'Nombre Hoja':nombre_hoja
                     }
                     resultados.append(resultado)
