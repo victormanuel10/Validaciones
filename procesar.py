@@ -38,13 +38,17 @@ class Procesar:
             return
         
         
+        
+        
+        
+        
         fichasrph=FichasRPH(self.archivo_entry)
-        self.agregar_resultados(fichasrph.validar_unidades_rph())
+        self.agregar_resultados(fichasrph.ficha_resumen_sin_unidades())
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
         
-        
-        
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_duplicados_npn())
+        
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())    
@@ -63,7 +67,7 @@ class Procesar:
         self.agregar_resultados(ficha.validar_nrofichas_propietarios())
         self.agregar_resultados(ficha.validar_matricula_numerica())
         
-        self.agregar_resultados(ficha.validar_duplicados_npn())
+        
         self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
         self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
         self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
@@ -102,6 +106,9 @@ class Procesar:
         self.agregar_resultados(propietarios.fecha_escritura_inferior())
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
+        
+        self.agregar_resultados(fichasrph.validar_unidades_rph())
+        
         self.agregar_resultados(fichasrph.piso_en_cero_rph())
         
         
@@ -112,7 +119,7 @@ class Procesar:
         
         self.agregar_resultados(fichasrph.validar_npn_num_cedula())
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
-        self.agregar_resultados(fichasrph.validar_duplicados_npn())
+        
         
         
         construcciones = Construcciones(self.archivo_entry)
@@ -142,6 +149,7 @@ class Procesar:
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_rph())
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        
         
         cartografia=Cartografia(self.archivo_entry)
         self.agregar_resultados(cartografia.validar_fichas_faltantes())

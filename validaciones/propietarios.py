@@ -52,11 +52,9 @@ class Propietarios:
                     'PrimerApellido':row['PrimerApellido'],
                     'SegundoApellido':row['SegundoApellido'],
                     'Sexo':row['Sexo'],
-                    
                     'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
                     'Tomo':row['Tomo'],
                     'Radicado':row['Radicado'],
-                    
                     'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)

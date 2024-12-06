@@ -1809,6 +1809,7 @@ class Ficha:
                         'NroFicha': row['NroFicha'],
                         'Npn': Npn,
                         'Observacion': 'Npn no tiene 30 dígitos',
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Fichas'
                     })
 

@@ -33,7 +33,10 @@ class FichasRPH:
 
             # Crear una columna 'Npn_22' con los primeros 22 caracteres de Npn
             df_fichas['Npn_22'] = df_fichas['Npn'].astype(str).str[:22]
+
+            # Filtrar registros donde el dígito 22 de 'Npn' sea '8' o '9'
             df_filtrado = df_fichas[df_fichas['Npn'].str[21].isin(['8', '9'])]
+
             # Agrupar por 'Npn_22' y sumar 'CoeficienteCopropiedad'
             suma_coeficientes = df_filtrado.groupby('Npn_22')['CoeficienteCopropiedad'].sum().reset_index()
 
@@ -45,29 +48,21 @@ class FichasRPH:
             for _, row in errores.iterrows():
                 npn_22 = row['Npn_22']
                 coeficiente_suma = row['CoeficienteCopropiedad']
-                
-                # Obtener todos los valores 'Npn' completos que corresponden al 'Npn_22'
-                npn_completos = df_fichas[df_fichas['Npn_22'] == npn_22]['Npn'].unique()
-                
-                for npn in npn_completos:
+
+                # Obtener todas las filas que corresponden al 'Npn_22' para extraer también 'Radicado'
+                filas_error = df_fichas[df_fichas['Npn_22'] == npn_22]
+
+                for _, fila in filas_error.iterrows():
                     resultado = {
-                        'Npn': npn,
+                        'Npn': fila['Npn'],
+                        'Radicado': fila['Radicado'],  # Extraer el valor de la columna Radicado
                         'Suma CoeficienteCopropiedad': coeficiente_suma,
                         'Observacion': 'La suma de CoeficienteCopropiedad no es 100',
-                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     }
                     resultados.append(resultado)
-            '''
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Errores_CoeficienteCopropiedad_Npn_22_FichasPrediales.xlsx'
-                df_resultado.to_excel(output_file, index=False)
-                print(f"Archivo de errores guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros.")
-            else:
-                messagebox.showinfo("Sin errores", "Todos los coeficientes de copropiedad suman 100 en 'Fichas Prediales'.")
-            '''
+                    print(f"Error agregado: {resultado}")
+
             return resultados
 
         except Exception as e:
@@ -76,7 +71,7 @@ class FichasRPH:
             return []
         
         
-    def validar_duplicados_npn(self):
+    def ficha_resumen_sin_unidades(self):
         """
         Verifica que en la hoja 'FichasPrediales' existan duplicados en los primeros 22 caracteres de Npn
         solo si el dígito 22 de 'Npn' es '8' o '9'. Si no hay duplicados, genera un error.
@@ -114,23 +109,13 @@ class FichasRPH:
                         resultado = {
                             'NroFicha': fila['NroFicha'],
                             'Npn': fila['Npn'],
+                            'Radicado': fila['Radicado'],  # Agregar columna Radicado
                             'Observacion': 'No existe Unidades prediales para la ficha resumen',
-                            
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
                         print(f"Error agregado: {resultado}")
-            '''
-                # Guardar resultados en archivo si existen errores
-                if resultados:
-                    df_resultado = pd.DataFrame(resultados)
-                    output_file = 'Errores_Duplicados_Npn_FichasPrediales.xlsx'
-                    df_resultado.to_excel(output_file, index=False)
-                    print(f"Archivo de errores guardado: {output_file}")
-                    messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros sin duplicados.")
-                else:
-                    messagebox.showinfo("Sin errores", "Todos los Npn tienen duplicados en los primeros 22 dígitos cuando el dígito 22 es '8' o '9'.")
-            '''
+
             return resultados
 
         except Exception as e:
@@ -197,6 +182,7 @@ class FichasRPH:
                             'NroFicha': row['NroFicha'],
                             'Npn': row['Npn'],
                             'Observacion': 'Edificio en 0 para condición de predio 9',
+                            'Radicado':row['Radicado'],
                             'Nombre Hoja': 'FichasPrediales'
                         }
                         resultados.append(resultado)

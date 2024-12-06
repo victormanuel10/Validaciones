@@ -24,6 +24,7 @@ class Cartografia:
             df_fichas['NroFicha'] = df_fichas['NroFicha'].astype(str).str.strip()
             df_cartografia['NroFicha'] = df_cartografia['NroFicha'].astype(str).str.strip()
 
+            # Convertir a numérico para evitar errores
             df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
             df_cartografia['NroFicha'] = pd.to_numeric(df_cartografia['NroFicha'], errors='coerce')
             
@@ -38,27 +39,22 @@ class Cartografia:
 
             # Crear resultados para las fichas que faltan
             for nro_ficha in fichas_faltantes_en_cartografia:
+                # Obtener los radicados asociados al número de ficha
                 radicados = ', '.join(df_fichas[df_fichas['NroFicha'] == nro_ficha]['Radicado'].dropna().astype(str).unique())
+                
+                # Obtener los valores de Npn asociados al número de ficha
+                npns = ', '.join(df_fichas[df_fichas['NroFicha'] == nro_ficha]['Npn'].dropna().astype(str).unique())
+                
+                # Crear el registro de resultado
                 resultado = {
                     'NroFicha': nro_ficha,
-                    'Observacion': 'NroFicha en FICHAS no está en CARTOGRAFIA',
+                    'Npn': npns,  # Agregar la columna Npn
                     'Radicado': radicados,
+                    'Observacion': 'NroFicha en FICHAS no está en CARTOGRAFIA',
                     'Nombre Hoja': 'CartografiaInformacionGrafica'
                 }
                 resultados.append(resultado)
-            '''
-            
-            # Solo crear y guardar el DataFrame si hay resultados
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Fichas_Faltantes.xlsx'
-                sheet_name = 'Fichas Faltantes'
-                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"NroFicha en FICHAS no está en CARTOGRAFIA: {len(resultados)} registros.")
-            else:
-                messagebox.showinfo("Información", "No faltan fichas en Cartografía.")
-            '''
+
             return resultados
 
         except Exception as e:
@@ -159,7 +155,8 @@ class Cartografia:
                     'Observacion': "La Vigencia es menor a 1995.",
                     'Nombre Hoja': 'CartografiaInformacionGrafica'
                 })
-
+            '''
+            
             # Solo crear y guardar el DataFrame si hay errores
             if resultados:
                 df_resultados = pd.DataFrame(resultados)
@@ -170,7 +167,7 @@ class Cartografia:
                 messagebox.showinfo("Errores encontrados", f"Se encontraron {len(resultados)} errores en la hoja 'CartografiaInformacionGrafica'.")
             else:
                 messagebox.showinfo("Validación completada", "No se encontraron errores en la hoja 'CartografiaInformacionGrafica'.")
-
+            '''
             return resultados
 
         except Exception as e:
