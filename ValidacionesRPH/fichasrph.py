@@ -40,8 +40,14 @@ class FichasRPH:
             # Agrupar por 'Npn_22' y sumar 'CoeficienteCopropiedad'
             suma_coeficientes = df_filtrado.groupby('Npn_22')['CoeficienteCopropiedad'].sum().reset_index()
 
+            # Ajustar los coeficientes que estén dentro del margen de 0.01 de 100 a 100
+            suma_coeficientes['CoeficienteCopropiedad'] = suma_coeficientes['CoeficienteCopropiedad'].apply(
+                lambda x: 100 if abs(x - 100) <= 0.01 else round(x, 3)
+            )
+
             # Filtrar donde la suma no es 100
             errores = suma_coeficientes[suma_coeficientes['CoeficienteCopropiedad'] != 100]
+            
             resultados = []
 
             # Para cada error, buscar el valor completo de 'Npn' original y agregarlo al resultado
@@ -58,7 +64,8 @@ class FichasRPH:
                         'Radicado': fila['Radicado'],  # Extraer el valor de la columna Radicado
                         'Suma CoeficienteCopropiedad': coeficiente_suma,
                         'Observacion': 'La suma de CoeficienteCopropiedad no es 100',
-                        'Nombre Hoja': 'FichasPrediales'
+                        'Nombre Hoja': 'FichasPrediales',
+                        'NroFicha': fila['NroFicha']
                     }
                     resultados.append(resultado)
                     print(f"Error agregado: {resultado}")

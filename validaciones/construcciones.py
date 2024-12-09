@@ -217,14 +217,23 @@ class Construcciones:
 
             resultados = []
             for secuencia in secuencias_faltantes:
-                resultado = {
-                    'secuencia': secuencia,
-                    'Observacion': 'secuencia está en Construcciones pero no en CalificacionesConstrucciones',
-                    'Nombre Hoja': 'Construcciones'
-                }
-                resultados.append(resultado)
-                print(f"secuencia faltante: {resultado}")
+                # Buscar los datos asociados a la secuencia faltante en la hoja Construcciones
+                construccion_fila = df_construcciones_filtrado[df_construcciones_filtrado['secuencia'] == secuencia]
 
+                if not construccion_fila.empty:
+                    nro_ficha = construccion_fila.iloc[0]['NroFicha']  # Obtener NroFicha
+                    radicado = construccion_fila.iloc[0].get('Radicado', 'N/A')  # Obtener Radicado, si existe
+
+                    resultado = {
+                        'secuencia': secuencia,
+                        'NroFicha': nro_ficha,
+                        'Radicado': radicado,
+                        'Observacion': 'secuencia está en Construcciones pero no en CalificacionesConstrucciones',
+                        'Nombre Hoja': 'Construcciones'
+                    }
+                    resultados.append(resultado)
+                    print(f"secuencia faltante: {resultado}")
+            '''
             
             # Si se encuentran errores, guardar los resultados en un archivo Excel
             if resultados:
@@ -235,7 +244,7 @@ class Construcciones:
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
             else:
                 messagebox.showinfo("Sin errores", "Todas las secuencias en Construcciones están presentes en CalificacionesConstrucciones.")
-            
+            '''
             return resultados
 
         except Exception as e:

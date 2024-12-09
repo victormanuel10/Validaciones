@@ -29,67 +29,6 @@ class Procesar:
 
         
         
-        
-        
-        archivo_excel = self.archivo_entry.get()
-        
-        if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
-            return
-        
-        
-        
-        
-        
-        
-        fichasrph=FichasRPH(self.archivo_entry)
-        self.agregar_resultados(fichasrph.ficha_resumen_sin_unidades())
-        self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
-        
-        ficha = Ficha(self.archivo_entry)
-        self.agregar_resultados(ficha.validar_duplicados_npn())
-        
-        self.agregar_resultados(ficha.validar_fichas_en_propietarios())
-        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
-        self.agregar_resultados(ficha.predios_con_direcciones_invalidas())    
-        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
-        self.agregar_resultados(ficha.validar_caracteristica_predio())
-        self.agregar_resultados(ficha.validar_agricola_urb())
-        self.agregar_resultados(ficha.validar_matricula_repetida())
-        self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
-        self.agregar_resultados(ficha.modo_adquisicion_informal())
-        self.agregar_resultados(ficha.informal_matricula())
-        
-        self.agregar_resultados(ficha.areaterrenocero())
-        self.agregar_resultados(ficha.tomo_mejora())
-        
-        
-        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
-        self.agregar_resultados(ficha.validar_matricula_numerica())
-        
-        
-        self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
-        self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
-        self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
-        self.agregar_resultados(ficha.Validar_Longitud_NPN())
-        self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
-        self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
-        self.agregar_resultados(ficha.ultimo_digito())
-        
-        
-        self.agregar_resultados(ficha.validar_npn14a17())
-        self.agregar_resultados(ficha.validar_npn())
-        self.agregar_resultados(ficha.porcentaje_litigiocero())
-        self.agregar_resultados(ficha.destino_economico_mayorcero())
-        self.agregar_resultados(ficha.matricula_mejora())
-        self.agregar_resultados(ficha.terreno_cero())
-        self.agregar_resultados(ficha.terreno_null())
-        self.agregar_resultados(ficha.circulo_mejora())
-        self.agregar_resultados(ficha.ficha_repetida())
-        self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
-        
-        
-        
         propietarios = Propietarios(self.archivo_entry)
         self.agregar_resultados(propietarios.validar_tipo_documento())
         self.agregar_resultados(propietarios.contar_nph_calidad_propietario())
@@ -107,16 +46,61 @@ class Procesar:
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         
+        archivo_excel = self.archivo_entry.get()
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return
+        
+        '''
+        ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_matricula_repetida())
+        self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
+        self.agregar_resultados(ficha.validar_duplicados_npn())
+        self.agregar_resultados(ficha.validar_fichas_en_propietarios())
+        self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
+        self.agregar_resultados(ficha.predios_con_direcciones_invalidas())    
+        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
+        self.agregar_resultados(ficha.validar_caracteristica_predio())
+        self.agregar_resultados(ficha.validar_agricola_urb())
+        
+        self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
+        self.agregar_resultados(ficha.modo_adquisicion_informal())
+        self.agregar_resultados(ficha.informal_matricula())
+        self.agregar_resultados(ficha.areaterrenocero())
+        self.agregar_resultados(ficha.tomo_mejora())
+        self.agregar_resultados(ficha.validar_nrofichas_propietarios())
+        self.agregar_resultados(ficha.validar_matricula_numerica())
+        self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
+        self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
+        self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
+        self.agregar_resultados(ficha.Validar_Longitud_NPN())
+        
+        self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
+        self.agregar_resultados(ficha.ultimo_digito())
+        self.agregar_resultados(ficha.validar_npn14a17())
+        self.agregar_resultados(ficha.validar_npn())
+        self.agregar_resultados(ficha.porcentaje_litigiocero())
+        self.agregar_resultados(ficha.destino_economico_mayorcero())
+        self.agregar_resultados(ficha.matricula_mejora())
+        self.agregar_resultados(ficha.terreno_cero())
+        self.agregar_resultados(ficha.terreno_null())
+        self.agregar_resultados(ficha.circulo_mejora())
+        self.agregar_resultados(ficha.ficha_repetida())
+        self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
+        
+        
+        
+        
+        fichasrph=FichasRPH(self.archivo_entry)
+        self.agregar_resultados(fichasrph.ficha_resumen_sin_unidades())
+        self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
         self.agregar_resultados(fichasrph.validar_unidades_rph())
-        
         self.agregar_resultados(fichasrph.piso_en_cero_rph())
-        
-        
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
         self.agregar_resultados(fichasrph.validar_informalidad_con_piso())
         self.agregar_resultados(fichasrph.validar_informalidad_edificio())
         self.agregar_resultados(fichasrph.validar_area_total_lote_npn())
-        
         self.agregar_resultados(fichasrph.validar_npn_num_cedula())
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
         
@@ -162,7 +146,7 @@ class Procesar:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        
+        '''
         
         self.generar_reporte_observaciones(archivo_excel)  
         

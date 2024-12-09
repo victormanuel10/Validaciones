@@ -760,7 +760,6 @@ class Ficha:
                 if valor_b[6] == '0' and (valor_p == '12|LOTE URBANIZADO NO CONSTRUIDO' or valor_p == '13|LOTE URBANIZABLE NO URBANIZADO' or valor_p == '14|LOTE NO URBANIZABLE'):
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        
                         'Observacion': 'En sector rural no es valido destinaciones 12,13 y 14',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
@@ -905,7 +904,6 @@ class Ficha:
                     if areatotalterreno == '' or areatotalterreno == 0 or pd.isna(areatotalterreno):
                         resultado = {
                             'NroFicha': row['NroFicha'],
-                            
                             'Observacion': 'Área de terreno invalida para característica diferente a RPH o Condominio',
                             'Npn':row['Npn'],
                             'DestinoEconomico': row['DestinoEcconomico'],
@@ -1747,6 +1745,7 @@ class Ficha:
                 if pd.isnull(row['DireccionReferencia']):
                     resultados.append({
                         'NroFicha': row['NroFicha'],
+                        'Npn':row['Npn'],
                         'DireccionReferencia': row['DireccionReferencia'],
                         'DireccionNombre':row['DireccionNombre'],
                         'Observacion': 'DireccionReferencia no está diligenciada',
@@ -1757,6 +1756,7 @@ class Ficha:
                 if pd.isnull(row['DireccionNombre']):
                     resultados.append({
                         'NroFicha': row['NroFicha'],
+                        'Npn':row['Npn'],
                         'DireccionReferencia': row['DireccionReferencia'],
                         'DireccionNombre':row['DireccionNombre'],
                         'Observacion': 'DireccionNombre no está diligenciada',
@@ -2331,68 +2331,84 @@ class Ficha:
     
     
     def validar_matricula_repetida(self):
-            archivo_excel = self.archivo_entry.get()
-            nombre_hoja = 'Propietarios'
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja_propietarios = 'Propietarios'
+        nombre_hoja_fichas = 'Fichas'
 
-            if not archivo_excel or not nombre_hoja:
-                messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
-                return
+        if not archivo_excel or not nombre_hoja_propietarios or not nombre_hoja_fichas:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica los nombres de las hojas.")
+            return
 
-            try:
-                # Leer el archivo Excel
-                df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+        try:
+            # Leer ambas hojas
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_propietarios)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_fichas)
 
-                print(f"funcion: validar_matricula_repetida")
-                print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-                print(f"Dimensiones del DataFrame: {df.shape}")
-                print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Función: validar_matricula_repetida")
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Hoja Propietarios: {nombre_hoja_propietarios}, Hoja Fichas: {nombre_hoja_fichas}")
+            print(f"Dimensiones del DataFrame Propietarios: {df_propietarios.shape}")
+            print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
+            print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
 
-                # Verificar que las columnas necesarias existan
-                columnas_necesarias = ['MatriculaInmobiliaria', 'Documento']
-                for columna in columnas_necesarias:
-                    if columna not in df.columns:
-                        messagebox.showerror("Error", f"La columna '{columna}' no existe en la hoja {nombre_hoja}.")
-                        return
-                df['MatriculaInmobiliaria'] = pd.to_numeric(df['MatriculaInmobiliaria'], errors='coerce')
-                # Agrupar por 'MatriculaInmobiliaria' y contar ocurrencias
-                duplicados = df.groupby('MatriculaInmobiliaria').filter(lambda x: len(x) > 1)
+            # Verificar que las columnas necesarias existan
+            columnas_necesarias_propietarios = ['MatriculaInmobiliaria', 'Documento', 'NroFicha']
+            for columna in columnas_necesarias_propietarios:
+                if columna not in df_propietarios.columns:
+                    messagebox.showerror("Error", f"La columna '{columna}' no existe en la hoja {nombre_hoja_propietarios}.")
+                    return
 
-                # Lista para almacenar los errores encontrados
-                errores = []
+            # Asegurarse de que 'MatriculaInmobiliaria' sea numérico
+            df_propietarios['MatriculaInmobiliaria'] = pd.to_numeric(df_propietarios['MatriculaInmobiliaria'], errors='coerce')
 
-                # Validar si los duplicados tienen el mismo número de documento
-                for matricula, grupo in duplicados.groupby('MatriculaInmobiliaria'):
-                    documentos = grupo['Documento'].unique()
-                    if len(documentos) == 1:
-                        for _, fila in grupo.iterrows():
-                            error = {
-                                'MatriculaInmobiliaria': matricula,
-                                'NroFicha': fila.get('NroFicha', 'N/A'),
-                                'Observacion': 'Matricula inmobiliaria repetida',
-                                'Documento': fila['Documento'],
-                                'Radicado':fila['Radicado'],
-                                'Nombre Hoja': nombre_hoja
-                            }
-                            errores.append(error)
-                            print(f"Error encontrado: {error}")
+            # Agrupar por 'MatriculaInmobiliaria' y contar ocurrencias
+            duplicados = df_propietarios.groupby('MatriculaInmobiliaria').filter(lambda x: len(x) > 1)
 
-                print(f"Total de errores encontrados: {len(errores)}")
+            # Lista para almacenar los errores encontrados
+            errores = []
 
-                # Crear un DataFrame con los errores
-                df_errores = pd.DataFrame(errores)
+            # Validar si los duplicados tienen el mismo número de documento
+            for matricula, grupo in duplicados.groupby('MatriculaInmobiliaria'):
+                documentos = grupo['Documento'].unique()  # Obtener documentos únicos dentro de la misma matrícula
+                
+                # Si todos los documentos dentro del grupo son iguales
+                if len(documentos) == 1:
+                    for _, fila in grupo.iterrows():
+                        # Si encontramos que la matrícula tiene documentos repetidos
+                        npn = df_fichas[df_fichas['NroFicha'] == fila['NroFicha']]['Npn'].values
+                        npn_value = npn[0] if len(npn) > 0 else 'N/A'
 
-                '''
-                # Guardar los errores en un archivo Excel
-                output_file = 'Errores_MatriculaRepetida.xlsx'
-                sheet_name = 'Errores'
-                df_errores.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Proceso completado. Se encontró(n) {len(errores)} error(es).")
-                '''
-                return errores
+                        # Crear el error
+                        error = {
+                            'MatriculaInmobiliaria': matricula,
+                            'NroFicha': fila.get('NroFicha', 'N/A'),
+                            'Npn': npn_value,
+                            'Observacion': 'Matricula inmobiliaria repetida con el mismo documento',
+                            'Documento': fila['Documento'],
+                            'Radicado': fila['Radicado'],
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        errores.append(error)
+                        print(f"Error encontrado: {error}")
 
-            except Exception as e:
-                print(f"Error: {str(e)}")
+            print(f"Total de errores encontrados: {len(errores)}")
+
+            # Crear un DataFrame con los errores
+            df_errores = pd.DataFrame(errores)
+
+            '''
+            # Guardar los errores en un archivo Excel
+            output_file = 'Errores_MatriculaRepetida.xlsx'
+            sheet_name = 'Errores'
+            df_errores.to_excel(output_file, sheet_name=sheet_name, index=False)
+            print(f"Archivo guardado: {output_file}")
+            messagebox.showinfo("Éxito", f"Proceso completado. Se encontró(n) {len(errores)} error(es).")
+            '''
+            return errores
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
     '''
         
     def validar_destino_economico_nulo_o_0na(self):
