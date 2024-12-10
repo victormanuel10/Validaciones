@@ -34,7 +34,10 @@ class Procesar:
             return
         
         
+        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
+        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
+        '''
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
@@ -143,8 +146,7 @@ class Procesar:
         
         
         
-        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
-        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
+        '''
         
         
         

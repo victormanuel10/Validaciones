@@ -9,6 +9,7 @@ class ZonasHomogeneas:
     def validar_tipo_zonas_homogeneas(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'ZonasHomogeneas'
+        hoja_fichas='Fichas'
         
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
@@ -17,13 +18,18 @@ class ZonasHomogeneas:
         try:
             # Leer el archivo Excel y la hoja ZonasHomogeneas
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
             
+            df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+            
             resultados = []
+            
             fichas = df.groupby('NroFicha')
+            
             
             for nro_ficha, grupo in fichas:
                 tiene_fisica = 'Fisica' in grupo['Tipo'].values
@@ -32,6 +38,8 @@ class ZonasHomogeneas:
                 # Si falta alguno de los tipos, se agrega a los resultados
                 if not (tiene_fisica and tiene_geoeconomica):
                     radicados = ', '.join(grupo['Radicado'].dropna().astype(str).unique())
+                    Npn = ', '.join(grupo['Npn'].dropna().astype(str).unique())
+                    
                     observacion = []
                     if not tiene_fisica:
                         observacion.append("Falta tipo 'Fisica'")
@@ -41,6 +49,7 @@ class ZonasHomogeneas:
                     resultado = {
                         
                         'NroFicha': nro_ficha,
+                        'Npn':Npn,
                         'Observacion': ', '.join(observacion),
                         'Radicado':radicados,
                         'Nombre Hoja':nombre_hoja
