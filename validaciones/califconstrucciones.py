@@ -456,6 +456,9 @@ class CalificaionesConstrucciones:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
+                        
+                        
+                        
                 print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             '''
             
@@ -952,6 +955,77 @@ class CalificaionesConstrucciones:
 
             return resultados
 
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+            
+    def Validar_cubierta(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'CalificacionesConstrucciones'
+        hoja_construcciones = 'Construcciones'
+        hoja_fichas = 'Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+            print(f"funcion: Validar_armazon")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            
+            if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
+                    messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
+                    return
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
+            df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+            
+            resultados = []
+
+            for index, row in df.iterrows():
+                resultado = {}
+                print(f"Fila {index}: {row}") 
+                Armazon = row['Armazon']
+                Cubierta=row['Cubierta']
+                
+                
+                
+                if Cubierta == '135|AZOTEA, ALUMINIO,PLACAS CON ETERNIT' and Armazon != '115|CONCRETO CUATRO O MAS PISOS':
+                    
+                    resultado = {
+                            'NroFicha':row['NroFicha'],
+                            'secuencia': row['secuencia'],
+                            'Npn':row['Npn'],
+                            'Observacion': 'Cubierta invalida para Armazon (aviso)',
+                            'Armazon': row['Armazon'],
+                            'Muro': row['Muro'],
+                            'Cubierta': row['Cubierta'],
+                            'Conservacion': row['Conservacion'],
+                            'Fachada': row['Fachada'],
+                            'Cubrimiento Muro': row['Cubrimiento Muro'],
+                            'Piso': row['Piso'],
+                            'ConservacionPrincipales': row['ConservacionPrincipales'],
+                            'TamanioBanio': row['TamanioBanio'],
+                            'EnchapesBanio': row['EnchapesBanio'],
+                            'MobiliarioBanio': row['MobiliarioBanio'],
+                            'ConservacionBanio': row['ConservacionBanio'],
+                            'TamanioCocina': row['TamanioCocina'],
+                            'Enchape': row['Enchape'],
+                            'MobiliarioCocina': row['MobiliarioCocina'],
+                            'ConservacionCocina': row['ConservacionCocina'],
+                            'Radicado':row['Radicado'],
+                            'Nombre Hoja': nombre_hoja
+                        }
+                    resultados.append(resultado)
+
+                    
+            
+            return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

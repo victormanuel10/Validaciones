@@ -35,6 +35,7 @@ class Procesar:
         
         
         
+        
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
@@ -117,6 +118,7 @@ class Procesar:
         
         
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.Validar_cubierta())
         self.agregar_resultados(calificonstrucciones.validar_banios())
         self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
         self.agregar_resultados(calificonstrucciones.validar_sinCocina())
