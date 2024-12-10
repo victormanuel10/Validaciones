@@ -91,6 +91,7 @@ class Cartografia:
 
             # Crear resultados para las fichas que faltan
             for nro_ficha in fichas_faltantes_en_fichas:
+                
                 resultado = {
                     'NroFicha': nro_ficha,
                     'Observacion': 'NroFicha en CARTOGRAFIA no está en FICHAS',

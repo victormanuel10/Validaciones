@@ -391,7 +391,6 @@ class Ficha:
                         'NroFicha': row['NroFicha'],
                         'Observacion': 'Informalidad con matrícula',
                         'Npn':row['Npn'],
-                        'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
                         'AreaTotalConstruida':row['AreaTotalConstruida'],

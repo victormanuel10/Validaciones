@@ -27,32 +27,21 @@ class Procesar:
        
     def procesar_errores(self):
 
-        
-        
-        propietarios = Propietarios(self.archivo_entry)
-        self.agregar_resultados(propietarios.validar_tipo_documento())
-        self.agregar_resultados(propietarios.contar_nph_calidad_propietario())
-        self.agregar_resultados(propietarios.validar_matricula_entidad())
-        self.agregar_resultados(propietarios.derecho_diferente_cien())
-        self.agregar_resultados(propietarios.validar_documento_inicia_con_cero())
-        self.agregar_resultados(propietarios.validar_documento_sexo_masculino())
-        self.agregar_resultados(propietarios.validar_tipo_documento_sexo())
-        self.agregar_resultados(propietarios.validar_documento_sexo_femenino())
-        self.agregar_resultados(propietarios.numerofallocero())
-        self.agregar_resultados(propietarios.primer_apellido_blanco())
-        self.agregar_resultados(propietarios.primer_nombre_blanco())
-       #self.agregar_resultados(propietarios.documento_blanco_cod_asig())
-        self.agregar_resultados(propietarios.fecha_escritura_inferior())
-        self.agregar_resultados(propietarios.fecha_escritura_mayor())
-        
-        
         archivo_excel = self.archivo_entry.get()
         
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return
         
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_banios())
+        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
+        self.agregar_resultados(calificonstrucciones.validar_sinCocina())
+        self.agregar_resultados(calificonstrucciones.Validar_armazon())
+        self.agregar_resultados(calificonstrucciones.Validar_fachada())
+        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         '''
+        
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
@@ -63,7 +52,6 @@ class Procesar:
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
         self.agregar_resultados(ficha.validar_caracteristica_predio())
         self.agregar_resultados(ficha.validar_agricola_urb())
-        
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
         self.agregar_resultados(ficha.modo_adquisicion_informal())
         self.agregar_resultados(ficha.informal_matricula())
@@ -74,8 +62,7 @@ class Procesar:
         self.agregar_resultados(ficha.validar_matricula_inmobiliaria_PredioLc_Modo_Adquisicion())
         self.agregar_resultados(ficha.validar_npn_sin_cuatro_ceros())
         self.agregar_resultados(ficha.validar_Predios_Uso_Publico())
-        self.agregar_resultados(ficha.Validar_Longitud_NPN())
-        
+        self.agregar_resultados(ficha.Validar_Longitud_NPN())    
         self.agregar_resultados(ficha.validar_destino_economico_y_longitud_cedula())
         self.agregar_resultados(ficha.ultimo_digito())
         self.agregar_resultados(ficha.validar_npn14a17())
@@ -104,7 +91,20 @@ class Procesar:
         self.agregar_resultados(fichasrph.validar_npn_num_cedula())
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
         
-        
+        propietarios = Propietarios(self.archivo_entry)
+        self.agregar_resultados(propietarios.contar_nph_calidad_propietario())
+        self.agregar_resultados(propietarios.validar_matricula_entidad())
+        self.agregar_resultados(propietarios.derecho_diferente_cien())
+        self.agregar_resultados(propietarios.validar_documento_inicia_con_cero())
+        self.agregar_resultados(propietarios.validar_documento_sexo_masculino())
+        self.agregar_resultados(propietarios.validar_tipo_documento_sexo())
+        self.agregar_resultados(propietarios.validar_documento_sexo_femenino())
+        self.agregar_resultados(propietarios.numerofallocero())
+        self.agregar_resultados(propietarios.primer_apellido_blanco())
+        self.agregar_resultados(propietarios.primer_nombre_blanco())
+       #self.agregar_resultados(propietarios.documento_blanco_cod_asig())
+        self.agregar_resultados(propietarios.fecha_escritura_inferior())
+        self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         construcciones = Construcciones(self.archivo_entry)
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
@@ -112,27 +112,18 @@ class Procesar:
         self.agregar_resultados(construcciones.validar_secuencia_unica_por_ficha())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.validar_secuencia_convencional_calificaciones())
-        self.agregar_resultados(construcciones.validar_no_convencional_secuencia())       
+        self.agregar_resultados(construcciones.validar_no_convencional_secuencia())
         self.agregar_resultados(construcciones.validar_construcciones_puntos())
         self.agregar_resultados(construcciones.validar_porcentaje_construido())
         self.agregar_resultados(construcciones.validar_edad_construccion())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.areaconstruida_mayora1000())
-        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())         
+        self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())
         self.agregar_resultados(construcciones.validar_secuencia_calificaciones_vs_construcciones())
         
-        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        self.agregar_resultados(calificonstrucciones.validar_banios())
-        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
-        self.agregar_resultados(calificonstrucciones.validar_sinCocina())
-        self.agregar_resultados(calificonstrucciones.Validar_armazon())
-        self.agregar_resultados(calificonstrucciones.Validar_fachada())
-        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         
         
-        colindantes=Colindantes(self.archivo_entry)
-        self.agregar_resultados(colindantes.validar_orientaciones_rph())
-        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
+        
         
         
         cartografia=Cartografia(self.archivo_entry)
@@ -140,6 +131,13 @@ class Procesar:
         self.agregar_resultados(cartografia.validar_cartografia_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_columnas())
         
+        
+        
+        
+        
+        colindantes=Colindantes(self.archivo_entry)
+        self.agregar_resultados(colindantes.validar_orientaciones_rph())
+        self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
         
         
@@ -168,9 +166,12 @@ class Procesar:
                 # Asegúrate de que el reporte se agrega al archivo después de los errores
                 self.agregar_reporte(writer)
                 self.agregar_hoja_reportes(writer)
+                #self.agregar_observacion_cuantas_fichas(writer)
+                
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
         else:
             messagebox.showinfo("Sin errores", "No se encontraron errores en los archivos procesados.")
+    
     
     def agregar_hoja_reportes(self, writer):
         """
@@ -209,8 +210,32 @@ class Procesar:
 
         except Exception as e:
             print(f"Error al generar la hoja 'Reportes': {e}")
-            
-    
+    '''
+         
+    def agregar_observacion_cuantas_fichas(self,writer):
+        
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+        
+        errores_df = archivo_excel.parse("Errores por Fichas")
+        resumen_df = archivo_excel.parse("Resumen")
+
+        # Contar los NroFicha únicos con errores
+        nro_ficha_errores = errores_df["NroFicha"].nunique()
+
+        # Mensaje para la observación
+        observacion = f"{nro_ficha_errores} NroFicha tienen al menos un error en la hoja Errores"
+
+        # Agregar la observación a la hoja Resumen
+        nueva_fila = {"Observaciones": observacion}
+        resumen_df = pd.concat([resumen_df, pd.DataFrame([nueva_fila])], ignore_index=True)
+
+        # Guardar el archivo con las modificaciones
+        with pd.ExcelWriter(archivo_excel, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
+            resumen_df.to_excel(writer, sheet_name="Resumen", index=False)
+
+        print("Observación agregada exitosamente.")
+    '''
     def leer_archivo(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'

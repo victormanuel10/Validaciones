@@ -80,26 +80,32 @@ class Propietarios:
             return
         
         try:
-            # Leer el archivo Excel, especificando la hoja 'Propietarios' y la hoja 'Fichas'
+            # Leer el archivo Excel, especificando las hojas 'Propietarios' y 'Fichas'
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
             df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
 
-            print(f"funcion: validar_documento_sexo_femenino")
+            print(f"función: validar_documento_sexo_femenino")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-
-            # Lista para almacenar los resultados
-            resultados = []
+            print(f"Dimensiones del DataFrame Propietarios: {df.shape}")
+            print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
+            print(f"Columnas en el DataFrame Propietarios: {df.columns.tolist()}")
+            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")
 
             # Hacer un merge con la hoja 'Fichas' para traer la columna 'Npn' usando 'NroFicha'
             df = df.merge(df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
 
-            # Iterar sobre las filas del DataFrame
+            print(f"Dimensiones del DataFrame después del merge: {df.shape}")
+            print(f"Columnas después del merge: {df.columns.tolist()}")
+
+            # Lista para almacenar los resultados
+            resultados = []
+
+            # Iterar sobre las filas del DataFrame fusionado
             for index, row in df.iterrows():
                 tipo_documento = row['TipoDocumento']
                 documento = row['Documento']
                 sexo = row['Sexo']
+                npn = row.get('Npn')  # Traer la columna Npn después del merge
 
                 # Intentar convertir el valor de 'Documento' a entero
                 try:
@@ -114,30 +120,30 @@ class Propietarios:
                     # Validar que el Documento esté fuera del rango [20000000, 70000000] y que el Sexo sea 'F|FEMENINO'
                     if (documento <= 20000000 or documento >= 70000000) and sexo == 'F|FEMENINO':
                         resultado = {
-                            'NroFicha': row['NroFicha'],  # Suponiendo que existe esta columna
-                            'Npn': row['Npn'],  # Agregar la columna Npn
+                            'NroFicha': row['NroFicha'],  # Columna desde Propietarios
+                            'Npn': npn,  # Agregar la columna Npn desde el merge
                             'Observacion': 'Documento fuera del rango para Sexo Femenino',
-                            'TipoDocumento': row['TipoDocumento'],
-                            'Documento': row['Documento'],
-                            'CalidadPropietario': row['CalidadPropietario'],
-                            'Derecho': row['Derecho'],
-                            'CalidadPropietarioOficial': row['CalidadPropietarioOficial'],
-                            'Fecha': row['Fecha'],
-                            'CodigoFideicomiso': row['CodigoFideicomiso'],
-                            'Escritura': row['Escritura'],
-                            'Entidad': row['Entidad'],
-                            'EntidadDepartamento': row['EntidadDepartamento'],
-                            'EntidadMunicipio': row['EntidadMunicipio'],
-                            'NumeroFallo': row['NumeroFallo'],
-                            'RazonSocial': row['RazonSocial'],
-                            'PrimerNombre': row['PrimerNombre'],
-                            'SegundoNombre': row['SegundoNombre'],
-                            'PrimerApellido': row['PrimerApellido'],
-                            'SegundoApellido': row['SegundoApellido'],
-                            'Sexo': row['Sexo'],
-                            'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
-                            'Tomo': row['Tomo'],
-                            'Radicado': row['Radicado'],
+                            'TipoDocumento': tipo_documento,
+                            'Documento': documento,
+                            'CalidadPropietario': row.get('CalidadPropietario'),
+                            'Derecho': row.get('Derecho'),
+                            'CalidadPropietarioOficial': row.get('CalidadPropietarioOficial'),
+                            'Fecha': row.get('Fecha'),
+                            'CodigoFideicomiso': row.get('CodigoFideicomiso'),
+                            'Escritura': row.get('Escritura'),
+                            'Entidad': row.get('Entidad'),
+                            'EntidadDepartamento': row.get('EntidadDepartamento'),
+                            'EntidadMunicipio': row.get('EntidadMunicipio'),
+                            'NumeroFallo': row.get('NumeroFallo'),
+                            'RazonSocial': row.get('RazonSocial'),
+                            'PrimerNombre': row.get('PrimerNombre'),
+                            'SegundoNombre': row.get('SegundoNombre'),
+                            'PrimerApellido': row.get('PrimerApellido'),
+                            'SegundoApellido': row.get('SegundoApellido'),
+                            'Sexo': sexo,
+                            'MatriculaInmobiliaria': row.get('MatriculaInmobiliaria'),
+                            'Tomo': row.get('Tomo'),
+                            'Radicado': row.get('Radicado'),
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
@@ -150,7 +156,6 @@ class Propietarios:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
-
         
    
 
@@ -707,28 +712,37 @@ class Propietarios:
     
     def fecha_escritura_mayor(self):
         archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
+        hoja_propietarios = 'Propietarios'
+        hoja_fichas = 'Fichas'
 
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+        if not archivo_excel or not hoja_propietarios or not hoja_fichas:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica los nombres de las hojas.")
             return
-        
-        try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+        try:
+            # Leer las hojas del archivo Excel
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=hoja_propietarios)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Dimensiones de Propietarios: {df_propietarios.shape}")
+            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+
+            # Combinar las dos hojas por el campo NroFicha
+            df_merged = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+
+            print(f"Dimensiones del DataFrame combinado: {df_merged.shape}")
 
             # Lista para almacenar los resultados
             resultados = []
 
-            # Obtener la fecha actual (sin tiempo para evitar diferencias por horas/minutos)
+            # Obtener la fecha actual
             fecha_actual = datetime.now().date()
 
-            # Iterar sobre las filas del DataFrame
-            for index, row in df.iterrows():
+            # Iterar sobre las filas del DataFrame combinado
+            for index, row in df_merged.iterrows():
                 fecha_escritura = row['FechaEscritura']
 
                 # Verificar si 'FechaEscritura' es nula o NaT
@@ -743,7 +757,6 @@ class Propietarios:
                     except ValueError:
                         print(f"Error en el formato de fecha en la fila {index}: '{fecha_escritura}'")
                         continue
-
                 elif isinstance(fecha_escritura, datetime):
                     fecha_escritura = fecha_escritura.date()  # Tomar solo la parte de la fecha
 
@@ -751,7 +764,7 @@ class Propietarios:
                 if fecha_escritura > fecha_actual:
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'Npn': row['Npn'],  # Agregar la columna Npn
+                        'Npn': row['Npn'],  # Ahora se incluye la columna Npn
                         'FechaEscritura': fecha_escritura.strftime("%d/%m/%Y"),
                         'Observacion': 'Fecha de escritura es superior a la fecha actual',
                         'TipoDocumento': row['TipoDocumento'],
@@ -775,7 +788,7 @@ class Propietarios:
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
                         'Radicado': row['Radicado'],
-                        'Nombre Hoja': nombre_hoja
+                        'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
                     print(f"Fila {index}: Fecha '{fecha_escritura}' es superior a la fecha actual. Agregado a resultados.")
@@ -856,30 +869,39 @@ class Propietarios:
         '''  
     def numerofallocero(self):
         archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
+        hoja_propietarios = 'Propietarios'
+        hoja_fichas = 'Fichas'
 
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+        if not archivo_excel or not hoja_propietarios or not hoja_fichas:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica los nombres de las hojas.")
             return
 
         try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            # Leer las hojas del archivo Excel
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=hoja_propietarios)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
 
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Dimensiones de Propietarios: {df_propietarios.shape}")
+            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+
+            # Combinar las dos hojas por el campo NroFicha
+            df_merged = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+
+            print(f"Dimensiones del DataFrame combinado: {df_merged.shape}")
 
             resultados = []
 
-            # Iterar sobre las filas del DataFrame
-            for index, row in df.iterrows():
+            # Iterar sobre las filas del DataFrame combinado
+            for index, row in df_merged.iterrows():
                 NumeroFallo = row['NumeroFallo']
 
                 if NumeroFallo == '0' or NumeroFallo == '' or pd.isna(NumeroFallo):
                     resultado = {
                         'NroFicha': row['NroFicha'],
-                        'Npn': row['Npn'],  # Agregar la columna Npn
+                        'Npn': row['Npn'],  # Ahora se incluye la columna Npn
                         'Observacion': 'El numero fallo es cero o vacio',
                         'TipoDocumento': row['TipoDocumento'],
                         'Documento': row['Documento'],
@@ -902,7 +924,7 @@ class Propietarios:
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
                         'Radicado': row['Radicado'],
-                        'Nombre Hoja': nombre_hoja
+                        'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
 
@@ -918,26 +940,43 @@ class Propietarios:
     
     def validar_matricula_entidad(self):
         archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
+        hoja_propietarios = 'Propietarios'
+        hoja_fichas = 'Fichas'
 
-        if not archivo_excel or not nombre_hoja:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+        if not archivo_excel or not hoja_propietarios or not hoja_fichas:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica los nombres de las hojas.")
             return
 
         try:
-            # Leer el archivo Excel, especificando la hoja
-            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            # Leer las hojas 'Propietarios' y 'Fichas'
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=hoja_propietarios)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
 
             print(f"función: validar_matricula_entidad")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Dimensiones de 'Propietarios': {df_propietarios.shape}")
+            print(f"Columnas en 'Propietarios': {df_propietarios.columns.tolist()}")
+            print(f"Dimensiones de 'Fichas': {df_fichas.shape}")
+            print(f"Columnas en 'Fichas': {df_fichas.columns.tolist()}")
+
+            # Verificar que las claves existen en ambas hojas
+            if 'NroFicha' not in df_propietarios.columns or 'NroFicha' not in df_fichas.columns:
+                messagebox.showerror("Error", "La columna 'NroFicha' no existe en una de las hojas.")
+                return
+
+            # Hacer merge para agregar la columna 'Npn' de 'Fichas' a 'Propietarios'
+            df_merged = pd.merge(
+                df_propietarios,
+                df_fichas[['NroFicha', 'Npn']],  # Sólo tomamos las columnas necesarias
+                on='NroFicha',
+                how='left'  # Usamos 'left' para mantener todas las filas de 'Propietarios'
+            )
 
             # Lista para almacenar los resultados que no cumplen la condición
             resultados = []
 
-            # Iterar sobre cada fila del DataFrame
-            for _, row in df.iterrows():
+            # Iterar sobre cada fila del DataFrame combinado
+            for _, row in df_merged.iterrows():
                 matricula_inmobiliaria = str(row.get('MatriculaInmobiliaria', '')).strip()
                 entidad_departamento = str(row.get('EntidadDepartamento', '')).strip()
                 entidad_municipio = str(row.get('EntidadMunicipio', '')).strip()
@@ -946,7 +985,7 @@ class Propietarios:
                 if matricula_inmobiliaria and (entidad_departamento == 'null|null' or not entidad_municipio):
                     resultado = {
                         'NroFicha': row.get('NroFicha'),
-                        'Npn': row.get('Npn'),  # Agregar la columna Npn
+                        'Npn': row.get('Npn'),  # Ahora la columna Npn está disponible
                         'Observacion': 'EntidadDepartamento no puede ser null|null y EntidadMunicipio no puede ser vacío si MatriculaInmobiliaria tiene valor',
                         'TipoDocumento': row['TipoDocumento'],
                         'Documento': row['Documento'],
@@ -969,7 +1008,7 @@ class Propietarios:
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
                         'Radicado': row['Radicado'],
-                        'Nombre Hoja': nombre_hoja
+                        'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
                     print(f"Condición de error encontrada: {resultado}")
@@ -986,7 +1025,7 @@ class Propietarios:
             else:
                 messagebox.showinfo("Información", "No se encontraron errores en los registros de MatriculaInmobiliaria y Entidad.")
             '''
-            
+
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -1014,6 +1053,9 @@ class Propietarios:
 
             resultados = []
 
+            # Crear un diccionario para mapear NroFicha con Npn en la hoja Fichas
+            npn_dict = df_fichas.set_index('NroFicha')['Npn'].to_dict()
+
             # Iterar sobre las filas del DataFrame de Fichas
             for index, row in df_fichas.iterrows():
                 npn = row.get('Npn')
@@ -1036,9 +1078,29 @@ class Propietarios:
                             if calidad not in ['4|MUNICIPAL', '2|NACIONAL']:
                                 resultado = {
                                     'NroFicha': row.get('NroFicha'),
-                                    'Npn': row.get('Npn'),  # Agregar la columna Npn
+                                    'Npn': npn_dict.get(nro_ficha, ''),  # Obtener Npn desde el diccionario
                                     'Observacion': 'El predio es NPH, la matrícula es 0 o vacía y CalidadPropietarioOficial es diferente de la Nación o el municipio',
                                     'Radicado': row['Radicado'],
+                                    'Documento': propietario.get('Documento'),
+                                    'CalidadPropietario': propietario.get('CalidadPropietario'),
+                                    'Derecho': propietario.get('Derecho'),
+                                    'CalidadPropietarioOficial': propietario.get('CalidadPropietarioOficial'),
+                                    'Fecha': propietario.get('Fecha'),
+                                    'CodigoFideicomiso': propietario.get('CodigoFideicomiso'),
+                                    'Escritura': propietario.get('Escritura'),
+                                    'Entidad': propietario.get('Entidad'),
+                                    'EntidadDepartamento': propietario.get('EntidadDepartamento'),
+                                    'EntidadMunicipio': propietario.get('EntidadMunicipio'),
+                                    'NumeroFallo': propietario.get('NumeroFallo'),
+                                    'RazonSocial': propietario.get('RazonSocial'),
+                                    'PrimerNombre': propietario.get('PrimerNombre'),
+                                    'SegundoNombre': propietario.get('SegundoNombre'),
+                                    'PrimerApellido': propietario.get('PrimerApellido'),
+                                    'SegundoApellido': propietario.get('SegundoApellido'),
+                                    'Sexo': propietario.get('Sexo'),
+                                    'MatriculaInmobiliaria': propietario.get('MatriculaInmobiliaria'),
+                                    'Tomo': propietario.get('Tomo'),
+                                    'Radicado': propietario.get('Radicado'),
                                     'Nombre Hoja': 'Propietarios'
                                 }
                                 resultados.append(resultado)
@@ -1047,70 +1109,3 @@ class Propietarios:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            
-            
-    def validar_tipo_documento(self):
-        """
-        Verifica que en la hoja 'Fichas', los valores en la columna 'TipoDocumento' no sean
-        '10|CEDULA CIUDADANIA HOMBRE' o '10|CEDULA CIUDADANIA MUJER'.
-        Si se encuentran estos valores, genera un error indicando que deben ser '10|CEDULA DE CIUDADANIA'.
-        """
-        archivo_excel = self.archivo_entry.get()
-        if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
-            return []
-
-        try:
-            # Leer la hoja 'Fichas'
-            df_fichas = pd.read_excel(archivo_excel, sheet_name='Propietarios')
-
-            # Valores no permitidos en 'TipoDocumento'
-            valores_invalidos = [
-                "10|CEDULA CIUDADANIA HOMBRE",
-                "10|CEDULA CIUDADANIA MUJER"
-            ]
-            
-            # Lista para almacenar los errores encontrados
-            resultados = []
-
-            # Validar cada fila en la columna 'TipoDocumento'
-            for index, row in df_fichas.iterrows():
-                tipo_documento = row.get('TipoDocumento', '')
-                
-                # Si 'TipoDocumento' contiene un valor no permitido
-                if tipo_documento in valores_invalidos:
-                    resultados.append({
-                        'NroFicha': row['NroFicha'],
-                        'Npn': row.get('Npn', ''),  # Agregar la columna Npn
-                        'Observacion': "Debe ser '10|CEDULA DE CIUDADANIA'",
-                        'TipoDocumento': tipo_documento,
-                        'Documento': row['Documento'],
-                        'CalidadPropietario': row['CalidadPropietario'],
-                        'Derecho': row['Derecho'],
-                        'CalidadPropietarioOficial': row['CalidadPropietarioOficial'],
-                        'Fecha': row['Fecha'],
-                        'CodigoFideicomiso': row['CodigoFideicomiso'],
-                        'Escritura': row['Escritura'],
-                        'Entidad': row['Entidad'],
-                        'EntidadDepartamento': row['EntidadDepartamento'],
-                        'EntidadMunicipio': row['EntidadMunicipio'],
-                        'NumeroFallo': row['NumeroFallo'],
-                        'RazonSocial': row['RazonSocial'],
-                        'PrimerNombre': row['PrimerNombre'],
-                        'SegundoNombre': row['SegundoNombre'],
-                        'PrimerApellido': row['PrimerApellido'],
-                        'SegundoApellido': row['SegundoApellido'],
-                        'Sexo': row['Sexo'],
-                        'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
-                        'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
-                        'Nombre Hoja': 'Propietarios'
-                    })
-
-            return resultados
-
-        except Exception as e:
-            print(f"Error: {str(e)}")
-            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            return []
-        

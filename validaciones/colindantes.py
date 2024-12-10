@@ -11,23 +11,33 @@ class Colindantes:
     def validar_orientaciones_colindantes(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Colindantes'
+        hoja_fichas = 'Fichas'  # Hoja donde se encuentra la columna 'Npn'
         
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return
             
         try:
-            # Leer el archivo Excel y la hoja Colindantes
+            # Leer el archivo Excel y las hojas necesarias
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
-            
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
-            
+
             # Normalizar los valores de la columna 'Orientacion' para evitar problemas con mayúsculas o espacios
             df['Orientacion'] = df['Orientacion'].str.strip().str.upper()
+
+            # Validar la existencia de las columnas necesarias
+            if 'NroFicha' not in df.columns or 'NroFicha' not in df_fichas.columns:
+                messagebox.showerror("Error", "La columna 'NroFicha' no existe en las hojas necesarias.")
+                return
             
-            # Agrupar por NroFicha y revisar si cada uno tiene al menos las orientaciones "ESTE", "NORTE", "SUR", "OESTE"
+            # Combinar con la hoja Fichas para traer la columna 'Npn'
+            df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+
+            # Agrupar por NroFicha y revisar si cada uno tiene al menos las orientaciones requeridas
             orientaciones_requeridas = {"ESTE", "NORTE", "SUR", "OESTE"}
             resultados = []
             fichas = df.groupby('NroFicha')
@@ -44,25 +54,15 @@ class Colindantes:
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)}",
-                        'Radicado':radicados,
-                        'Nombre Hoja':nombre_hoja
+                        'Radicado': radicados,
+                        'Nombre Hoja': nombre_hoja,
+                        'Npn': grupo['Npn'].iloc[0]  # Agregar el valor de 'Npn'
                     }
                     resultados.append(resultado)
                     print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
-            '''
-            # Si se encuentran errores, se guardan en un archivo Excel
-            if resultados:
-                
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'ERRORES_ORIENTACIONES_COLINDANTES.xlsx'
-                df_resultado.to_excel(output_file, sheet_name='ErroresOrientaciones', index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
-                
-            else:
-                messagebox.showinfo("Sin errores", "Todos los NroFicha tienen las orientaciones 'ESTE', 'NORTE', 'SUR', y 'OESTE'.")
-            '''    
+
             return resultados
+
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
@@ -96,18 +96,24 @@ class Colindantes:
             fichas_validas = df_fichas[
                 (df_fichas['Npn'].str[21:22] == '9') & 
                 (df_fichas['Ultimos_4'] != 0)
-            ]['NroFicha'].unique()
+            ][['NroFicha', 'Npn']]  # Mantener también la columna Npn
 
-            print(f"NroFicha válidas desde Fichas: {fichas_validas}")
+            print(f"Fichas válidas: {fichas_validas}")
 
             # Verifica si hay fichas válidas
-            if len(fichas_validas) == 0:
+            if fichas_validas.empty:
                 print("No se encontraron fichas válidas en la hoja Fichas.")
                 messagebox.showinfo("Sin datos", "No se encontraron fichas válidas para validar.")
                 return []
 
             # Filtrar las NroFicha de Colindantes
-            df_colindantes_filtradas = df_colindantes[df_colindantes['NroFicha'].isin(fichas_validas)]
+            df_colindantes_filtradas = pd.merge(
+                df_colindantes,
+                fichas_validas,
+                on='NroFicha',
+                how='inner'
+            )
+
             print(f"Dimensiones de Colindantes filtradas: {df_colindantes_filtradas.shape}")
 
             # Orientaciones requeridas
@@ -122,26 +128,17 @@ class Colindantes:
 
                 if orientaciones_faltantes:
                     radicados = ', '.join(grupo['Radicado'].dropna().astype(str).unique())
+                    npn = grupo['Npn'].iloc[0]  # Extraer el valor de Npn
                     resultado = {
                         'NroFicha': nro_ficha,
+                        'Npn': npn,
                         'Observacion': f"Faltan orientaciones: {', '.join(orientaciones_faltantes)} en Rph",
-                        'Radicado':radicados,
+                        'Radicado': radicados,
                         'Nombre Hoja': hoja_colindantes
                     }
                     resultados.append(resultado)
                     print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
-            '''
-            
-            # Guardar resultados si hay errores
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'ERRORES_ORIENTACIONES_COLINDANTES.xlsx'
-                df_resultado.to_excel(output_file, sheet_name='ErroresOrientaciones', index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Errores encontrados", f"Se encontraron errores. Archivo guardado en '{output_file}'.")
-            else:
-                messagebox.showinfo("Sin errores", "Todas las NroFicha cumplen con las orientaciones requeridas.")
-            '''
+
             return resultados
 
         except Exception as e:
