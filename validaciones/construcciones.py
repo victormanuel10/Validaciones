@@ -503,8 +503,8 @@ class Construcciones:
             # Encontrar secuencias en CalificacionesConstrucciones que no están en Construcciones
             secuencias_faltantes = secuencia_calificaciones - secuencia_construcciones
 
-            # Realizar un merge con la hoja Fichas para incluir la columna 'Npn'
-            df_calificaciones = df_calificaciones.merge(
+            # Realizar un merge con las hojas Fichas y Construcciones para obtener NroFicha y Npn
+            df_construcciones_fichas = df_construcciones.merge(
                 df_fichas[['NroFicha', 'Npn']], 
                 on='NroFicha', 
                 how='left'
@@ -515,26 +515,18 @@ class Construcciones:
                 # Buscar la fila correspondiente a la secuencia faltante en CalificacionesConstrucciones
                 fila = df_calificaciones[df_calificaciones['secuencia'] == secuencia].iloc[0]
                 
+                # Buscar la fila correspondiente a la secuencia faltante en el merge de Construcciones y Fichas
+                fila_construccion = df_construcciones_fichas[df_construcciones_fichas['secuencia'] == secuencia].iloc[0]
+                
                 resultado = {
                     'secuencia': secuencia,
-                    'Npn': fila.get('Npn', ''),
+                    'Npn': fila_construccion.get('Npn', ''),  # Obtener la columna Npn
                     'Observacion': 'secuencia está en CalificacionesConstrucciones pero no en Construcciones',
                     'Nombre Hoja': 'CalificacionesConstrucciones'
                 }
                 resultados.append(resultado)
                 print(f"secuencia faltante: {resultado}")
 
-            '''
-            # Si se encuentran errores, guardar los resultados en un archivo Excel
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'ERRORES_SECUENCIAS_CALIFICACIONES.xlsx'
-                df_resultado.to_excel(output_file, sheet_name='ErroresSecuencias', index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
-            else:
-                messagebox.showinfo("Sin errores", "Todas las secuencias en CalificacionesConstrucciones están presentes en Construcciones.")
-            '''
             return resultados
 
         except Exception as e:

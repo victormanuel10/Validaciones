@@ -33,14 +33,7 @@ class Procesar:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return
         
-        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
-        self.agregar_resultados(calificonstrucciones.validar_banios())
-        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
-        self.agregar_resultados(calificonstrucciones.validar_sinCocina())
-        self.agregar_resultados(calificonstrucciones.Validar_armazon())
-        self.agregar_resultados(calificonstrucciones.Validar_fachada())
-        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
-        '''
+        
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
@@ -123,6 +116,13 @@ class Procesar:
         
         
         
+        calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
+        self.agregar_resultados(calificonstrucciones.validar_banios())
+        self.agregar_resultados(calificonstrucciones.validar_cubierta_y_numero_pisos())
+        self.agregar_resultados(calificonstrucciones.validar_sinCocina())
+        self.agregar_resultados(calificonstrucciones.Validar_armazon())
+        self.agregar_resultados(calificonstrucciones.Validar_fachada())
+        self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         
         
         
@@ -144,7 +144,7 @@ class Procesar:
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
-        '''
+        
         
         self.generar_reporte_observaciones(archivo_excel)  
         
@@ -166,7 +166,7 @@ class Procesar:
                 # Asegúrate de que el reporte se agrega al archivo después de los errores
                 self.agregar_reporte(writer)
                 self.agregar_hoja_reportes(writer)
-                #self.agregar_observacion_cuantas_fichas(writer)
+                
                 
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
         else:
@@ -210,32 +210,8 @@ class Procesar:
 
         except Exception as e:
             print(f"Error al generar la hoja 'Reportes': {e}")
-    '''
-         
-    def agregar_observacion_cuantas_fichas(self,writer):
-        
-        archivo_excel = self.archivo_entry.get()
-        nombre_hoja = 'Propietarios'
-        
-        errores_df = archivo_excel.parse("Errores por Fichas")
-        resumen_df = archivo_excel.parse("Resumen")
-
-        # Contar los NroFicha únicos con errores
-        nro_ficha_errores = errores_df["NroFicha"].nunique()
-
-        # Mensaje para la observación
-        observacion = f"{nro_ficha_errores} NroFicha tienen al menos un error en la hoja Errores"
-
-        # Agregar la observación a la hoja Resumen
-        nueva_fila = {"Observaciones": observacion}
-        resumen_df = pd.concat([resumen_df, pd.DataFrame([nueva_fila])], ignore_index=True)
-
-        # Guardar el archivo con las modificaciones
-        with pd.ExcelWriter(archivo_excel, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
-            resumen_df.to_excel(writer, sheet_name="Resumen", index=False)
-
-        print("Observación agregada exitosamente.")
-    '''
+    
+    
     def leer_archivo(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Propietarios'

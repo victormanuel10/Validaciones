@@ -2386,7 +2386,7 @@ class Ficha:
                             'Observacion': 'Matricula inmobiliaria repetida con el mismo documento',
                             'Documento': fila['Documento'],
                             'Radicado': fila['Radicado'],
-                            'Nombre Hoja': nombre_hoja
+                            'Nombre Hoja': nombre_hoja_propietarios
                         }
                         errores.append(error)
                         print(f"Error encontrado: {error}")

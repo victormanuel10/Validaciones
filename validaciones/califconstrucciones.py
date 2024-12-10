@@ -898,7 +898,6 @@ class CalificaionesConstrucciones:
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones Hoja Calificaciones: {df_calificaciones.shape}")
             print(f"Dimensiones Hoja Construcciones: {df_construcciones.shape}")
-            #Commmit1
             
             # Lista para almacenar los resultados
             resultados = []
@@ -925,15 +924,28 @@ class CalificaionesConstrucciones:
                         # Validar que el Número de Pisos sea menor a 3
                         if numero_pisos < 3:
                             resultado = {
-                                
-                                
                                 'NroFicha': nro_ficha,  # Incluir NroFicha en los resultados
                                 'secuencia': secuencia,
-                                'Cubierta': fila_calificaciones['Cubierta'],
-                                'NumeroPisos': numero_pisos,
                                 'Npn': npn,  # Incluir la columna Npn
                                 'Observacion': 'Número de pisos menor a 3 para la cubierta azotea (aviso)',
-                                'Nombre Hoja': hoja_calificaciones
+                                'Cubierta': fila_calificaciones['Cubierta'],
+                                'Armazon': fila_calificaciones['Armazon'],
+                                'Muro': fila_calificaciones['Muro'],
+                                'Conservacion': fila_calificaciones['Conservacion'],
+                                'Fachada': fila_calificaciones['Fachada'],
+                                'Cubrimiento Muro': fila_calificaciones['Cubrimiento Muro'],
+                                'Piso': fila_calificaciones['Piso'],
+                                'ConservacionPrincipales': fila_calificaciones['ConservacionPrincipales'],
+                                'TamanioBanio': fila_calificaciones['TamanioBanio'],
+                                'EnchapesBanio': fila_calificaciones['EnchapesBanio'],
+                                'MobiliarioBanio': fila_calificaciones['MobiliarioBanio'],
+                                'ConservacionBanio': fila_calificaciones['ConservacionBanio'],
+                                'TamanioCocina': fila_calificaciones['TamanioCocina'],
+                                'Enchape': fila_calificaciones['Enchape'],
+                                'MobiliarioCocina': fila_calificaciones['MobiliarioCocina'],
+                                'ConservacionCocina': fila_calificaciones['ConservacionCocina'],
+                                'Radicado': fila_calificaciones['Radicado'],
+                                'Nombre Hoja': hoja_calificaciones  # Nombre de la hoja
                             }
                             resultados.append(resultado)
                             print(f"Error encontrado: {resultado}")
