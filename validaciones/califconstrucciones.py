@@ -898,6 +898,7 @@ class CalificaionesConstrucciones:
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones Hoja Calificaciones: {df_calificaciones.shape}")
             print(f"Dimensiones Hoja Construcciones: {df_construcciones.shape}")
+            #Commmit1
             
             # Lista para almacenar los resultados
             resultados = []
@@ -914,7 +915,7 @@ class CalificaionesConstrucciones:
                 if not construccion_filtrada.empty:
                     nro_ficha = construccion_filtrada.iloc[0]['NroFicha']  # Obtener el NroFicha
                     numero_pisos = construccion_filtrada.iloc[0]['NumeroPisos']
-                    
+
                     # Realizar un merge con la hoja Fichas para obtener la columna Npn
                     ficha_filtrada = df_fichas[df_fichas['NroFicha'] == nro_ficha]
                     
