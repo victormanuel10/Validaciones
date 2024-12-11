@@ -2378,14 +2378,32 @@ class Ficha:
                         npn = df_fichas[df_fichas['NroFicha'] == fila['NroFicha']]['Npn'].values
                         npn_value = npn[0] if len(npn) > 0 else 'N/A'
 
-                        # Crear el error
+                        # Crear el error con todas las columnas adicionales
                         error = {
                             'MatriculaInmobiliaria': matricula,
-                            'NroFicha': fila.get('NroFicha', 'N/A'),
+                            'NroFicha': fila.get('NroFicha', ''),
                             'Npn': npn_value,
                             'Observacion': 'Matricula inmobiliaria repetida con el mismo documento',
-                            'Documento': fila['Documento'],
-                            'Radicado': fila['Radicado'],
+                            'TipoDocumento': fila.get('TipoDocumento', ''),
+                            'Documento': fila.get('Documento', ''),
+                            'CalidadPropietario': fila.get('CalidadPropietario', ''),
+                            'Derecho': fila.get('Derecho', ''),
+                            'CalidadPropietarioOficial': fila.get('CalidadPropietarioOficial', ''),
+                            'Fecha': fila.get('Fecha', ''),
+                            'CodigoFideicomiso': fila.get('CodigoFideicomiso', ''),
+                            'Escritura': fila.get('Escritura', ''),
+                            'Entidad': fila.get('Entidad', ''),
+                            'EntidadDepartamento': fila.get('EntidadDepartamento', ''),
+                            'EntidadMunicipio': fila.get('EntidadMunicipio', ''),
+                            'NumeroFallo': fila.get('NumeroFallo', ''),
+                            'RazonSocial': fila.get('RazonSocial', ''),
+                            'PrimerNombre': fila.get('PrimerNombre', ''),
+                            'SegundoNombre': fila.get('SegundoNombre', ''),
+                            'PrimerApellido': fila.get('PrimerApellido', ''),
+                            'SegundoApellido': fila.get('SegundoApellido', ''),
+                            'Sexo': fila.get('Sexo', ''),
+                            'Tomo': fila.get('Tomo', ''),
+                            'Radicado': fila.get('Radicado', ''),
                             'Nombre Hoja': nombre_hoja_propietarios
                         }
                         errores.append(error)

@@ -25,19 +25,8 @@ class Procesar:
         elif isinstance(resultados, pd.DataFrame):
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
        
-    def procesar_errores(self):
-
-        archivo_excel = self.archivo_entry.get()
-        
-        if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
-            return
-        
-        
-        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
-        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
-        
-        '''
+       
+    '''
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
@@ -144,10 +133,18 @@ class Procesar:
         self.agregar_resultados(colindantes.validar_orientaciones_rph())
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
-        
-        
         '''
         
+    def procesar_errores(self):
+
+        archivo_excel = self.archivo_entry.get()
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return
+        
+        zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
+        self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
         
         
         self.generar_reporte_observaciones(archivo_excel)  
@@ -299,15 +296,32 @@ class Procesar:
     def agregar_reporte(self, writer):
         """
         Agrega las hojas 'Resumen' y 'Agrupación por Fichas' al archivo Excel.
+        Además, agrega una fila a 'Resumen' con la cantidad total de fichas con inconsistencia.
         """
         if hasattr(self, 'reporte'):
+            # Verificar si existe la hoja 'Errores por Ficha'
+            if hasattr(self, 'agrupacion_fichas') and self.agrupacion_fichas is not None:
+                # Calcular la cantidad total de fichas con inconsistencia
+                total_fichas_inconsistentes = len(self.agrupacion_fichas)
+
+                # Agregar una fila al DataFrame de reporte
+                nueva_fila = {
+                    'Observacion': 'Cantidad total de fichas con inconsistencia',
+                    'Cantidad': total_fichas_inconsistentes
+                }
+                self.reporte = pd.concat([self.reporte, pd.DataFrame([nueva_fila])], ignore_index=True)
+
+            # Guardar la hoja 'Resumen'
             self.reporte.to_excel(writer, sheet_name='Resumen', index=False)
             print("Reporte de observaciones agregado a la hoja 'Resumen'.")
         else:
             print("No hay observaciones para generar el reporte.")
 
         if hasattr(self, 'agrupacion_fichas') and self.agrupacion_fichas is not None:
+            # Guardar la hoja 'Errores por Ficha'
             self.agrupacion_fichas.to_excel(writer, sheet_name='Errores por Ficha', index=False)
-            print("Agrupación por NroFicha agregada a la hoja 'Agrupación por Fichas'.")
+            print("Agrupación por NroFicha agregada a la hoja 'Errores por Ficha'.")
         else:
             print("No hay agrupación por NroFicha para generar el reporte.")
+            
+    
