@@ -430,12 +430,15 @@ class Construcciones:
                 how='left'
             )
 
+            df_construcciones = df_construcciones[df_construcciones['ConvencionalNoConvencional'] == 'Convencional']
             # Lista para almacenar errores
             errores = []
 
             # Validar cada fila en la columna 'Puntos'
             for index, row in df_construcciones.iterrows():
                 # Validar si 'Puntos' es nulo
+                
+                
                 if pd.isnull(row['Puntos ']):
                     errores.append({
                         

@@ -26,10 +26,26 @@ class Procesar:
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
        
        
-    '''
+    
+        
+        
+        
+        
+        
+    def procesar_errores(self):
+
+        archivo_excel = self.archivo_entry.get()
+        
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return
+        
+        
+       
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
+        self.agregar_resultados(ficha.validar_matricula_repetida_diferente_doc())
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
@@ -93,13 +109,15 @@ class Procesar:
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         construcciones = Construcciones(self.archivo_entry)
+        self.agregar_resultados(construcciones.validar_construcciones_puntos())
+        
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
         self.agregar_resultados(construcciones.validar_secuencia_convencional())
         self.agregar_resultados(construcciones.validar_secuencia_unica_por_ficha())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.validar_secuencia_convencional_calificaciones())
         self.agregar_resultados(construcciones.validar_no_convencional_secuencia())
-        self.agregar_resultados(construcciones.validar_construcciones_puntos())
+        
         self.agregar_resultados(construcciones.validar_porcentaje_construido())
         self.agregar_resultados(construcciones.validar_edad_construccion())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
@@ -132,16 +150,6 @@ class Procesar:
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_rph())
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
-        
-        '''
-        
-    def procesar_errores(self):
-
-        archivo_excel = self.archivo_entry.get()
-        
-        if not archivo_excel:
-            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
-            return
         
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())

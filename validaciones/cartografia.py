@@ -23,11 +23,23 @@ class Cartografia:
             # Convertir a string y eliminar espacios en blanco
             df_fichas['NroFicha'] = df_fichas['NroFicha'].astype(str).str.strip()
             df_cartografia['NroFicha'] = df_cartografia['NroFicha'].astype(str).str.strip()
+            df_fichas['Npn'] = df_fichas['Npn'].astype(str).str.strip()
 
             # Convertir a numérico para evitar errores
             df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
             df_cartografia['NroFicha'] = pd.to_numeric(df_cartografia['NroFicha'], errors='coerce')
+
+            # Filtrar registros de FICHAS excluyendo los que cumplen la condición
+            def excluir_prediales(npn):
+                if len(npn) >= 30:  # Asegurar que tiene al menos 30 caracteres
+                    digito_22 = npn[21]  # Dígito 22 (índice 21)
+                    ultimos_4_digitos = npn[-4:]  # Últimos 4 dígitos
+                    suma_ultimos_4 = sum(int(d) for d in ultimos_4_digitos if d.isdigit())  # Sumar los dígitos numéricos
+                    return not (digito_22 == '9' and suma_ultimos_4 > 0)  # Excluir si cumple la condición
+                return True  # Incluir si no cumple la longitud mínima
             
+            df_fichas = df_fichas[df_fichas['Npn'].apply(excluir_prediales)]
+
             # Obtener los números de ficha únicos
             nro_ficha_fichas = set(df_fichas['NroFicha'].dropna().unique())
             nro_ficha_cartografia = set(df_cartografia['NroFicha'].dropna().unique())

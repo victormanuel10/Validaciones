@@ -1741,16 +1741,6 @@ class Ficha:
 
             # Validar si hay valores nulos en las columnas 'DireccionReferencia' y 'DireccionNombre'
             for index, row in df_fichas.iterrows():
-                if pd.isnull(row['DireccionReferencia']):
-                    resultados.append({
-                        'NroFicha': row['NroFicha'],
-                        'Npn':row['Npn'],
-                        'DireccionReferencia': row['DireccionReferencia'],
-                        'DireccionNombre':row['DireccionNombre'],
-                        'Observacion': 'DireccionReferencia no está diligenciada',
-                        'Radicado':row['Radicado'],
-                        'Nombre Hoja': 'FichasPrediales'
-                    })
 
                 if pd.isnull(row['DireccionNombre']):
                     resultados.append({
@@ -2405,6 +2395,78 @@ class Ficha:
                             'Tomo': fila.get('Tomo', ''),
                             'Radicado': fila.get('Radicado', ''),
                             'Nombre Hoja': nombre_hoja_propietarios
+                        }
+                        errores.append(error)
+                        print(f"Error encontrado: {error}")
+
+            print(f"Total de errores encontrados: {len(errores)}")
+
+            # Crear un DataFrame con los errores
+            df_errores = pd.DataFrame(errores)
+
+            '''
+            # Guardar los errores en un archivo Excel
+            output_file = 'Errores_MatriculaRepetida.xlsx'
+            sheet_name = 'Errores'
+            df_errores.to_excel(output_file, sheet_name=sheet_name, index=False)
+            print(f"Archivo guardado: {output_file}")
+            messagebox.showinfo("Éxito", f"Proceso completado. Se encontró(n) {len(errores)} error(es).")
+            '''
+            return errores
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            
+            
+    def validar_matricula_repetida_diferente_doc(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja_propietarios = 'Propietarios'
+        nombre_hoja_fichas = 'Fichas'
+
+        if not archivo_excel or not nombre_hoja_propietarios or not nombre_hoja_fichas:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica los nombres de las hojas.")
+            return
+
+        try:
+            # Leer ambas hojas
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_propietarios)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_fichas)
+
+            print(f"Función: validar_matricula_repetida")
+            print(f"Leyendo archivo: {archivo_excel}")
+            print(f"Hoja Propietarios: {nombre_hoja_propietarios}, Hoja Fichas: {nombre_hoja_fichas}")
+            print(f"Dimensiones del DataFrame Propietarios: {df_propietarios.shape}")
+            print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
+            print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+
+           
+
+            # Asegurarse de que 'MatriculaInmobiliaria' sea numérico
+            df_fichas['MatriculaInmobiliaria'] = pd.to_numeric(df_fichas['MatriculaInmobiliaria'], errors='coerce')
+
+            # Agrupar por 'MatriculaInmobiliaria' y contar ocurrencias
+            duplicados = df_fichas.groupby('MatriculaInmobiliaria').filter(lambda x: len(x) > 1)
+
+            # Lista para almacenar los errores encontrados
+            errores = []
+
+            # Validar si los duplicados tienen el mismo número de documento
+            for matricula, grupo in duplicados.groupby('MatriculaInmobiliaria'):
+                
+                # Si todos los documentos dentro del grupo son iguales
+                    for _, fila in grupo.iterrows():
+                        # Si encontramos que la matrícula tiene documentos repetidos
+                        npn = df_fichas[df_fichas['NroFicha'] == fila['NroFicha']]['Npn'].values
+                        npn_value = npn[0] if len(npn) > 0 else 'N/A'
+
+                        # Crear el error con todas las columnas adicionales
+                        error = {
+                            'MatriculaInmobiliaria': matricula,
+                            'NroFicha': fila.get('NroFicha', ''),
+                            'Npn': npn_value,
+                            'Observacion': 'Matricula inmobiliaria repetida',
+                            'Nombre Hoja': nombre_hoja_fichas
                         }
                         errores.append(error)
                         print(f"Error encontrado: {error}")
