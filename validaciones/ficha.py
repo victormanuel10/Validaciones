@@ -1672,11 +1672,11 @@ class Ficha:
                 num_cedula_catastral = row['NumCedulaCatastral'].strip()  # Convertir a cadena y quitar espacios
 
                 # Validar longitud de 28 dígitos
-                if len(num_cedula_catastral) != 28:
+                if len(num_cedula_catastral) < 19:
                     resultados.append({
                         'NroFicha': row['NroFicha'],
                         
-                        'Observacion': 'NumCedulaCatastral no tiene 28 dígitos',
+                        'Observacion': 'NumCedulaCatastral invalida',
                         'Npn':row['Npn'],
                         'DestinoEconomico': row['DestinoEcconomico'],
                         'MatriculaInmobiliaria':row['MatriculaInmobiliaria'],
