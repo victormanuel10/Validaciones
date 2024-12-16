@@ -42,10 +42,13 @@ class Procesar:
         
         
        
+        '''
         
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida())
         self.agregar_resultados(ficha.validar_matricula_repetida_diferente_doc())
+        
+        
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
@@ -109,8 +112,7 @@ class Procesar:
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         construcciones = Construcciones(self.archivo_entry)
-        self.agregar_resultados(construcciones.validar_construcciones_puntos())
-        
+        self.agregar_resultados(construcciones.validar_construcciones_puntos())     
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
         self.agregar_resultados(construcciones.validar_secuencia_convencional())
         self.agregar_resultados(construcciones.validar_secuencia_unica_por_ficha())
@@ -136,10 +138,12 @@ class Procesar:
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         
-        
+        '''
         
         cartografia=Cartografia(self.archivo_entry)
         self.agregar_resultados(cartografia.validar_fichas_faltantes())
+        '''
+        
         self.agregar_resultados(cartografia.validar_cartografia_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_columnas())
         
@@ -153,7 +157,7 @@ class Procesar:
         
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
-        
+        '''
         
         self.generar_reporte_observaciones(archivo_excel)  
         

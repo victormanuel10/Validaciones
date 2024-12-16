@@ -2370,10 +2370,11 @@ class Ficha:
 
                         # Crear el error con todas las columnas adicionales
                         error = {
-                            'MatriculaInmobiliaria': matricula,
+                            
                             'NroFicha': fila.get('NroFicha', ''),
                             'Npn': npn_value,
                             'Observacion': 'Matricula inmobiliaria repetida con el mismo documento',
+                            'MatriculaInmobiliaria': matricula,
                             'TipoDocumento': fila.get('TipoDocumento', ''),
                             'Documento': fila.get('Documento', ''),
                             'CalidadPropietario': fila.get('CalidadPropietario', ''),
@@ -2440,10 +2441,12 @@ class Ficha:
             print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
             print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
 
-           
-
             # Asegurarse de que 'MatriculaInmobiliaria' sea numérico
             df_fichas['MatriculaInmobiliaria'] = pd.to_numeric(df_fichas['MatriculaInmobiliaria'], errors='coerce')
+
+            # Excluir matrículas nulas, vacías o igual a cero
+            df_fichas = df_fichas[(df_fichas['MatriculaInmobiliaria'].notna()) & (df_fichas['MatriculaInmobiliaria'] != 0)]
+            print(f"Dimensiones después de excluir matrículas nulas, vacías o igual a cero: {df_fichas.shape}")
 
             # Agrupar por 'MatriculaInmobiliaria' y contar ocurrencias
             duplicados = df_fichas.groupby('MatriculaInmobiliaria').filter(lambda x: len(x) > 1)
@@ -2453,37 +2456,41 @@ class Ficha:
 
             # Validar si los duplicados tienen el mismo número de documento
             for matricula, grupo in duplicados.groupby('MatriculaInmobiliaria'):
-                
                 # Si todos los documentos dentro del grupo son iguales
-                    for _, fila in grupo.iterrows():
-                        # Si encontramos que la matrícula tiene documentos repetidos
-                        npn = df_fichas[df_fichas['NroFicha'] == fila['NroFicha']]['Npn'].values
-                        npn_value = npn[0] if len(npn) > 0 else 'N/A'
+                for _, fila in grupo.iterrows():
+                    # Si encontramos que la matrícula tiene documentos repetidos
+                    npn = df_fichas[df_fichas['NroFicha'] == fila['NroFicha']]['Npn'].values
+                    npn_value = npn[0] if len(npn) > 0 else 'N/A'
 
-                        # Crear el error con todas las columnas adicionales
-                        error = {
-                            'MatriculaInmobiliaria': matricula,
-                            'NroFicha': fila.get('NroFicha', ''),
-                            'Npn': npn_value,
-                            'Observacion': 'Matricula inmobiliaria repetida',
-                            'Nombre Hoja': nombre_hoja_fichas
-                        }
-                        errores.append(error)
-                        print(f"Error encontrado: {error}")
+                    # Crear el error con todas las columnas adicionales
+                    error = {
+                        'Npn': npn_value,
+                        'NroFicha': fila.get('NroFicha', ''),
+                        'Observacion': 'Matricula inmobiliaria repetida',
+                        'DestinoEconomico': fila['DestinoEcconomico'],
+                        'MatriculaInmobiliaria': matricula,
+                        'Radicado': fila.get('Radicado', ''),
+                        'AreaTotalConstruida':fila['AreaTotalConstruida'],
+                        'CaracteristicaPredio':fila['CaracteristicaPredio'],
+                        'AreaTotalTerreno':fila['AreaTotalTerreno'],
+                        'ModoAdquisicion':fila['ModoAdquisicion'],
+                        'Tomo':fila['Tomo'],
+                        'PredioLcTipo':fila['PredioLcTipo'],
+                        'NumCedulaCatastral':fila['NumCedulaCatastral'],
+                        'AreaTotalLote':fila['AreaTotalLote'],
+                        'AreaLoteComun':fila['AreaLoteComun'],
+                        'AreaLotePrivada':fila['AreaLotePrivada'],
+                        'Radicado':fila['Radicado'],
+                        'Nombre Hoja': nombre_hoja_fichas
+                    }
+                    errores.append(error)
+                    print(f"Error encontrado: {error}")
 
             print(f"Total de errores encontrados: {len(errores)}")
 
             # Crear un DataFrame con los errores
             df_errores = pd.DataFrame(errores)
 
-            '''
-            # Guardar los errores en un archivo Excel
-            output_file = 'Errores_MatriculaRepetida.xlsx'
-            sheet_name = 'Errores'
-            df_errores.to_excel(output_file, sheet_name=sheet_name, index=False)
-            print(f"Archivo guardado: {output_file}")
-            messagebox.showinfo("Éxito", f"Proceso completado. Se encontró(n) {len(errores)} error(es).")
-            '''
             return errores
 
         except Exception as e:

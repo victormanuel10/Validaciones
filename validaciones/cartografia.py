@@ -35,7 +35,7 @@ class Cartografia:
                     digito_22 = npn[21]  # Dígito 22 (índice 21)
                     ultimos_4_digitos = npn[-4:]  # Últimos 4 dígitos
                     suma_ultimos_4 = sum(int(d) for d in ultimos_4_digitos if d.isdigit())  # Sumar los dígitos numéricos
-                    return not (digito_22 == '9' and suma_ultimos_4 > 0)  # Excluir si cumple la condición
+                    return not (digito_22 in ['8', '9'] and suma_ultimos_4 > 0)  # Excluir si cumple la condición
                 return True  # Incluir si no cumple la longitud mínima
             
             df_fichas = df_fichas[df_fichas['Npn'].apply(excluir_prediales)]
