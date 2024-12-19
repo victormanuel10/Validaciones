@@ -25,12 +25,6 @@ class Procesar:
         elif isinstance(resultados, pd.DataFrame):
             self.resultados_generales.extend(resultados.to_dict(orient='records'))
        
-       
-    
-        
-        
-        
-        
         
     def procesar_errores(self):
 
@@ -42,9 +36,13 @@ class Procesar:
         
         
        
-        '''
+        
+        
+        
         
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
+       
         self.agregar_resultados(ficha.validar_matricula_repetida())
         self.agregar_resultados(ficha.validar_matricula_repetida_diferente_doc())
         
@@ -54,7 +52,7 @@ class Procesar:
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())    
-        self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
+        
         self.agregar_resultados(ficha.validar_caracteristica_predio())
         self.agregar_resultados(ficha.validar_agricola_urb())
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
@@ -81,9 +79,6 @@ class Procesar:
         self.agregar_resultados(ficha.ficha_repetida())
         self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
         
-        
-        
-        
         fichasrph=FichasRPH(self.archivo_entry)
         self.agregar_resultados(fichasrph.ficha_resumen_sin_unidades())
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
@@ -97,6 +92,7 @@ class Procesar:
         self.agregar_resultados(fichasrph.validar_npn_suma_cero_unico())
         
         propietarios = Propietarios(self.archivo_entry)
+        self.agregar_resultados(propietarios.calidad_propietario_incorrecto())
         self.agregar_resultados(propietarios.contar_nph_calidad_propietario())
         self.agregar_resultados(propietarios.validar_matricula_entidad())
         self.agregar_resultados(propietarios.derecho_diferente_cien())
@@ -112,6 +108,7 @@ class Procesar:
         self.agregar_resultados(propietarios.fecha_escritura_mayor())
         
         construcciones = Construcciones(self.archivo_entry)
+        self.agregar_resultados(construcciones.validar_id_uso())
         self.agregar_resultados(construcciones.validar_construcciones_puntos())     
         self.agregar_resultados(construcciones.validar_secuencia_construcciones_vs_calificaciones())
         self.agregar_resultados(construcciones.validar_secuencia_convencional())
@@ -119,7 +116,6 @@ class Procesar:
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
         self.agregar_resultados(construcciones.validar_secuencia_convencional_calificaciones())
         self.agregar_resultados(construcciones.validar_no_convencional_secuencia())
-        
         self.agregar_resultados(construcciones.validar_porcentaje_construido())
         self.agregar_resultados(construcciones.validar_edad_construccion())
         self.agregar_resultados(construcciones.validar_construcciones_No_convencionales())
@@ -138,11 +134,11 @@ class Procesar:
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         
-        '''
+        
         
         cartografia=Cartografia(self.archivo_entry)
         self.agregar_resultados(cartografia.validar_fichas_faltantes())
-        '''
+        
         
         self.agregar_resultados(cartografia.validar_cartografia_faltantes())
         self.agregar_resultados(cartografia.validar_cartografia_columnas())
@@ -157,7 +153,7 @@ class Procesar:
         
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
-        '''
+        
         
         self.generar_reporte_observaciones(archivo_excel)  
         

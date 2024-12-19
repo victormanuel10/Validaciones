@@ -10,8 +10,7 @@ import numpy as np
 from pathlib import Path
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl import load_workbook
-
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class InterfazGrafica:
@@ -266,6 +265,8 @@ class InterfazGrafica:
         df.columns = cols
         return df
     
+     
+
     def consolidar_carpeta(self):
         if not self.folder_path.get():
             messagebox.showerror("Error", "Por favor seleccione una carpeta")
@@ -426,7 +427,6 @@ class InterfazGrafica:
 
         except Exception as e:
             messagebox.showerror("Error", f"Ocurrió un error durante la consolidación:\n{str(e)}")
-
         
     def seleccionar_archivo_1(self):
         self.ruta_archivo_1 = filedialog.askopenfilename(title="Selecciona el primer archivo de Excel", filetypes=[("Excel files", "*.xlsx")])

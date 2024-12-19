@@ -1109,3 +1109,108 @@ class Propietarios:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    def calidad_propietario_incorrecto(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'Propietarios'
+        hoja_fichas='Fichas'
+        
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return
+        
+        try:
+            # Leer el archivo Excel
+            df_propietarios = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            
+
+            if 'NroFicha' not in df_propietarios.columns or 'NroFicha' not in df_fichas.columns:
+                messagebox.showerror("Error", "La columna 'NroFicha' no existe en una de las hojas.")
+                return
+
+            # Hacer merge para agregar la columna 'Npn' de 'Fichas' a 'Propietarios'
+            df_merged = pd.merge(
+                df_propietarios,
+                df_fichas[['NroFicha', 'Npn']],  # Sólo tomamos las columnas necesarias
+                on='NroFicha',
+                how='left'  # Usamos 'left' para mantener todas las filas de 'Propietarios'
+            )
+            
+            resultados = []
+
+            # Lista de palabras no permitidas
+            palabras_permitidas = ['MUNICIPIO']
+
+            # Iterar sobre las filas del DataFrame
+            for index, row in df_merged.iterrows():
+                CalidadPropietarioOficial = str(row['CalidadPropietarioOficial']).strip()
+                RazonSocial=str(row['RazonSocial']).strip()
+                
+                print(f"Fila {index}: NumCedulaCatastral = '{CalidadPropietarioOficial}'")
+                print(f"Fila {index}: NumCedulaCatastral = '{RazonSocial}'")
+                
+                if len(RazonSocial) >= 9:
+                         
+                        # Validar si la dirección está vacía
+                        if any(palabra in RazonSocial[:9] for palabra in palabras_permitidas) and CalidadPropietarioOficial not in ['21|PREDIO PUBLICO BALDIO','4|MUNICIPAL','24|PREDIO PUBLICO USO PUBLICO']:
+                            observacion = 'Calidad de propietario incorrecto para Municipio'
+                        else:
+                            continue
+
+                        # Agregar a resultados
+                        resultado = {
+                            
+                            'NroFicha': row.get('NroFicha'),
+                            'Npn': row.get('Npn'),
+                            'Observacion': observacion,
+                            'TipoDocumento': row['TipoDocumento'],
+                            'Documento': row['Documento'],
+                            'CalidadPropietario': row['CalidadPropietario'],
+                            'Derecho': row['Derecho'],
+                            'CalidadPropietarioOficial': row['CalidadPropietarioOficial'],
+                            'Fecha': row['Fecha'],
+                            'CodigoFideicomiso': row['CodigoFideicomiso'],
+                            'Escritura': row['Escritura'],
+                            'Entidad': row['Entidad'],
+                            'EntidadDepartamento': row['EntidadDepartamento'],
+                            'EntidadMunicipio': row['EntidadMunicipio'],
+                            'NumeroFallo': row['NumeroFallo'],
+                            'RazonSocial': row['RazonSocial'],
+                            'PrimerNombre': row['PrimerNombre'],
+                            'SegundoNombre': row['SegundoNombre'],
+                            'PrimerApellido': row['PrimerApellido'],
+                            'SegundoApellido': row['SegundoApellido'],
+                            'Sexo': row['Sexo'],
+                            'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
+                            'Tomo': row['Tomo'],
+                            'Radicado': row['Radicado'],
+                            
+                            
+                            'Nombre Hoja': nombre_hoja
+                        }
+                        resultados.append(resultado)
+                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+
+                print(f"Total de errores encontrados: {len(resultados)}")
+            '''
+            
+            if resultados:
+                # Crear un nuevo DataFrame con los resultados
+                df_resultado = pd.DataFrame(resultados)
+                
+                output_file = 'Direcciones_invalidas.xlsx'
+                sheet_name = 'Direcciones'
+                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
+                print(f"Archivo guardado: {output_file}")
+                messagebox.showinfo("Éxito", f"Se encontraron {len(resultados)} registros con errores.")
+            else:
+                print("No se encontraron direcciones inválidas.")
+                messagebox.showinfo("Información", "No se encontraron registros con errores en las direcciones.")
+            '''
+            return resultados
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")

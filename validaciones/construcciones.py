@@ -841,3 +841,54 @@ class Construcciones:
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            
+    
+    def validar_id_uso(self):
+        archivo_excel = self.archivo_entry.get()
+
+        if not archivo_excel:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo.")
+            return []
+
+        try:
+            # Leer la hoja 'Construcciones' y 'Fichas'
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name='Construcciones')
+            df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
+
+            # Realizar merge para incluir la columna Npn desde la hoja Fichas
+            df_construcciones = df_construcciones.merge(
+                df_fichas[['NroFicha', 'Npn']],
+                on='NroFicha',
+                how='left'
+            )
+
+            errores = []
+
+            # Validar cada fila en la columna 'IdUso'
+            for index, row in df_construcciones.iterrows():
+                id_uso = str(row.get('IdUso', '')).strip()  # Convertir a string y eliminar espacios
+                
+                # Extraer los números antes del separador '|'
+                try:
+                    numero_inicial = int(id_uso.split('|')[0])  # Tomar el primer valor numérico
+                except ValueError:
+                    numero_inicial = None  # Si no es un número válido, asignar None
+
+                # Validar si el número inicial es menor a 800
+                if numero_inicial is None or numero_inicial < 800:
+                    errores.append({
+                        'Npn': row.get('Npn', ''),
+                        'NroFicha': row['NroFicha'],
+                        'Observacion': "Identificador de uso incorrecto (menor a 800)",
+                        'IdUso': row['IdUso'],
+                        'Radicado': row.get('Radicado', ''),
+                        'Nombre Hoja': 'Construcciones'
+                    })
+
+            # Devolver los errores encontrados
+            return errores
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+            return []

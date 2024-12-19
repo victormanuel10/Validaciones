@@ -265,7 +265,7 @@ class Ficha:
 
             return resultados
 
-        except Exception as e:
+        except Exception as e:  
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
@@ -622,7 +622,7 @@ class Ficha:
                 # Verificar que ModoAdquisicion sea igual a '2|POSESIÓN'
                 if modo_adquisicion in ['2|POSESIÓN', '5|OCUPACIÓN']:
                     # Si CaracteristicaPredio es diferente de '12|INFORMAL (2)', generar error
-                    if caracteristica_predio != '12|INFORMAL (2)' and PredioLcTipo!='Predio.Publico.Presunto_Baldio':
+                    if caracteristica_predio != '12|INFORMAL (2)' and PredioLcTipo not in  ['Predio.Publico.Presunto_Baldio','Predio.Publico.Baldio.Baldio','Predio.Publico.Uso_Publico']:
                         resultado = {
                             'NroFicha': row.get('NroFicha', 'Sin valor'),
                             'Observacion': 'Caracteristica incorrecta para Modo de Aquisición Ocupación o Posesión',
