@@ -2419,7 +2419,7 @@ class Ficha:
             print(f"Error: {str(e)}")
             
             
-    def validar_matricula_repetida_diferente_doc(self):
+    def validar_matricula_repetida_mismo_circulo(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja_propietarios = 'Propietarios'
         nombre_hoja_fichas = 'Fichas'
@@ -2430,15 +2430,12 @@ class Ficha:
 
         try:
             # Leer ambas hojas
-            df_propietarios = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_propietarios)
             df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja_fichas)
 
-            print(f"Función: validar_matricula_repetida")
+            print(f"Función: validar_matricula_repetida_mismo_circulo")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Hoja Propietarios: {nombre_hoja_propietarios}, Hoja Fichas: {nombre_hoja_fichas}")
-            print(f"Dimensiones del DataFrame Propietarios: {df_propietarios.shape}")
+            print(f"Hoja Fichas: {nombre_hoja_fichas}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
-            print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
             print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
 
             # Asegurarse de que 'MatriculaInmobiliaria' sea numérico
@@ -2448,40 +2445,39 @@ class Ficha:
             df_fichas = df_fichas[(df_fichas['MatriculaInmobiliaria'].notna()) & (df_fichas['MatriculaInmobiliaria'] != 0)]
             print(f"Dimensiones después de excluir matrículas nulas, vacías o igual a cero: {df_fichas.shape}")
 
-            # Agrupar por 'MatriculaInmobiliaria' y contar ocurrencias
-            duplicados = df_fichas.groupby('MatriculaInmobiliaria').filter(lambda x: len(x) > 1)
+            # Agrupar por 'MatriculaInmobiliaria' y 'circulo', y filtrar los que tienen más de una ocurrencia
+            duplicados = (
+                df_fichas.groupby(['MatriculaInmobiliaria', 'circulo'])
+                .filter(lambda x: len(x) > 1)
+            )
+
+            print(f"Total de matrículas repetidas con el mismo círculo registral: {duplicados.shape[0]}")
 
             # Lista para almacenar los errores encontrados
             errores = []
 
-            # Validar si los duplicados tienen el mismo número de documento
-            for matricula, grupo in duplicados.groupby('MatriculaInmobiliaria'):
-                # Si todos los documentos dentro del grupo son iguales
+            # Crear el reporte de errores
+            for (matricula, circulo), grupo in duplicados.groupby(['MatriculaInmobiliaria', 'circulo']):
                 for _, fila in grupo.iterrows():
-                    # Si encontramos que la matrícula tiene documentos repetidos
-                    npn = df_fichas[df_fichas['NroFicha'] == fila['NroFicha']]['Npn'].values
-                    npn_value = npn[0] if len(npn) > 0 else 'N/A'
-
-                    # Crear el error con todas las columnas adicionales
                     error = {
-                        'Npn': npn_value,
-                        'NroFicha': fila.get('NroFicha', ''),
-                        'Observacion': 'Matricula inmobiliaria repetida',
-                        'DestinoEconomico': fila['DestinoEcconomico'],
-                        'MatriculaInmobiliaria': matricula,
-                        'Radicado': fila.get('Radicado', ''),
-                        'AreaTotalConstruida':fila['AreaTotalConstruida'],
-                        'CaracteristicaPredio':fila['CaracteristicaPredio'],
-                        'AreaTotalTerreno':fila['AreaTotalTerreno'],
-                        'ModoAdquisicion':fila['ModoAdquisicion'],
-                        'Tomo':fila['Tomo'],
-                        'PredioLcTipo':fila['PredioLcTipo'],
-                        'NumCedulaCatastral':fila['NumCedulaCatastral'],
-                        'AreaTotalLote':fila['AreaTotalLote'],
-                        'AreaLoteComun':fila['AreaLoteComun'],
-                        'AreaLotePrivada':fila['AreaLotePrivada'],
-                        'Radicado':fila['Radicado'],
-                        'Nombre Hoja': nombre_hoja_fichas
+                            'Npn': fila.get('Npn', ''),
+                            'NroFicha': fila.get('NroFicha', ''),
+                            'Observacion': 'Matricula inmobiliaria repetida ',
+                            'DestinoEconomico': fila['DestinoEcconomico'],
+                            'MatriculaInmobiliaria': matricula,
+                            'Circulo': fila['circulo'],
+                            'Radicado': fila.get('Radicado', ''),
+                            'AreaTotalConstruida': fila['AreaTotalConstruida'],
+                            'CaracteristicaPredio': fila['CaracteristicaPredio'],
+                            'AreaTotalTerreno': fila['AreaTotalTerreno'],
+                            'ModoAdquisicion': fila['ModoAdquisicion'],
+                            'Tomo': fila['Tomo'],
+                            'PredioLcTipo': fila['PredioLcTipo'],
+                            'NumCedulaCatastral': fila['NumCedulaCatastral'],
+                            'AreaTotalLote': fila['AreaTotalLote'],
+                            'AreaLoteComun': fila['AreaLoteComun'],
+                            'AreaLotePrivada': fila['AreaLotePrivada'],
+                            'Nombre Hoja': nombre_hoja_fichas
                     }
                     errores.append(error)
                     print(f"Error encontrado: {error}")

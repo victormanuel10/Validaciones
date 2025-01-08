@@ -41,10 +41,14 @@ class Procesar:
         
         
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_matricula_repetida_mismo_circulo())
+        
+        
+        
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
        
         self.agregar_resultados(ficha.validar_matricula_repetida())
-        self.agregar_resultados(ficha.validar_matricula_repetida_diferente_doc())
+        
         
         
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
