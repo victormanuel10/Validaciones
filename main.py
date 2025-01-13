@@ -7,6 +7,7 @@ from procesar import Procesar
 import traceback    
 import logging
 
+
 warnings.filterwarnings("ignore", category=UserWarning, message="Data Validation extension is not supported and will be removed")
 
 

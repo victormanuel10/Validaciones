@@ -34,29 +34,15 @@ class Procesar:
             messagebox.showerror("Error", "Por favor, selecciona un archivo.")
             return
         
-        
-       
-        
-        
-        
-        
         ficha = Ficha(self.archivo_entry)
         self.agregar_resultados(ficha.validar_matricula_repetida_mismo_circulo())
-        
-        
-        
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
-       
         self.agregar_resultados(ficha.validar_matricula_repetida())
-        
-        
-        
         self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
         self.agregar_resultados(ficha.predios_con_direcciones_invalidas())    
-        
         self.agregar_resultados(ficha.validar_caracteristica_predio())
         self.agregar_resultados(ficha.validar_agricola_urb())
         self.agregar_resultados(ficha.validar_area_construida_fichas_construcciones())
@@ -127,8 +113,6 @@ class Procesar:
         self.agregar_resultados(construcciones.tipo_construccion_noconvencionales())
         self.agregar_resultados(construcciones.validar_secuencia_calificaciones_vs_construcciones())
         
-        
-        
         calificonstrucciones= CalificaionesConstrucciones(self.archivo_entry)
         self.agregar_resultados(calificonstrucciones.Validar_cubierta())
         self.agregar_resultados(calificonstrucciones.validar_banios())
@@ -137,27 +121,18 @@ class Procesar:
         self.agregar_resultados(calificonstrucciones.Validar_armazon())
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
-        
-        
-        
-        cartografia=Cartografia(self.archivo_entry)
-        self.agregar_resultados(cartografia.validar_fichas_faltantes())
-        
-        
-        self.agregar_resultados(cartografia.validar_cartografia_faltantes())
-        self.agregar_resultados(cartografia.validar_cartografia_columnas())
-        
-        
-        
-        
-        
+    
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_rph())
         self.agregar_resultados(colindantes.validar_orientaciones_colindantes())
         
+        cartografia=Cartografia(self.archivo_entry)
+        self.agregar_resultados(cartografia.validar_fichas_faltantes())
+        self.agregar_resultados(cartografia.validar_cartografia_faltantes())
+        self.agregar_resultados(cartografia.validar_cartografia_columnas())
+        
         zonashomogeneas= ZonasHomogeneas(self.archivo_entry)
         self.agregar_resultados(zonashomogeneas.validar_tipo_zonas_homogeneas())
-        
         
         self.generar_reporte_observaciones(archivo_excel)  
         

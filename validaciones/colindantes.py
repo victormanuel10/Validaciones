@@ -6,8 +6,6 @@ class Colindantes:
     
     def __init__(self, archivo_entry):
         self.archivo_entry = archivo_entry
-        
-    
     def validar_orientaciones_colindantes(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Colindantes'
@@ -26,7 +24,7 @@ class Colindantes:
             print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
-            # Normalizar los valores de la columna 'Orientacion' para evitar problemas con mayúsculas o espacios
+            # Normalizar los valores de la columna 'Orientacion'
             df['Orientacion'] = df['Orientacion'].str.strip().str.upper()
 
             # Validar la existencia de las columnas necesarias
@@ -34,17 +32,29 @@ class Colindantes:
                 messagebox.showerror("Error", "La columna 'NroFicha' no existe en las hojas necesarias.")
                 return
             
-            # Combinar con la hoja Fichas para traer la columna 'Npn'
             df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
 
-            # Agrupar por NroFicha y revisar si cada uno tiene al menos las orientaciones requeridas
+            orientacion_map = {
+                "SURESTE": {"SUR", "ESTE"},
+                "NORESTE": {"NORTE", "ESTE"},
+                "SUROESTE": {"SUR", "OESTE"},
+                "NOROESTE": {"NORTE", "OESTE"}
+            }
+
             orientaciones_requeridas = {"ESTE", "NORTE", "SUR", "OESTE"}
             resultados = []
             fichas = df.groupby('NroFicha')
             
             for nro_ficha, grupo in fichas:
-                # Obtener las orientaciones únicas en el grupo
-                orientaciones_presentes = set(grupo['Orientacion'].unique())
+                # Obtener todas las orientaciones únicas en el grupo
+                orientaciones_presentes = set()
+                for orientacion in grupo['Orientacion'].unique():
+                    if orientacion in orientacion_map:
+                        # Añadir componentes de orientaciones compuestas
+                        orientaciones_presentes.update(orientacion_map[orientacion])
+                    else:
+                        # Añadir orientación simple
+                        orientaciones_presentes.add(orientacion)
                 
                 # Verificar si faltan orientaciones
                 orientaciones_faltantes = orientaciones_requeridas - orientaciones_presentes
