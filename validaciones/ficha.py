@@ -261,8 +261,8 @@ class Ficha:
                 '''
             else:
                 print("No se encontraron registros que cumplan con las condiciones.")
-                messagebox.showinfo("Información", "No se encontraron registros que cumplan con las condiciones.")
-
+                print("Información", "No se encontraron registros que cumplan con las condiciones.")
+                
             return resultados
 
         except Exception as e:  
@@ -793,7 +793,7 @@ class Ficha:
 
             '''
             
-            messagebox.showinfo("Éxito",
+            print("Éxito",
                                 f"Proceso completado Rural destino invalido.' con {len(resultados)} registros.")
             return resultados
         except Exception as e:
@@ -869,7 +869,7 @@ class Ficha:
                 
             else:
                 print("No se encontraron errores.")
-                messagebox.showinfo("Información", "No se encontraron registros con errores.")
+                print("Información", "No se encontraron registros con errores.")
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")

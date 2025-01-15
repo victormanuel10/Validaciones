@@ -898,11 +898,11 @@ class Propietarios:
             for index, row in df_merged.iterrows():
                 NumeroFallo = row['NumeroFallo']
 
-                if NumeroFallo == '0' or NumeroFallo == '' or pd.isna(NumeroFallo):
+                if NumeroFallo == '' or pd.isna(NumeroFallo):
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'Npn': row['Npn'],  # Ahora se incluye la columna Npn
-                        'Observacion': 'El numero fallo es cero o vacio',
+                        'Observacion': 'El numero fallo vacio',
                         'TipoDocumento': row['TipoDocumento'],
                         'Documento': row['Documento'],
                         'CalidadPropietario': row['CalidadPropietario'],

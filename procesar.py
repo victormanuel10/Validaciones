@@ -1,7 +1,6 @@
 import pandas as pd
 from tkinter import messagebox
 from collections import Counter
-from datetime import datetime
 from validaciones.ficha import Ficha
 from validaciones.construcciones import Construcciones
 from validaciones.califconstrucciones import CalificaionesConstrucciones
