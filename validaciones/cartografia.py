@@ -145,8 +145,8 @@ class Cartografia:
             
             # Columnas a validar
             columnas_requeridas = [
-                'IndicePlancha', 'Ventana', 'Escala', 'Vigencia', 'IndiceVuelo', 
-                'Faja', 'Foto', 'VigenciaAero', 'ampliacion'
+                'IndicePlancha', 'Escala', 'Vigencia', 'IndiceVuelo', 
+                'Faja', 'Foto', 'VigenciaAero'
             ]
             
             # Lista para almacenar errores

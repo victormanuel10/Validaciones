@@ -56,8 +56,8 @@ class Construcciones:
                         'TipoConstruccion': row['TipoConstruccion'],  # Desde Construcciones
                         'ConvencionalNoConvencional': row['ConvencionalNoConvencional'],  # Desde Construcciones
                         'calificacionNoConvencional': row['calificacionNoConvencional'],  # Desde Construcciones
-                        'Observacion': 'Calificación no convencional es nula para No Convencional',
-                        'Radicado': row['Radicado'],  # Desde Construcciones
+                        'Observacion': 'Calificación de construcción no convencional es nula',
+                        'Radicado':row['Radicado'],  # Desde Construcciones
                         'Nombre Hoja': 'Construcciones'  # Constante
                     }
                     resultados.append(resultado)
@@ -100,10 +100,10 @@ class Construcciones:
 
             print(f"función: tipo_construccion_noconvencionales")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame Construcciones: {df_construcciones.shape}")
+            '''print(f"Dimensiones del DataFrame Construcciones: {df_construcciones.shape}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
             print(f"Columnas en el DataFrame Construcciones: {df_construcciones.columns.tolist()}")
-            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")'''
 
             # Realizar el merge para incluir la columna Npn
             df_construcciones = df_construcciones.merge(
@@ -112,8 +112,8 @@ class Construcciones:
                 how='left'
             )
 
-            print(f"Dimensiones del DataFrame después del merge: {df_construcciones.shape}")
-            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame después del merge: {df_construcciones.shape}")
+            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")'''
 
             resultados = []
 
@@ -133,7 +133,7 @@ class Construcciones:
                         'ConvencionalNoConvencional': row['ConvencionalNoConvencional'],
                         'calificacionNoConvencional': row['calificacionNoConvencional'],
                         'Observacion': 'TipoConstruccion debe ser vacío o "N" si es No Convencional',
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -173,10 +173,10 @@ class Construcciones:
 
             print(f"función: areaconstruida_mayora1000")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame Construcciones: {df_construcciones.shape}")
+            '''print(f"Dimensiones del DataFrame Construcciones: {df_construcciones.shape}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
             print(f"Columnas en el DataFrame Construcciones: {df_construcciones.columns.tolist()}")
-            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")'''
 
             # Realizar el merge para incluir la columna Npn
             df_construcciones = df_construcciones.merge(
@@ -185,8 +185,8 @@ class Construcciones:
                 how='left'
             )
 
-            print(f"Dimensiones del DataFrame después del merge: {df_construcciones.shape}")
-            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame después del merge: {df_construcciones.shape}")
+            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")'''
 
             resultados = []
 
@@ -203,7 +203,7 @@ class Construcciones:
                         'secuencia': row['secuencia'],
                         'AreaConstruida': row['AreaConstruida'],
                         'Observacion': 'El área construida es mayor a 1000 mts (verificar)',
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
@@ -243,8 +243,8 @@ class Construcciones:
 
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
-            print(f"Dimensiones de CalificacionesConstrucciones: {df_calificaciones.shape}")
-            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            '''print(f"Dimensiones de CalificacionesConstrucciones: {df_calificaciones.shape}")
+            print(f"Dimensiones de Fichas: {df_fichas.shape}")'''
 
             # Realizar merge entre Construcciones y Fichas para incluir la columna Npn
             df_construcciones = df_construcciones.merge(
@@ -283,7 +283,7 @@ class Construcciones:
                     resultado = {
                         'NroFicha': nro_ficha,
                         'secuencia': secuencia,
-                        'Observacion': 'secuencia está en Construcciones pero no en CalificacionesConstrucciones',
+                        'Observacion': 'Construcción (secuencia) está en Construcciones pero no en CalificacionesConstrucciones',
                         'Npn': npn,  # Agregar Npn al resultado
                         'Radicado': radicado,
                         'Nombre Hoja': 'Construcciones'
@@ -311,8 +311,8 @@ class Construcciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name='Fichas')
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
-            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            '''print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
+            print(f"Dimensiones de Fichas: {df_fichas.shape}")'''
 
             # Realizar merge para incluir la columna Npn desde la hoja Fichas
             df_construcciones = df_construcciones.merge(
@@ -379,8 +379,8 @@ class Construcciones:
             )
 
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones de Construcciones después del merge: {df_construcciones.shape}")
-            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
+            '''print(f"Dimensiones de Construcciones después del merge: {df_construcciones.shape}")
+            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")'''
 
             # Filtrar registros donde 'PorcentajeConstruido' es menor a 100
             errores = df_construcciones[df_construcciones['PorcentajeConstruido'] < 100]
@@ -395,7 +395,7 @@ class Construcciones:
                     'Npn': row.get('Npn', ''),
                     'PorcentajeConstruido': row['PorcentajeConstruido'],
                     'Observacion': 'El valor de PorcentajeConstruido es menor a 100',
-                    'Radicado': row.get('Radicado', 'Sin Radicado'),
+                    'Radicado': row.get('Radicado', ' '),
                     'Nombre Hoja': 'Construcciones'
                 }
                 resultados.append(resultado)
@@ -446,7 +446,7 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'Observacion': "La columna 'Puntos' contiene valores nulos.",
                         'Puntos': row['Puntos '],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
 
@@ -457,7 +457,7 @@ class Construcciones:
                         'Observacion': "La columna 'Puntos' contiene valores menores a 1.",
                         'NroFicha': row['NroFicha'],
                         'Npn': row.get('Npn', 'Sin Npn'),  # Agregar Npn al resultado
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
 
@@ -496,8 +496,8 @@ class Construcciones:
 
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
-            print(f"Dimensiones de CalificacionesConstrucciones: {df_calificaciones.shape}")
-            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            '''print(f"Dimensiones de CalificacionesConstrucciones: {df_calificaciones.shape}")
+            print(f"Dimensiones de Fichas: {df_fichas.shape}")'''
 
             # Extraer las secuencias de cada hoja
             secuencia_construcciones = set(df_construcciones['secuencia'].dropna())
@@ -524,7 +524,7 @@ class Construcciones:
                 resultado = {
                     'secuencia': secuencia,
                     'Npn': fila_construccion.get('Npn', ''),  # Obtener la columna Npn
-                    'Observacion': 'secuencia está en CalificacionesConstrucciones pero no en Construcciones',
+                    'Observacion': 'Construccion (secuencia) está en CalificacionesConstrucciones pero no en Construcciones',
                     'Nombre Hoja': 'CalificacionesConstrucciones'
                 }
                 resultados.append(resultado)
@@ -577,8 +577,8 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'Npn': row.get('Npn', ''),
                         'secuencia': secuencia,
-                        'Observacion': "secuencia 'Convencional' no encontrada en 'ConstruccionesGenerales'",
-                        'Radicado': row['Radicado'],
+                        'Observacion': "Construcción convencional (secuencia) no encontrada en 'ConstruccionesGenerales'",
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
             
@@ -641,8 +641,8 @@ class Construcciones:
                         'NroFicha': row['NroFicha'],
                         'secuencia': secuencia,
                         'Npn': row.get('Npn', ''),  # Agregar Npn al resultado
-                        'Observacion': "secuencia 'Convencional' no encontrada en 'CalificacionesConstrucciones'",
-                        'Radicado': row['Radicado'],
+                        'Observacion': "Construccion convencional (secuencia) no encontrada en 'CalificacionesConstrucciones'",
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
             
@@ -706,7 +706,7 @@ class Construcciones:
                         'secuencia': secuencia,
                         'Npn': row.get('Npn', 'Sin Npn'),  # Agregar Npn al resultado
                         'Observacion': "secuencia 'No Convencional' encontrada en 'CalificacionesConstrucciones'",
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': 'Construcciones'
                     })
             
@@ -807,8 +807,8 @@ class Construcciones:
 
             print(f"funcion: validar_secuencia_unica_por_ficha")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -830,7 +830,7 @@ class Construcciones:
                             'secuencia': row['secuencia'],
                             'Npn': npn_value,
                             'Observacion': 'Secuencia duplicada para el mismo NroFicha',
-                            'Radicado': row['Radicado'],
+                            'Radicado':row['Radicado'],
                               # Incluir Npn en los resultados
                             'Nombre Hoja': nombre_hoja
                         }

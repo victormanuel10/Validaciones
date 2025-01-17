@@ -26,9 +26,9 @@ class CalificaionesConstrucciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
 
             print(f"Función: Validar_baños")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
             
             # Verificar que las columnas necesarias existan
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns or 'NroFicha' not in df_fichas.columns:
@@ -102,8 +102,8 @@ class CalificaionesConstrucciones:
             
             print(f"Función: validar_sinCocina")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Verificar que las columnas necesarias existan
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns or 'NroFicha' not in df_fichas.columns:
@@ -152,6 +152,153 @@ class CalificaionesConstrucciones:
                     }
                     resultados.append(resultado)
                     
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+
+            return resultados      
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+
+    def validar_conservacion(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'CalificacionesConstrucciones'
+        hoja_construcciones = 'Construcciones'
+        hoja_fichas = 'Fichas'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return 
+
+        try:
+            # Leer las hojas del archivo Excel
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+            
+            print(f"Función: validar conservación")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
+
+            # Verificar que las columnas necesarias existan
+            if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns or 'NroFicha' not in df_fichas.columns:
+                messagebox.showerror("Error", "Las columnas necesarias no existen en las hojas especificadas.")
+                return
+
+            # Primer merge: Agregar NroFicha desde Construcciones
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
+            
+            # Segundo merge: Agregar Npn desde Fichas
+            df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+            
+            resultados = []
+
+            for index, row in df.iterrows():
+                ConservacionPrincipales = row['ConservacionPrincipales']
+                Conservacion = row['Conservacion']
+
+                # Validación de condiciones
+                if (pd.isnull(Conservacion) or pd.notna(ConservacionPrincipales)):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'secuencia': row['secuencia'],
+                        'Npn': row['Npn'],  # Agregar Npn desde la hoja Fichas
+                        'Observacion': 'Conservación y conservaciones principales sin diligenciar en calificación',
+                        'Armazon': row['Armazon'],
+                        'Muro': row['Muro'],
+                        'Cubierta': row['Cubierta'],
+                        'Conservacion': row['Conservacion'],
+                        'Fachada': row['Fachada'],
+                        'Cubrimiento Muro': row['Cubrimiento Muro'],
+                        'Piso': row['Piso'],
+                        'ConservacionPrincipales': row['ConservacionPrincipales'],
+                        'TamanioBanio': row['TamanioBanio'],
+                        'EnchapesBanio': row['EnchapesBanio'],
+                        'MobiliarioBanio': row['MobiliarioBanio'],
+                        'ConservacionBanio': row['ConservacionBanio'],
+                        'TamanioCocina': row['TamanioCocina'],
+                        'Enchape': row['Enchape'],
+                        'MobiliarioCocina': row['MobiliarioCocina'],
+                        'ConservacionCocina': row['ConservacionCocina'],
+                        'Radicado': row['Radicado'],
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    
+                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+
+            return resultados      
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
+
+    def validar_cocinabanionull(self):
+        archivo_excel = self.archivo_entry.get()
+        nombre_hoja = 'CalificacionesConstrucciones'
+        hoja_construcciones = 'Construcciones'
+        hoja_fichas = 'Fichas'
+
+        if not archivo_excel or not nombre_hoja:
+            messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
+            return 
+
+        try:
+            # Leer las hojas del archivo Excel
+            df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
+            
+            print(f"Función: validar_sinCocina")
+            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
+
+            # Verificar que las columnas necesarias existan
+            if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns or 'NroFicha' not in df_fichas.columns:
+                messagebox.showerror("Error", "Las columnas necesarias no existen en las hojas especificadas.")
+                return
+
+            # Primer merge: Agregar NroFicha desde Construcciones
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha','TipoConstruccion']], on='secuencia', how='left')
+            
+            # Segundo merge: Agregar Npn desde Fichas
+            df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
+            
+            resultados = []
+
+            for index, row in df.iterrows():
+                TamanioBanio = row['TamanioBanio']
+                TamanioCocina = row['TamanioCocina']
+                TipoConstruccion = row['TipoConstruccion']
+
+                # Validación de condiciones
+                if ( TipoConstruccion == 'R') and (pd.isnull(TamanioBanio) or pd.isnull(TamanioCocina)):
+                    resultado = {
+                        'NroFicha': row['NroFicha'],
+                        'secuencia': row['secuencia'],
+                        'Npn': row['Npn'],  # Agregar Npn desde la hoja Fichas
+                        'Observacion': 'Construcción residencial con tamaño Baño y tamaño cocina sin diligenciar.',
+                        'Armazon': row['Armazon'],
+                        'Muro': row['Muro'],
+                        'Cubierta': row['Cubierta'],
+                        'Conservacion': row['Conservacion'],
+                        'Fachada': row['Fachada'],
+                        'Cubrimiento Muro': row['Cubrimiento Muro'],
+                        'Piso': row['Piso'],
+                        'ConservacionPrincipales': row['ConservacionPrincipales'],
+                        'TamanioBanio': row['TamanioBanio'],
+                        'EnchapesBanio': row['EnchapesBanio'],
+                        'MobiliarioBanio': row['MobiliarioBanio'],
+                        'ConservacionBanio': row['ConservacionBanio'],
+                        'TamanioCocina': row['TamanioCocina'],
+                        'Enchape': row['Enchape'],
+                        'MobiliarioCocina': row['MobiliarioCocina'],
+                        'ConservacionCocina': row['ConservacionCocina'],
+                        'Radicado': row['Radicado'],
+                        'Nombre Hoja': nombre_hoja
+                    }
+                    resultados.append(resultado)
+                    
                     print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             return resultados      
@@ -175,8 +322,8 @@ class CalificaionesConstrucciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             print(f"funcion: Validar_armazon")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
             
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
                     messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
@@ -499,8 +646,8 @@ class CalificaionesConstrucciones:
             
             print(f"funcion: Validar_fachada")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
             
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
                     messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
@@ -811,8 +958,8 @@ class CalificaionesConstrucciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones del DataFrame de Calificaciones: {df_calificaciones.shape}")
-            print(f"Dimensiones del DataFrame de Construcciones: {df_construcciones.shape}")
+            '''print(f"Dimensiones del DataFrame de Calificaciones: {df_calificaciones.shape}")
+            print(f"Dimensiones del DataFrame de Construcciones: {df_construcciones.shape}")'''
             
             if 'secuencia' not in df_calificaciones.columns or 'secuencia' not in df_construcciones.columns:
                     messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
@@ -899,8 +1046,8 @@ class CalificaionesConstrucciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             print(f"función: validar_cubierta_numero_pisos")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones Hoja Calificaciones: {df_calificaciones.shape}")
-            print(f"Dimensiones Hoja Construcciones: {df_construcciones.shape}")
+            '''print(f"Dimensiones Hoja Calificaciones: {df_calificaciones.shape}")
+            print(f"Dimensiones Hoja Construcciones: {df_construcciones.shape}")'''
             
             # Lista para almacenar los resultados
             resultados = []

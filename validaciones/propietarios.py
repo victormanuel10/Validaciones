@@ -59,7 +59,7 @@ class Propietarios:
                     'Sexo': row['Sexo'],
                     'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                     'Tomo': row['Tomo'],
-                    'Radicado': row['Radicado'],
+                    'Radicado':row['Radicado'],
                     'Nombre Hoja': 'Propietarios'
                 }
                 resultados.append(resultado)
@@ -86,16 +86,16 @@ class Propietarios:
 
             print(f"función: validar_documento_sexo_femenino")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame Propietarios: {df.shape}")
+            '''print(f"Dimensiones del DataFrame Propietarios: {df.shape}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
             print(f"Columnas en el DataFrame Propietarios: {df.columns.tolist()}")
-            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")'''
 
             # Hacer un merge con la hoja 'Fichas' para traer la columna 'Npn' usando 'NroFicha'
             df = df.merge(df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
 
-            print(f"Dimensiones del DataFrame después del merge: {df.shape}")
-            print(f"Columnas después del merge: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame después del merge: {df.shape}")
+            print(f"Columnas después del merge: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -175,10 +175,10 @@ class Propietarios:
 
             print(f"Función: validar_tipo_documento_sexo")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones de la hoja Propietarios: {df_propietarios.shape}")
+            '''print(f"Dimensiones de la hoja Propietarios: {df_propietarios.shape}")
             print(f"Dimensiones de la hoja Fichas: {df_fichas.shape}")
             print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
-            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")'''
 
             # Hacer un merge entre las dos hojas usando 'NroFicha'
             df_merge = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
@@ -220,7 +220,7 @@ class Propietarios:
                             'Sexo': row['Sexo'],
                             'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                             'Tomo': row['Tomo'],
-                            'Radicado': row['Radicado'],
+                            'Radicado':row['Radicado'],
                             
                             'Nombre Hoja': nombre_hoja_propietarios
                         }
@@ -251,10 +251,10 @@ class Propietarios:
 
             print(f"funcion: validar_documento_sexo_masculino")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones de la hoja Propietarios: {df_propietarios.shape}")
+            '''print(f"Dimensiones de la hoja Propietarios: {df_propietarios.shape}")
             print(f"Dimensiones de la hoja Fichas: {df_fichas.shape}")
             print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
-            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")'''
             df = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
             # Lista para almacenar los resultados
             resultados = []
@@ -309,7 +309,7 @@ class Propietarios:
                         resultados.append(resultado)
                         print(f"Fila {index}: Agregado a resultados: {resultado}")
             
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
             '''
             if resultados:
                 # Crear un nuevo DataFrame con los resultados
@@ -390,7 +390,7 @@ class Propietarios:
                         'Sexo': row['Sexo'],
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         
                         'Nombre Hoja': 'Propietarios'
                     }
@@ -469,7 +469,7 @@ class Propietarios:
                         'Sexo': row['Sexo'],
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         
                         'Nombre Hoja': 'Propietarios'
                     }
@@ -640,7 +640,7 @@ class Propietarios:
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja_propietarios}")
             print(f"Dimensiones del DataFrame: {df_merge.shape}")
-            print(f"Columnas en el DataFrame: {df_merge.columns.tolist()}")
+            #print(f"Columnas en el DataFrame: {df_merge.columns.tolist()}")
 
             # Lista para almacenar los resultados
             resultados = []
@@ -691,7 +691,7 @@ class Propietarios:
                         'Sexo': row['Sexo'],
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Npn': row['Npn'],  # Agregar la columna Npn
                         'Nombre Hoja': nombre_hoja_propietarios
                     }
@@ -726,9 +726,9 @@ class Propietarios:
 
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones de Propietarios: {df_propietarios.shape}")
-            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            '''print(f"Dimensiones de Fichas: {df_fichas.shape}")
             print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
-            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")'''
 
             # Combinar las dos hojas por el campo NroFicha
             df_merged = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
@@ -787,7 +787,7 @@ class Propietarios:
                         'Sexo': row['Sexo'],
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
@@ -883,9 +883,9 @@ class Propietarios:
 
             print(f"Leyendo archivo: {archivo_excel}")
             print(f"Dimensiones de Propietarios: {df_propietarios.shape}")
-            print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            '''print(f"Dimensiones de Fichas: {df_fichas.shape}")
             print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
-            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")'''
 
             # Combinar las dos hojas por el campo NroFicha
             df_merged = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
@@ -923,7 +923,7 @@ class Propietarios:
                         'Sexo': row['Sexo'],
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
@@ -954,10 +954,10 @@ class Propietarios:
 
             print(f"función: validar_matricula_entidad")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones de 'Propietarios': {df_propietarios.shape}")
+            '''print(f"Dimensiones de 'Propietarios': {df_propietarios.shape}")
             print(f"Columnas en 'Propietarios': {df_propietarios.columns.tolist()}")
             print(f"Dimensiones de 'Fichas': {df_fichas.shape}")
-            print(f"Columnas en 'Fichas': {df_fichas.columns.tolist()}")
+            print(f"Columnas en 'Fichas': {df_fichas.columns.tolist()}")'''
 
             # Verificar que las claves existen en ambas hojas
             if 'NroFicha' not in df_propietarios.columns or 'NroFicha' not in df_fichas.columns:
@@ -1007,7 +1007,7 @@ class Propietarios:
                         'Sexo': row['Sexo'],
                         'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                         'Tomo': row['Tomo'],
-                        'Radicado': row['Radicado'],
+                        'Radicado':row['Radicado'],
                         'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
@@ -1048,8 +1048,8 @@ class Propietarios:
 
             print(f"función: contar_nph_calidad_propietario")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Hoja Fichas: {hoja_fichas}, Dimensiones: {df_fichas.shape}")
-            print(f"Hoja Propietarios: {hoja_propietarios}, Dimensiones: {df_propietarios.shape}")
+            '''print(f"Hoja Fichas: {hoja_fichas}, Dimensiones: {df_fichas.shape}")
+            print(f"Hoja Propietarios: {hoja_propietarios}, Dimensiones: {df_propietarios.shape}")'''
 
             resultados = []
 
@@ -1080,7 +1080,7 @@ class Propietarios:
                                     'NroFicha': row.get('NroFicha'),
                                     'Npn': npn_dict.get(nro_ficha, ''),  # Obtener Npn desde el diccionario
                                     'Observacion': 'El predio es NPH, la matrícula es 0 o vacía y CalidadPropietarioOficial es diferente de la Nación o el municipio',
-                                    'Radicado': row['Radicado'],
+                                    'Radicado':row['Radicado'],
                                     'Documento': propietario.get('Documento'),
                                     'CalidadPropietario': propietario.get('CalidadPropietario'),
                                     'Derecho': propietario.get('Derecho'),
@@ -1186,7 +1186,7 @@ class Propietarios:
                             'Sexo': row['Sexo'],
                             'MatriculaInmobiliaria': row['MatriculaInmobiliaria'],
                             'Tomo': row['Tomo'],
-                            'Radicado': row['Radicado'],
+                            'Radicado':row['Radicado'],
                             
                             
                             'Nombre Hoja': nombre_hoja

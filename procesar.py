@@ -120,6 +120,8 @@ class Procesar:
         self.agregar_resultados(calificonstrucciones.Validar_armazon())
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
+        self.agregar_resultados(calificonstrucciones.validar_conservacion())
+        self.agregar_resultados(calificonstrucciones.validar_cocinabanionull())
     
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_rph())

@@ -24,8 +24,8 @@ class Ficha:
             
             print("Leyendo archivo: {}, Hoja: {}".format(archivo_excel, nombre_hoja))
             print(f"funcion: terreno_cero")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -38,7 +38,7 @@ class Ficha:
                 # Verificar si valor_b no es nulo o vacío, y si tiene al menos 22 caracteres
                 if pd.notna(valor_b) and len(str(valor_b)) > 21:
                     valor_b_str = str(valor_b)  # Convertir el valor a cadena
-                    print(f"Fila {index}: Valor B = '{valor_b_str}', condicion: {valor_b_str[21]}, Valor P = '{valor_p}'")
+                    #print(f"Fila {index}: Valor B = '{valor_b_str}', condicion: {valor_b_str[21]}, Valor P = '{valor_p}'")
 
                     # Verificar las condiciones
                     if valor_b_str[21] == '0' and (valor_p == '0' or valor_p == 0):
@@ -63,7 +63,7 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                        #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
                 else:
                     print(f"Fila {index}: NumCedulaCatastral no tiene suficientes caracteres o es nulo.")
 
@@ -96,8 +96,8 @@ class Ficha:
 
             print(f"funcion: terreno_null")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -177,8 +177,8 @@ class Ficha:
 
             print(f"Función: informal_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Verificar que las columnas requeridas existen
             columnas_requeridas = ['MatriculaInmobiliaria', 'ModoAdquisicion', 'NroFicha']
@@ -284,8 +284,8 @@ class Ficha:
 
             print(f"funcion: matricula_mejora")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -368,8 +368,8 @@ class Ficha:
 
             print(f"funcion: circulo_mejora")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -447,8 +447,8 @@ class Ficha:
 
             print(f"funcion: tomo_mejora")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -526,8 +526,8 @@ class Ficha:
 
             print(f"funcion: modo_adquisicion_informal")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -608,8 +608,8 @@ class Ficha:
 
             print(f"funcion: validar_modo_adquisicion_caracteristica")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -681,8 +681,8 @@ class Ficha:
 
             print(f"funcion: ficha_repetida")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Verificar si hay duplicados en la columna 'NroFicha'
             duplicados = df[df.duplicated(subset='NroFicha', keep=False)]  # Detectar duplicados
@@ -742,8 +742,8 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -815,8 +815,8 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -887,8 +887,8 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             resultados = []
 
@@ -958,8 +958,8 @@ class Ficha:
             df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
 
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones de Fichas: {df_fichas.shape}")
-            print(f"Dimensiones de Construcciones: {df_construcciones.shape}")
+            '''print(f"Dimensiones de Fichas: {df_fichas.shape}")
+            print(f"Dimensiones de Construcciones: {df_construcciones.shape}")'''
 
             # Validar columnas necesarias
             columnas_necesarias_fichas = ['NroFicha', 'AreaTotalConstruida', 'Npn']
@@ -1117,8 +1117,8 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             resultados = []
 
@@ -1283,16 +1283,16 @@ class Ficha:
                 df_fichas_excluidos = df_fichas[condicion_excepcion]
 
                 # Mostrar los registros que fueron excluidos
-                print(f"Registros excluidos (que cumplen con la condición de Npn):")
-                print(df_fichas_excluidos[['NroFicha', 'Npn']])
+                '''print(f"Registros excluidos (que cumplen con la condición de Npn):")
+                print(df_fichas_excluidos[['NroFicha', 'Npn']])'''
 
                 # Filtrar fuera los registros que cumplen la condición de exclusión
                 df_fichas = df_fichas[~condicion_excepcion]
 
                 # Mostrar el número de registros después de filtrar
                 print(f"Total registros en Fichas después de filtrar: {len(df_fichas)}")
-                print(df_fichas)
-                print(df_propietarios)
+                #print(df_fichas)
+                #print(df_propietarios)
                 
             df_fichas['NroFicha'] = pd.to_numeric(df_fichas['NroFicha'], errors='coerce')
             df_propietarios['NroFicha'] = pd.to_numeric(df_propietarios['NroFicha'], errors='coerce')
@@ -1423,8 +1423,8 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los errores
             errores = []
@@ -1499,8 +1499,8 @@ class Ficha:
 
             print(f"funcion: validar_npn")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -1980,8 +1980,8 @@ class Ficha:
 
             print(f"funcion: validar_duplicados_npn")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Validar si la columna 'Npn' existe
             if 'Npn' not in df.columns:
@@ -2047,9 +2047,9 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"funcion: validar_matricula_inmobiliaria")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Validar si las columnas existen
             if 'PredioLcTipo' not in df.columns or 'ModoAdquisicion' not in df.columns or 'MatriculaInmobiliaria' not in df.columns:
@@ -2121,9 +2121,9 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"funcion: validar_matricula_numerica")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -2196,9 +2196,9 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"funcion: validar_matricula_no_inicia_cero")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -2263,8 +2263,8 @@ class Ficha:
 
             print(f"funcion: validar_npn_modo_adquisicion")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            '''print(f"Dimensiones del DataFrame: {df.shape}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Lista para almacenar los resultados
             resultados = []
@@ -2335,11 +2335,11 @@ class Ficha:
 
             print(f"Función: validar_matricula_repetida")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Hoja Propietarios: {nombre_hoja_propietarios}, Hoja Fichas: {nombre_hoja_fichas}")
+            '''print(f"Hoja Propietarios: {nombre_hoja_propietarios}, Hoja Fichas: {nombre_hoja_fichas}")
             print(f"Dimensiones del DataFrame Propietarios: {df_propietarios.shape}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
             print(f"Columnas en Propietarios: {df_propietarios.columns.tolist()}")
-            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")'''
 
             # Verificar que las columnas necesarias existan
             columnas_necesarias_propietarios = ['MatriculaInmobiliaria', 'Documento', 'NroFicha']
@@ -2373,7 +2373,7 @@ class Ficha:
                             
                             'NroFicha': fila.get('NroFicha', ''),
                             'Npn': npn_value,
-                            'Observacion': 'Matricula inmobiliaria repetida con el mismo documento',
+                            'Observacion': 'Matricula inmobiliaria repetida con el mismo documento (AVISO)',
                             'MatriculaInmobiliaria': matricula,
                             'TipoDocumento': fila.get('TipoDocumento', ''),
                             'Documento': fila.get('Documento', ''),
@@ -2434,9 +2434,9 @@ class Ficha:
 
             print(f"Función: validar_matricula_repetida_mismo_circulo")
             print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Hoja Fichas: {nombre_hoja_fichas}")
+            '''print(f"Hoja Fichas: {nombre_hoja_fichas}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
-            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")
+            print(f"Columnas en Fichas: {df_fichas.columns.tolist()}")'''
 
             # Asegurarse de que 'MatriculaInmobiliaria' sea numérico
             df_fichas['MatriculaInmobiliaria'] = pd.to_numeric(df_fichas['MatriculaInmobiliaria'], errors='coerce')
@@ -2447,7 +2447,7 @@ class Ficha:
 
             # Agrupar por 'MatriculaInmobiliaria' y 'circulo', y filtrar los que tienen más de una ocurrencia
             duplicados = (
-                df_fichas.groupby(['MatriculaInmobiliaria', 'circulo'])
+                df_fichas.groupby(['MatriculaInmobiliaria', 'circulo','Tomo'])
                 .filter(lambda x: len(x) > 1)
             )
 
@@ -2457,7 +2457,7 @@ class Ficha:
             errores = []
 
             # Crear el reporte de errores
-            for (matricula, circulo), grupo in duplicados.groupby(['MatriculaInmobiliaria', 'circulo']):
+            for (matricula, circulo), grupo in duplicados.groupby(['MatriculaInmobiliaria', 'circulo','Tomo']):
                 for _, fila in grupo.iterrows():
                     error = {
                             'Npn': fila.get('Npn', ''),
@@ -2681,9 +2681,9 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"funcion: validar_cedula_destino")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
 
             # Verificar que las columnas necesarias existan
             columnas_necesarias = ['NumCedulaCatastral', 'DestinoEcconomico']
