@@ -608,9 +608,10 @@ class CalificaionesConstrucciones:
                         
                         
                 #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-            '''
+            
             
             if resultados:
+                '''
                 df_resultado = pd.DataFrame(resultados)
                 
                 
@@ -621,10 +622,11 @@ class CalificaionesConstrucciones:
                 print(f"Archivo guardado: {output_file}")
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Muro Invalido con {len(resultados)} registros.")
-                
-            else:
-                messagebox.showinfo("Información", "No se encontraron registros que cumplan con la condición.")
             '''
+            else:
+                print("Información", "No se encontraron registros que cumplan con la condición.")
+                
+            
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
