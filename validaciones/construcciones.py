@@ -75,9 +75,10 @@ class Construcciones:
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"No convencionales. {len(resultados)} registros.")
-                '''
+                
             else:
                 messagebox.showinfo("Información", "No se encontraron registros No Convencionales.")
+            '''
             return resultados
 
         except Exception as e:
