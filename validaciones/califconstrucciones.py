@@ -77,7 +77,7 @@ class CalificaionesConstrucciones:
                     }
                     resultados.append(resultado)
                     
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             
             return resultados      
         except Exception as e:
@@ -90,6 +90,8 @@ class CalificaionesConstrucciones:
         hoja_construcciones = 'Construcciones'
         hoja_fichas = 'Fichas'
 
+        print(f"Función: validar_sinCocina")
+
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
             return 
@@ -100,10 +102,8 @@ class CalificaionesConstrucciones:
             df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             
-            print(f"Función: validar_sinCocina")
-            print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            '''print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
+            
+            
 
             # Verificar que las columnas necesarias existan
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns or 'NroFicha' not in df_fichas.columns:
@@ -198,7 +198,7 @@ class CalificaionesConstrucciones:
                 Conservacion = row['Conservacion']
 
                 # Validación de condiciones
-                if (pd.isnull(Conservacion) or pd.notna(ConservacionPrincipales)):
+                if (pd.isnull(Conservacion) or pd.isnull(ConservacionPrincipales)):
                     resultado = {
                         'NroFicha': row['NroFicha'],
                         'secuencia': row['secuencia'],
@@ -247,8 +247,9 @@ class CalificaionesConstrucciones:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
             df_construcciones = pd.read_excel(archivo_excel, sheet_name=hoja_construcciones)
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
-            
-            print(f"Función: validar_sinCocina")
+
+                      
+            print(f"Función: validar_cocinabanionull")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             '''print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
@@ -259,7 +260,7 @@ class CalificaionesConstrucciones:
                 return
 
             # Primer merge: Agregar NroFicha desde Construcciones
-            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha','TipoConstruccion']], on='secuencia', how='left')
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
             
             # Segundo merge: Agregar Npn desde Fichas
             df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
@@ -299,7 +300,7 @@ class CalificaionesConstrucciones:
                     }
                     resultados.append(resultado)
                     
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             return resultados      
         except Exception as e:
@@ -322,8 +323,8 @@ class CalificaionesConstrucciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             print(f"funcion: Validar_armazon")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            '''print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
             
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
                     messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
@@ -606,7 +607,7 @@ class CalificaionesConstrucciones:
                         
                         
                         
-                print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             '''
             
             if resultados:
@@ -659,8 +660,7 @@ class CalificaionesConstrucciones:
             resultados = []
 
             for index, row in df.iterrows():
-                resultado = {}
-                print(f"Fila {index}: {row}") 
+                resultado = {}                 
                 Fachada = row['Fachada']
                 Cubrimiento_Muro = row['Cubrimiento Muro']
                 Piso = row['Piso']
@@ -920,7 +920,7 @@ class CalificaionesConstrucciones:
                             
                         }
                         resultados.append(resultado)
-                print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             '''
             
             if resultados:
@@ -1008,7 +1008,7 @@ class CalificaionesConstrucciones:
                             
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                        #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             '''
             if resultados:
                 
@@ -1123,8 +1123,8 @@ class CalificaionesConstrucciones:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             print(f"funcion: Validar_armazon")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
             
             if 'secuencia' not in df.columns or 'secuencia' not in df_construcciones.columns:
                     messagebox.showerror("Error", "La columna 'secuencia' no existe en ambas hojas.")
@@ -1135,12 +1135,9 @@ class CalificaionesConstrucciones:
             resultados = []
 
             for index, row in df.iterrows():
-                resultado = {}
-                print(f"Fila {index}: {row}") 
+                resultado = {}                
                 Armazon = row['Armazon']
                 Cubierta=row['Cubierta']
-                
-                
                 
                 if Cubierta == '135|AZOTEA, ALUMINIO,PLACAS CON ETERNIT' and Armazon != '115|CONCRETO CUATRO O MAS PISOS':
                     

@@ -107,11 +107,10 @@ class Ficha:
                 valor_a = str(row['Npn'])  # Convertir a cadena por si acaso
                 valor_b = row['AreaTotalTerreno']
 
-            print(f"Fila {index}: Valor A = '{valor_a}'")
+            
 
             # Verificar que valor_a tenga al menos 22 caracteres
-            if len(valor_a) > 21:
-                print(f"CARACTER22B : {valor_a[21]}")
+            if len(valor_a) > 21:               
 
                 if valor_a[21] == '2' and pd.isna(valor_b):
                     resultado = {
@@ -194,7 +193,7 @@ class Ficha:
                 valor_a = row.get('MatriculaInmobiliaria', '')
                 valor_b = row.get('ModoAdquisicion', '')
 
-                print(f"Fila {index}: MatriculaInmobiliaria = '{valor_a}', ModoAdquisicion = '{valor_b}'")
+                #print(f"Fila {index}: MatriculaInmobiliaria = '{valor_a}', ModoAdquisicion = '{valor_b}'")
 
                 # Verificar las condiciones: valor_b es '2|POSESIÓN' y valor_a NO está vacío
                 if valor_b == '2|POSESIÓN' and (valor_a != '' and pd.notna(valor_a)):
@@ -242,14 +241,14 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
             if resultados:
                 df_resultado = pd.DataFrame(resultados)
-                print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
+                #print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 # Si deseas guardar los resultados en un archivo Excel, descomenta el siguiente bloque
                 '''
@@ -272,7 +271,6 @@ class Ficha:
     def matricula_mejora(self):
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
-        
         
         if not archivo_excel or not nombre_hoja:
             messagebox.showerror("Error", "Por favor, selecciona un archivo y especifica el nombre de la hoja.")
@@ -410,7 +408,7 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
             else:
                 print(f"El valor de 'NumCedulaCatastral' en la fila {index} no tiene suficientes caracteres.")
 
@@ -537,7 +535,7 @@ class Ficha:
                 valor_a = row['Npn']
                 valor_b = row['ModoAdquisicion']
 
-                print(f"Fila {index}: Valor A = '{valor_a}'")
+                #print(f"Fila {index}: Valor A = '{valor_a}'")
 
                 # Convertir valor_a a cadena si no lo es
                 if not isinstance(valor_a, str):
@@ -1617,7 +1615,7 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Error agregado: {resultado}")
+                        #print(f"Error agregado: {resultado}")
 
             # Guardar resultados en archivo si existen errores
             '''
@@ -2447,7 +2445,7 @@ class Ficha:
 
             # Agrupar por 'MatriculaInmobiliaria' y 'circulo', y filtrar los que tienen más de una ocurrencia
             duplicados = (
-                df_fichas.groupby(['MatriculaInmobiliaria', 'circulo','Tomo'])
+                df_fichas.groupby(['MatriculaInmobiliaria', 'circulo','Libro','Tomo'])
                 .filter(lambda x: len(x) > 1)
             )
 
@@ -2457,7 +2455,7 @@ class Ficha:
             errores = []
 
             # Crear el reporte de errores
-            for (matricula, circulo), grupo in duplicados.groupby(['MatriculaInmobiliaria', 'circulo','Tomo']):
+            for (matricula, circulo,libro,Tomo), grupo in duplicados.groupby(['MatriculaInmobiliaria', 'circulo','Libro','Tomo']):
                 for _, fila in grupo.iterrows():
                     error = {
                             'Npn': fila.get('Npn', ''),
