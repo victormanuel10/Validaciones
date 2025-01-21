@@ -260,14 +260,19 @@ class CalificaionesConstrucciones:
                 return
 
             # Primer merge: Agregar NroFicha desde Construcciones
-            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha']], on='secuencia', how='left')
+            df = pd.merge(df, df_construcciones[['secuencia', 'NroFicha','IdUso']], on='secuencia', how='left')
             
             # Segundo merge: Agregar Npn desde Fichas
             df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
             
+            errores = df[
+                (df['IdUso'] != '807|Residencial.Garajes_En_PH') &
+                (df['IdUso'] != '806|Residencial.Garajes_Cubiertos')
+            ]
+
             resultados = []
 
-            for index, row in df.iterrows():
+            for index, row in errores.iterrows():
                 TamanioBanio = row['TamanioBanio']
                 TamanioCocina = row['TamanioCocina']
                 TipoConstruccion = row['TipoConstruccion']
@@ -278,7 +283,7 @@ class CalificaionesConstrucciones:
                         'NroFicha': row['NroFicha'],
                         'secuencia': row['secuencia'],
                         'Npn': row['Npn'],  # Agregar Npn desde la hoja Fichas
-                        'Observacion': 'Construcción residencial con tamaño Baño y tamaño cocina sin diligenciar.',
+                        'Observacion': 'Construcción residencial con tamaño Baño o tamaño cocina sin diligenciar.',
                         'Armazon': row['Armazon'],
                         'Muro': row['Muro'],
                         'Cubierta': row['Cubierta'],
