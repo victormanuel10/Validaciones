@@ -1722,10 +1722,8 @@ class Ficha:
             return []
         
     
-    def validar_direccion_referencia_y_nombre(self):
-        """
-        Verifica que en la hoja 'FichasPrediales', las columnas 'DireccionReferencia' y 'DireccionNombre' no contengan valores nulos.
-        """
+    '''def validar_direccion_referencia_y_nombre(self):
+        
         archivo_excel = self.archivo_entry.get()
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
@@ -1750,24 +1748,13 @@ class Ficha:
                         'Radicado':row['Radicado'],
                         'Nombre Hoja': 'FichasPrediales'
                     })
-            '''
             
-            # Guardar los resultados en un archivo Excel si hay errores
-            if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                output_file = 'Errores_DireccionReferencia_y_DireccionNombre_FichasPrediales.xlsx'
-                df_resultado.to_excel(output_file, index=False)
-                print(f"Archivo de errores guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Errores encontrados: {len(resultados)} registros que cumplen con las condiciones.")
-            else:
-                messagebox.showinfo("Sin errores", "No se encontraron valores nulos en 'DireccionReferencia' o 'DireccionNombre' en 'FichasPrediales'.")
-            '''
             return resultados
 
         except Exception as e:
             print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
-            return []
+            return []'''
         
 
     
