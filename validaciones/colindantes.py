@@ -92,9 +92,6 @@ class Colindantes:
             df_colindantes = pd.read_excel(archivo_excel, sheet_name=hoja_colindantes)
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
 
-            print(f"Leyendo archivo: {archivo_excel}")
-            print(f"Dimensiones de Colindantes: {df_colindantes.shape}, Fichas: {df_fichas.shape}")
-
             # Normalizar las columnas necesarias
             df_colindantes['Orientacion'] = df_colindantes['Orientacion'].fillna('').str.strip().str.upper()
             df_colindantes['NroFicha'] = df_colindantes['NroFicha'].fillna('').astype(str).str.strip()
@@ -106,11 +103,8 @@ class Colindantes:
             fichas_validas = df_fichas[
                 (df_fichas['Npn'].str[21:22] == '9') & 
                 (df_fichas['Ultimos_4'] != 0)
-            ][['NroFicha', 'Npn']]  # Mantener también la columna Npn
+            ][['NroFicha', 'Npn']]
 
-            print(f"Fichas válidas: {fichas_validas}")
-
-            # Verifica si hay fichas válidas
             if fichas_validas.empty:
                 print("No se encontraron fichas válidas en la hoja Fichas.")
                 messagebox.showinfo("Sin datos", "No se encontraron fichas válidas para validar.")
@@ -124,21 +118,34 @@ class Colindantes:
                 how='inner'
             )
 
-            print(f"Dimensiones de Colindantes filtradas: {df_colindantes_filtradas.shape}")
-
             # Orientaciones requeridas
             orientaciones_requeridas = {"ESTE", "NORTE", "SUR", "OESTE", "ZENIT", "NADIR"}
+
+            # Mapa de orientaciones compuestas
+            orientacion_map = {
+                "SURESTE": {"SUR", "ESTE"},
+                "NORESTE": {"NORTE", "ESTE"},
+                "SUROESTE": {"SUR", "OESTE"},
+                "NOROESTE": {"NORTE", "OESTE"}
+            }
+
             resultados = []
 
             # Agrupar por NroFicha y verificar orientaciones
             fichas = df_colindantes_filtradas.groupby('NroFicha')
             for nro_ficha, grupo in fichas:
-                orientaciones_presentes = set(grupo['Orientacion'].unique())
+                orientaciones_presentes = set()
+                for orientacion in grupo['Orientacion'].unique():
+                    if orientacion in orientacion_map:
+                        orientaciones_presentes.update(orientacion_map[orientacion])
+                    else:
+                        orientaciones_presentes.add(orientacion)
+
                 orientaciones_faltantes = orientaciones_requeridas - orientaciones_presentes
 
                 if orientaciones_faltantes:
                     radicados = ', '.join(grupo['Radicado'].dropna().astype(str).unique())
-                    npn = grupo['Npn'].iloc[0]  # Extraer el valor de Npn
+                    npn = grupo['Npn'].iloc[0]
                     resultado = {
                         'NroFicha': nro_ficha,
                         'Npn': npn,
