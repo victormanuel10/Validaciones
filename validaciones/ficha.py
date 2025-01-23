@@ -64,14 +64,12 @@ class Ficha:
                         }
                         resultados.append(resultado)
                         #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-                else:
-                    print(f"Fila {index}: NumCedulaCatastral no tiene suficientes caracteres o es nulo.")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
+                
+            #print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
             
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
             
             #messagebox.showinfo("Éxito", f"Proceso completado Terreno cero. con {len(resultados)} registros.")
             return resultados
@@ -135,13 +133,11 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-            else:
-                print(f"Fila {index}: Valor A tiene menos de 22 caracteres, se omite.")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
                     
             # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados) if resultados else pd.DataFrame(columns=[
-                'NroFicha', 'NumCedulaCatastral', 'Condicion de predio', 'AreaTotalTerreno', 'Observacion'])
+            #df_resultado = pd.DataFrame(resultados) if resultados else pd.DataFrame(columns=[
+                #'NroFicha', 'NumCedulaCatastral', 'Condicion de predio', 'AreaTotalTerreno', 'Observacion'])
 
             # Guardar el resultado en un nuevo archivo Excel
             '''
@@ -155,7 +151,6 @@ class Ficha:
                                 f"Proceso completado Terreno null. con {len(resultados)} registros.")
          
             '''
-            
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -243,11 +238,11 @@ class Ficha:
                     resultados.append(resultado)
                     #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
-            print(f"Total de resultados encontrados: {len(resultados)}")
+            #print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
             if resultados:
-                df_resultado = pd.DataFrame(resultados)
+                #df_resultado = pd.DataFrame(resultados)
                 #print(f"Dimensiones del DataFrame de resultados: {df_resultado.shape}")
 
                 # Si deseas guardar los resultados en un archivo Excel, descomenta el siguiente bloque
@@ -257,11 +252,7 @@ class Ficha:
                 df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} registros.")
-                '''
-            else:
-                print("No se encontraron registros que cumplan con las condiciones.")
-                print("Información", "No se encontraron registros que cumplan con las condiciones.")
-                
+                '''    
             return resultados
 
         except Exception as e:  
@@ -293,11 +284,11 @@ class Ficha:
                 valor_a = str(row['Npn']) if pd.notna(row['Npn']) else ''
                 valor_b = row['MatriculaInmobiliaria']
 
-                print(f"Fila {index}: Valor A = '{valor_a}'")
-                print(f"Fila {index}: Valor A = '{valor_b}'")
+                #print(f"Fila {index}: Valor A = '{valor_a}'")
+                #print(f"Fila {index}: Valor A = '{valor_b}'")
                 # Verificar si valor_a tiene al menos 22 caracteres
                 if len(valor_a) >= 22:
-                    print(f"CARACTER22B : {valor_a[21]}")
+                    #print(f"CARACTER22B : {valor_a[21]}")
 
                     # Verificar las condiciones
                     if valor_a[21] == '2' and pd.notna(valor_b) or valor_b=='':
@@ -325,14 +316,12 @@ class Ficha:
                         }
                         
                         resultados.append(resultado)
-                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-                else:
-                    print(f"Fila {index} tiene una NumCedulaCatastral demasiado corta: '{valor_a}'")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
+                        #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                
+            #print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
             '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'MATRICULA_MEJORA.xlsx'
@@ -377,11 +366,11 @@ class Ficha:
                 valor_a = row['Npn']
                 valor_b = row['circulo']
 
-            print(f"Fila {index}: Valor A = '{valor_a}'")
+            #print(f"Fila {index}: Valor A = '{valor_a}'")
 
             # Verificar que 'valor_a' tiene al menos 22 caracteres
             if len(valor_a) > 21:
-                print(f"CARACTER22B : {valor_a[21]}")
+                #print(f"CARACTER22B : {valor_a[21]}")
 
                 # Verificar las condiciones
                 if valor_a[21] == '2' and pd.notna(valor_b):
@@ -409,11 +398,9 @@ class Ficha:
                     }
                     resultados.append(resultado)
                     #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-            else:
-                print(f"El valor de 'NumCedulaCatastral' en la fila {index} no tiene suficientes caracteres.")
-
+            
             # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
             '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'CIRCULO_MEJORA.xlsx'
@@ -459,7 +446,7 @@ class Ficha:
                 if pd.notna(valor_a) and len(str(valor_a)) > 21:
                     valor_a = str(valor_a)  # Convertir el valor a string
 
-                    print(f"Fila {index}: Valor A = '{valor_a}'")
+                    #print(f"Fila {index}: Valor A = '{valor_a}'")
 
                     # Verificar las condiciones
                     if valor_a[21] == '2' and pd.notna(row['Tomo']) and float(row['Tomo']) != 0:
@@ -485,10 +472,8 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                else:
-                    print(f"El valor de 'Npn' en la fila {index} es inválido o no tiene suficientes caracteres.")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
+                
+            #print(f"Total de resultados encontrados: {len(resultados)}")
             
             '''
             
@@ -567,14 +552,10 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
-                else:
-                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
-
-            print(f"Total de resultados encontrados: {len(resultados)}")
-
+                        #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                
             # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
             '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'MODO_ADQUISICION_INFORMAL.xlsx'
@@ -642,12 +623,12 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index} cumple las condiciones de error. Agregado: {resultado}")
+                        #print(f"Fila {index} cumple las condiciones de error. Agregado: {resultado}")
 
-            print(f"Total de resultados encontrados: {len(resultados)}")
+            #print(f"Total de resultados encontrados: {len(resultados)}")
 
             # Crear un nuevo DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
             '''
             # Guardar el resultado en un nuevo archivo Excel
             output_file = 'VALIDACION_MODO_CARACTERISTICA.xlsx'
@@ -685,7 +666,7 @@ class Ficha:
             # Verificar si hay duplicados en la columna 'NroFicha'
             duplicados = df[df.duplicated(subset='NroFicha', keep=False)]  # Detectar duplicados
             
-            print(f"Total de registros duplicados encontrados: {duplicados.shape[0]}")
+            #print(f"Total de registros duplicados encontrados: {duplicados.shape[0]}")
             resultados = []
             if not duplicados.empty:
                 for index, row in duplicados.iterrows():
@@ -709,7 +690,7 @@ class Ficha:
                         'Nombre Hoja': 'Fichas'
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index}: NroFicha duplicado encontrado: {resultado}")
+                    #print(f"Fila {index}: NroFicha duplicado encontrado: {resultado}")
                 '''
                 
                 # Guardar resultados en un archivo Excel si existen duplicados
@@ -751,7 +732,7 @@ class Ficha:
                 valor_b = str(row['NumCedulaCatastral'])
                 valor_p = row['DestinoEcconomico']
 
-                print(f"Fila {index}: Valor B = '{valor_b}',condicion:{valor_b[6]}, Valor P = '{valor_p}'")
+                #print(f"Fila {index}: Valor B = '{valor_b}',condicion:{valor_b[6]}, Valor P = '{valor_p}'")
 
                 # Verificar las condiciones
                 if valor_b[6] == '0' and (valor_p == '12|LOTE URBANIZADO NO CONSTRUIDO' or valor_p == '13|LOTE URBANIZABLE NO URBANIZADO' or valor_p == '14|LOTE NO URBANIZABLE'):
@@ -776,12 +757,12 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
-            print(f"Total de resultados encontrados: {len(resultados)}")
+            #print(f"Total de resultados encontrados: {len(resultados)}")
 
 
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
             '''
             output_file = 'rural_destino_invalido.xlsx'
             sheet_name = 'rural_destino_invalido'
@@ -791,8 +772,8 @@ class Ficha:
 
             '''
             
-            print("Éxito",
-                                f"Proceso completado Rural destino invalido.' con {len(resultados)} registros.")
+            #print("Éxito",
+                                #f"Proceso completado Rural destino invalido.' con {len(resultados)} registros.")
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -849,25 +830,9 @@ class Ficha:
                         
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+                    #print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-            print(f"Total de errores encontrados: {len(resultados)}")
-            
-            if resultados:
-                # Crear un nuevo DataFrame con los resultados
-                df_resultado = pd.DataFrame(resultados)
-                '''
-                output_file = 'ERRORES_DESTINO_ECONOMICO.xlsx'
-                sheet_name = 'ErroresDestinoEconomico'
-                df_resultado.to_excel(output_file, sheet_name=sheet_name, index=False)
-                print(f"Archivo guardado: {output_file}")
-                messagebox.showinfo("Éxito", f"Proceso completado Destino Economico 12 13 14.con {len(resultados)} errores.")
-            
-                '''
-                
-            else:
-                print("No se encontraron errores.")
-                print("Información", "No se encontraron registros con errores.")
+            #print(f"Total de errores encontrados: {len(resultados)}")        
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -884,6 +849,7 @@ class Ficha:
         try:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
+            print("Funcion area_terreno_cero")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
             '''print(f"Dimensiones del DataFrame: {df.shape}")
             print(f"Columnas en el DataFrame: {df.columns.tolist()}")'''
@@ -931,9 +897,9 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                        #print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
             return resultados
 
         except Exception as e:
@@ -1013,7 +979,7 @@ class Ficha:
                     'Nombre Hoja': 'Fichas'
                 }
                 resultados.append(resultado)
-                print(f"Error encontrado: {resultado}")
+                #print(f"Error encontrado: {resultado}")
 
             # Retornar los resultados
             return resultados
@@ -1128,7 +1094,7 @@ class Ficha:
             # Iterar sobre las filas del DataFrame
             for index, row in df.iterrows():
                 MatriculaInmobiliaria = str(row['NumCedulaCatastral']).strip()
-                print(f"Fila {index}: NumCedulaCatastral = '{MatriculaInmobiliaria}'")
+                #print(f"Fila {index}: NumCedulaCatastral = '{MatriculaInmobiliaria}'")
                 if len(MatriculaInmobiliaria) >= 4 and MatriculaInmobiliaria[3] == '1':
                         DireccionReal = row['DireccionReal']
                         # Validar si la dirección está vacía
@@ -1164,9 +1130,9 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                        #print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-                print(f"Total de errores encontrados: {len(resultados)}")
+                #print(f"Total de errores encontrados: {len(resultados)}")
             '''
             
             if resultados:
@@ -1269,7 +1235,7 @@ class Ficha:
                 df_fichas['Npn'] = df_fichas['Npn'].fillna('').astype(str).str.strip()
 
                 # Mostrar el número de registros antes de filtrar
-                print(f"Total registros en Fichas antes de filtrar: {len(df_fichas)}")
+                #print(f"Total registros en Fichas antes de filtrar: {len(df_fichas)}")
 
                 # Filtrar registros donde el dígito 22 de 'Npn' sea 9 y termine con tres ceros
                 condicion_excepcion = (
@@ -1288,7 +1254,7 @@ class Ficha:
                 df_fichas = df_fichas[~condicion_excepcion]
 
                 # Mostrar el número de registros después de filtrar
-                print(f"Total registros en Fichas después de filtrar: {len(df_fichas)}")
+                #print(f"Total registros en Fichas después de filtrar: {len(df_fichas)}")
                 #print(df_fichas)
                 #print(df_propietarios)
                 
@@ -1347,8 +1313,8 @@ class Ficha:
             df = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             resultados = []
 
@@ -1380,9 +1346,9 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+                    #print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
             '''
             
             if resultados:
@@ -1457,11 +1423,9 @@ class Ficha:
                                 'Nombre Hoja': nombre_hoja
                             }
                             errores.append(error)
-                            print(f"Error encontrado en la fila {index}: {error}")
-                else:
-                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
-
-            print(f"Total de errores encontrados: {len(errores)}")
+                            #print(f"Error encontrado en la fila {index}: {error}")
+                
+            #print(f"Total de errores encontrados: {len(errores)}")
 
             # Si hay errores, guardarlos en un archivo Excel
             '''
@@ -1534,11 +1498,9 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index}: Agregado a resultados: {resultado}")
-                else:
-                    print(f"El valor de 'Npn' en la fila {index} no tiene suficientes caracteres.")
-            
-            print(f"Total de errores encontrados: {len(resultados)}")
+                        #print(f"Fila {index}: Agregado a resultados: {resultado}")
+             
+            #print(f"Total de errores encontrados: {len(resultados)}")
             '''
             
             if resultados:
@@ -1804,7 +1766,7 @@ class Ficha:
             return resultados
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            #print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []   
     
@@ -1849,7 +1811,7 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Error encontrado en la fila {index}: {resultado}")
+                    #print(f"Error encontrado en la fila {index}: {resultado}")
             '''
             
             # Guardar los resultados en un archivo si hay errores
@@ -1865,7 +1827,7 @@ class Ficha:
             return resultados
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            #print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
         
@@ -1918,7 +1880,7 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Error encontrado en la fila {index}: {resultado}")
+                    #print(f"Error encontrado en la fila {index}: {resultado}")
 
                 # Validación 2: Cuando el dígito 22 es '3'
                 if npn[21] == '3' and npn[21:30] != '300000000':
@@ -1929,7 +1891,7 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Error encontrado en la fila {index}: {resultado}")
+                    #print(f"Error encontrado en la fila {index}: {resultado}")
             '''
             
             # Guardar los resultados en un archivo si hay errores
@@ -1999,7 +1961,7 @@ class Ficha:
                     'Nombre Hoja': nombre_hoja
                 }
                 resultados.append(resultado)
-                print(f"Registro duplicado encontrado: {resultado}")
+                #print(f"Registro duplicado encontrado: {resultado}")
             '''
             # Verificar si hay duplicados y guardar resultados
             if resultados:
@@ -2015,7 +1977,7 @@ class Ficha:
             return resultados
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            #print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             
             
@@ -2073,7 +2035,7 @@ class Ficha:
                     'Nombre Hoja': nombre_hoja
                 }
                 resultados.append(resultado)
-                print(f"Condición de error encontrada: {resultado}")
+                #print(f"Condición de error encontrada: {resultado}")
             '''
             # Verificar si hay errores y guardar los resultados
             if resultados:
@@ -2147,7 +2109,7 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Error encontrado: {resultado}")
+                        #print(f"Error encontrado: {resultado}")
             '''
             
             # Manejar resultados
@@ -2213,7 +2175,7 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Error encontrado: {resultado}")
+                    #print(f"Error encontrado: {resultado}")
             '''
             
             # Manejar resultados
@@ -2283,7 +2245,7 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Error encontrado: {resultado}")
+                        #print(f"Error encontrado: {resultado}")
             '''
             
             # Manejar resultados
@@ -2383,12 +2345,12 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja_propietarios
                         }
                         errores.append(error)
-                        print(f"Error encontrado: {error}")
+                        #print(f"Error encontrado: {error}")
 
-            print(f"Total de errores encontrados: {len(errores)}")
+            #print(f"Total de errores encontrados: {len(errores)}")
 
             # Crear un DataFrame con los errores
-            df_errores = pd.DataFrame(errores)
+            #df_errores = pd.DataFrame(errores)
 
             '''
             # Guardar los errores en un archivo Excel
@@ -2428,7 +2390,7 @@ class Ficha:
 
             # Excluir matrículas nulas, vacías o igual a cero
             df_fichas = df_fichas[(df_fichas['MatriculaInmobiliaria'].notna()) & (df_fichas['MatriculaInmobiliaria'] != 0)]
-            print(f"Dimensiones después de excluir matrículas nulas, vacías o igual a cero: {df_fichas.shape}")
+            #print(f"Dimensiones después de excluir matrículas nulas, vacías o igual a cero: {df_fichas.shape}")
 
             # Agrupar por 'MatriculaInmobiliaria' y 'circulo', y filtrar los que tienen más de una ocurrencia
             duplicados = (
@@ -2436,7 +2398,7 @@ class Ficha:
                 .filter(lambda x: len(x) > 1)
             )
 
-            print(f"Total de matrículas repetidas con el mismo círculo registral: {duplicados.shape[0]}")
+            #print(f"Total de matrículas repetidas con el mismo círculo registral: {duplicados.shape[0]}")
 
             # Lista para almacenar los errores encontrados
             errores = []
@@ -2465,12 +2427,12 @@ class Ficha:
                             'Nombre Hoja': nombre_hoja_fichas
                     }
                     errores.append(error)
-                    print(f"Error encontrado: {error}")
+                    #print(f"Error encontrado: {error}")
 
-            print(f"Total de errores encontrados: {len(errores)}")
+            #print(f"Total de errores encontrados: {len(errores)}")
 
             # Crear un DataFrame con los errores
-            df_errores = pd.DataFrame(errores)
+            #df_errores = pd.DataFrame(errores)
 
             return errores
 
@@ -2594,7 +2556,7 @@ class Ficha:
             return resultados
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            #print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
         
@@ -2641,13 +2603,13 @@ class Ficha:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Error encontrado: {resultado}")
+                    #print(f"Error encontrado: {resultado}")
 
             # Retornar la lista de resultados
             return resultados
 
         except Exception as e:
-            print(f"Error: {str(e)}")
+            #print(f"Error: {str(e)}")
             messagebox.showerror("Error", f"Ocurrió un error durante el proceso: {str(e)}")
             return []
         
@@ -2708,10 +2670,10 @@ class Ficha:
                     errores.append(error)
                     print(f"Error encontrado en fila {index}: {error}")
 
-            print(f"Total de errores encontrados: {len(errores)}")
+            #print(f"Total de errores encontrados: {len(errores)}")
 
             # Crear un DataFrame con los errores
-            df_errores = pd.DataFrame(errores)
+            #df_errores = pd.DataFrame(errores)
 
             '''
             # Guardar los errores en un archivo Excel

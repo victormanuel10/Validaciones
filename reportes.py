@@ -22,8 +22,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -37,7 +37,7 @@ class Reportes:
                 if pd.notna(npn) and len(str(npn)) > 21:
                     npn = str(npn)  # Convertir a string si no lo es
 
-                    print(f"Fila {index}: Npn = '{npn}', MatriculaInmobiliaria = '{matricula}'")
+                    #print(f"Fila {index}: Npn = '{npn}', MatriculaInmobiliaria = '{matricula}'")
 
                     # Validar el 22º carácter y la suma de los últimos 4 dígitos
                     digito_22 = npn[21]
@@ -49,7 +49,7 @@ class Reportes:
                 else:
                     print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
 
-            print(f"Total de registros encontrados: {cantidad_registros}")
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {
@@ -92,8 +92,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -117,10 +117,8 @@ class Reportes:
                     # Ajustar condición: matricula nula o igual a 0
                     if digito_22 in ['8', '9'] and suma_ultimos_4 == 0 and (pd.isna(matricula) or matricula == 0):
                         cantidad_registros += 1
-                else:
-                    print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
-
-            print(f"Total de registros encontrados: {cantidad_registros}")
+                
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {
@@ -161,8 +159,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -186,10 +184,8 @@ class Reportes:
                     # Ajustar condición: matricula nula o igual a 0
                     if digito_22 in ['8', '9'] and suma_ultimos_4 == 0 and (pd.isna(circulo) or circulo == 0):
                         cantidad_registros += 1
-                else:
-                    print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
-
-            print(f"Total de registros encontrados: {cantidad_registros}")
+             
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {
@@ -230,8 +226,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -245,7 +241,7 @@ class Reportes:
                 if pd.notna(npn) and len(str(npn)) > 21:
                     npn = str(npn)  # Convertir a string si no lo es
 
-                    print(f"Fila {index}: Npn = '{npn}', circulo = '{circulo}'")
+                    #print(f"Fila {index}: Npn = '{npn}', circulo = '{circulo}'")
 
                     # Validar el 22º carácter y la suma de los últimos 4 dígitos
                     digito_22 = npn[21]
@@ -254,10 +250,8 @@ class Reportes:
 
                     if digito_22 in ['8', '9'] and suma_ultimos_4 == 0 and pd.notna(circulo) and circulo != '' and circulo != 0:
                         cantidad_registros += 1
-                else:
-                    print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
-
-            print(f"Total de registros encontrados: {cantidad_registros}")
+                
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {
@@ -299,8 +293,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -323,10 +317,8 @@ class Reportes:
                     if digito_22 in ['8', '9'] and suma_ultimos_4 == 0:
                         cantidad_registros += 1
                         
-                else:
-                    print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
-
-            print(f"Total de registros encontrados: {cantidad_registros}")
+                
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {
@@ -367,8 +359,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -392,10 +384,8 @@ class Reportes:
                     if digito_22 in ['8', '9'] and suma_ultimos_4 != 0:
                         cantidad_registros += 1
                         
-                else:
-                    print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
-
-            print(f"Total de registros encontrados: {cantidad_registros}")
+             
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {
@@ -436,8 +426,8 @@ class Reportes:
 
             print(f"funcion: validar_npn_matricula")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Contador de registros que cumplen las condiciones
             cantidad_registros = 0
@@ -459,10 +449,8 @@ class Reportes:
                     if digito_22 in ['0'] and suma_ultimos_4 == 0:
                         cantidad_registros += 1
                         
-                else:
-                    print(f"Fila {index}: 'Npn' inválido o no cumple con la longitud mínima.")
 
-            print(f"Total de registros encontrados: {cantidad_registros}")
+            #print(f"Total de registros encontrados: {cantidad_registros}")
 
             # Crear un único DataFrame con el resumen
             resumen = {

@@ -21,8 +21,8 @@ class Colindantes:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
 
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
 
             # Normalizar los valores de la columna 'Orientacion'
             df['Orientacion'] = df['Orientacion'].str.strip().str.upper()
@@ -69,7 +69,7 @@ class Colindantes:
                         'Npn': grupo['Npn'].iloc[0]  # Agregar el valor de 'Npn'
                     }
                     resultados.append(resultado)
-                    print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
+                    #print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
 
             return resultados
 
@@ -154,7 +154,7 @@ class Colindantes:
                         'Nombre Hoja': hoja_colindantes
                     }
                     resultados.append(resultado)
-                    print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
+                    #print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
 
             return resultados
 

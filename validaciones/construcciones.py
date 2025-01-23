@@ -23,11 +23,13 @@ class Construcciones:
 
             print(f"función: validar_construcciones_No_convencionales")
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
+            '''
+            
             print(f"Dimensiones del DataFrame Construcciones: {df_construcciones.shape}")
             print(f"Dimensiones del DataFrame Fichas: {df_fichas.shape}")
             print(f"Columnas en el DataFrame Construcciones: {df_construcciones.columns.tolist()}")
             print(f"Columnas en el DataFrame Fichas: {df_fichas.columns.tolist()}")
-
+            '''
             # Realizar un merge para incluir la columna 'Npn' desde la hoja 'Fichas'
             df_construcciones = df_construcciones.merge(
                 df_fichas[['NroFicha', 'Npn']],
@@ -35,8 +37,8 @@ class Construcciones:
                 how='left'
             )
 
-            print(f"Dimensiones del DataFrame después del merge: {df_construcciones.shape}")
-            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame después del merge: {df_construcciones.shape}")
+            #print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
 
             # Lista para almacenar los resultados
             resultados = []
@@ -63,12 +65,12 @@ class Construcciones:
                         'Nombre Hoja': 'Construcciones'  # Constante
                     }
                 resultados.append(resultado)
-                print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             # Mostrar resultados
             if resultados:
-                df_resultado = pd.DataFrame(resultados)
-                print(f"Total de registros no convencionales encontrados: {len(resultados)}")
+                #df_resultado = pd.DataFrame(resultados)
+                #print(f"Total de registros no convencionales encontrados: {len(resultados)}")
 
                 '''
                 # Descomentar para guardar resultados en un archivo Excel
@@ -140,7 +142,7 @@ class Construcciones:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             '''
             if resultados:
@@ -210,7 +212,7 @@ class Construcciones:
                         'Nombre Hoja': nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             '''
             if resultados:
@@ -256,15 +258,15 @@ class Construcciones:
                 how='left'
             )
 
-            print(f"Dimensiones de Construcciones después del merge: {df_construcciones.shape}")
-            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
+            #print(f"Dimensiones de Construcciones después del merge: {df_construcciones.shape}")
+            #print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
 
             # Filtrar Construcciones: excluir registros donde ConvencionalNoConvencional sea 'No Convencional'
             df_construcciones_filtrado = df_construcciones[
                 df_construcciones['ConvencionalNoConvencional'] != 'No Convencional'
             ]
 
-            print(f"Filtrado de Construcciones (excluyendo 'No Convencional'): {df_construcciones_filtrado.shape}")
+            #print(f"Filtrado de Construcciones (excluyendo 'No Convencional'): {df_construcciones_filtrado.shape}")
 
             # Extraer las secuencias de cada hoja
             secuencia_construcciones = set(df_construcciones_filtrado['secuencia'].dropna())
@@ -292,7 +294,7 @@ class Construcciones:
                         'Nombre Hoja': 'Construcciones'
                     }
                     resultados.append(resultado)
-                    print(f"secuencia faltante: {resultado}")
+                    #print(f"secuencia faltante: {resultado}")
 
             return resultados
 
@@ -324,8 +326,8 @@ class Construcciones:
                 how='left'
             )
 
-            print(f"Dimensiones de Construcciones después del merge: {df_construcciones.shape}")
-            print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
+            #print(f"Dimensiones de Construcciones después del merge: {df_construcciones.shape}")
+            #print(f"Columnas después del merge: {df_construcciones.columns.tolist()}")
 
             # Lista para almacenar los resultados
             resultados = []
@@ -346,9 +348,9 @@ class Construcciones:
                         'Nombre Hoja': 'Construcciones'
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index}: Agregado a resultados: {resultado}")
+                    #print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
 
             # Agregar resultados a la lista general
             return resultados
@@ -402,9 +404,9 @@ class Construcciones:
                     'Nombre Hoja': 'Construcciones'
                 }
                 resultados.append(resultado)
-                print(f"Error encontrado: {resultado}")
+                #print(f"Error encontrado: {resultado}")
 
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
 
             return resultados
 
@@ -531,7 +533,7 @@ class Construcciones:
                     'Nombre Hoja': 'CalificacionesConstrucciones'
                 }
                 resultados.append(resultado)
-                print(f"secuencia faltante: {resultado}")
+                #print(f"secuencia faltante: {resultado}")
 
             return resultados
 
@@ -774,7 +776,7 @@ class Construcciones:
                     'Observacion': 'secuencia duplicada en ambas hojas',
                     'Nombre Hoja': 'Construcciones'
                 })
-                print(f"Secuencia duplicada encontrada: {row['secuencia']} - Npn: {row.get('Npn', 'Sin Npn')}")
+                #print(f"Secuencia duplicada encontrada: {row['secuencia']} - Npn: {row.get('Npn', 'Sin Npn')}")
             
             '''
             # Si se encuentran duplicados, guardarlos en un archivo Excel
@@ -838,7 +840,7 @@ class Construcciones:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Secuencia duplicada encontrada: {resultado}")
+                        #print(f"Secuencia duplicada encontrada: {resultado}")
 
             return resultados
         except Exception as e:

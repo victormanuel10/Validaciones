@@ -21,8 +21,8 @@ class ZonasHomogeneas:
             df_fichas = pd.read_excel(archivo_excel, sheet_name=hoja_fichas)
             
             print(f"Leyendo archivo: {archivo_excel}, Hoja: {nombre_hoja}")
-            print(f"Dimensiones del DataFrame: {df.shape}")
-            print(f"Columnas en el DataFrame: {df.columns.tolist()}")
+            #print(f"Dimensiones del DataFrame: {df.shape}")
+            #print(f"Columnas en el DataFrame: {df.columns.tolist()}")
             
             df = pd.merge(df, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
             
@@ -55,7 +55,7 @@ class ZonasHomogeneas:
                         'Nombre Hoja':nombre_hoja
                     }
                     resultados.append(resultado)
-                    print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
+                    #print(f"Error en NroFicha {nro_ficha}: {resultado['Observacion']}")
             
             # Si se encuentran errores, se guardan en un archivo Excel
             if resultados:
@@ -67,8 +67,6 @@ class ZonasHomogeneas:
                 print(f"Archivo guardado: {output_file}")
                 messagebox.showinfo("Éxito", f"Proceso completado. Se ha creado el archivo '{output_file}' con {len(resultados)} errores.")
                 '''    
-            else:
-                print("Sin errores", "Todos los NroFicha tienen registros de 'fisica' y 'geoeconomica'.")
             
             return resultados
         except Exception as e:

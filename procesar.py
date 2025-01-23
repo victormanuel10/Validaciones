@@ -34,10 +34,13 @@ class Procesar:
             return
         
         ficha = Ficha(self.archivo_entry)
+        self.agregar_resultados(ficha.validar_matricula_repetida())
+        
+        
         self.agregar_resultados(ficha.validar_matricula_repetida_mismo_circulo())
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
-        self.agregar_resultados(ficha.validar_matricula_repetida())
-        self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
+        
+        #self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
         self.agregar_resultados(ficha.validar_destino_economico_nulo_o_0na())
@@ -121,7 +124,7 @@ class Procesar:
         self.agregar_resultados(calificonstrucciones.Validar_fachada())
         self.agregar_resultados(calificonstrucciones.conservacion_cubierta_bueno())
         self.agregar_resultados(calificonstrucciones.validar_conservacion())
-        self.agregar_resultados(calificonstrucciones.validar_cocinabanionull())
+        #self.agregar_resultados(calificonstrucciones.validar_cocinabanionull())
     
         colindantes=Colindantes(self.archivo_entry)
         self.agregar_resultados(colindantes.validar_orientaciones_rph())
@@ -150,11 +153,11 @@ class Procesar:
                 for hoja, errores in errores_por_hoja.items():
                     df_resultado = pd.DataFrame(errores)
                     df_resultado.to_excel(writer, sheet_name=hoja, index=False)
-                    print(f"Errores guardados en la hoja: {hoja}")
+                    #print(f"Errores guardados en la hoja: {hoja}")
                 
                 # Asegúrate de que el reporte se agrega al archivo después de los errores
-                self.agregar_reporte(writer)
-                self.agregar_hoja_reportes(writer)
+                #self.agregar_reporte(writer)
+                #self.agregar_hoja_reportes(writer)
                 
                 
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")

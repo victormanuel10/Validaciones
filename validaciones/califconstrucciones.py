@@ -225,7 +225,7 @@ class CalificaionesConstrucciones:
                     }
                     resultados.append(resultado)
                     
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             return resultados      
         except Exception as e:
@@ -628,10 +628,6 @@ class CalificaionesConstrucciones:
 
                 messagebox.showinfo("Éxito", f"Proceso completado. Muro Invalido con {len(resultados)} registros.")
             '''
-            else:
-                print("Información", "No se encontraron registros que cumplan con la condición.")
-                
-            
             return resultados
         except Exception as e:
             print(f"Error: {str(e)}")
@@ -1105,7 +1101,7 @@ class CalificaionesConstrucciones:
                                 'Nombre Hoja': hoja_calificaciones  # Nombre de la hoja
                             }
                             resultados.append(resultado)
-                            print(f"Error encontrado: {resultado}")
+                            #print(f"Error encontrado: {resultado}")
 
             return resultados
 

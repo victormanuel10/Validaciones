@@ -147,9 +147,9 @@ class Propietarios:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                        #print(f"Fila {index}: Agregado a resultados: {resultado}")
             
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
             return resultados
 
         except Exception as e:
@@ -227,7 +227,7 @@ class Propietarios:
                         resultados.append(resultado)
                         print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-            print(f"Total de errores encontrados: {len(resultados)}")
+            #print(f"Total de errores encontrados: {len(resultados)}")
             
             return resultados
 
@@ -307,7 +307,7 @@ class Propietarios:
                             'Nombre Hoja': nombre_hoja_propietarios
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                        #print(f"Fila {index}: Agregado a resultados: {resultado}")
             
             #print(f"Total de errores encontrados: {len(resultados)}")
             '''
@@ -395,10 +395,10 @@ class Propietarios:
                         'Nombre Hoja': 'Propietarios'
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             # Crear el DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
 
             '''
             # Guardar el archivo de resultados si es necesario
@@ -442,7 +442,7 @@ class Propietarios:
                 valor_b = row['TipoDocumento']
                 npn = row['Npn']  # Columna Npn de la hoja Fichas
 
-                print(f"Fila {index}: Valor A = '{valor_a}'")
+                #print(f"Fila {index}: Valor A = '{valor_a}'")
 
                 if valor_b != '3|NIT' and (valor_a == '' or pd.isna(valor_a)):
                     resultado = {
@@ -474,10 +474,10 @@ class Propietarios:
                         'Nombre Hoja': 'Propietarios'
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
+                    #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             # Crear el DataFrame con los resultados
-            df_resultado = pd.DataFrame(resultados)
+            #df_resultado = pd.DataFrame(resultados)
 
             '''
             # Guardar el archivo de resultados si es necesario
@@ -541,7 +541,7 @@ class Propietarios:
                         'Nombre Hoja': nombre_hoja_propietarios
                     }
                     resultados.append(resultado)
-                    print(f"Resultado agregado para NroFicha {name}: {resultado}")
+                    #print(f"Resultado agregado para NroFicha {name}: {resultado}")
 
             return resultados
 
@@ -697,9 +697,9 @@ class Propietarios:
                     }
                     resultados.append(resultado)
 
-                    print(f"Fila {index}: Fecha '{fecha_obj}' es anterior a 1778. Agregado a resultados.")
+                    #print(f"Fila {index}: Fecha '{fecha_obj}' es anterior a 1778. Agregado a resultados.")
 
-            print(f"Total de fechas anteriores a 1778 encontradas: {len(resultados)}")
+            #print(f"Total de fechas anteriores a 1778 encontradas: {len(resultados)}")
 
             return resultados
 
@@ -733,7 +733,7 @@ class Propietarios:
             # Combinar las dos hojas por el campo NroFicha
             df_merged = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
 
-            print(f"Dimensiones del DataFrame combinado: {df_merged.shape}")
+            #print(f"Dimensiones del DataFrame combinado: {df_merged.shape}")
 
             # Lista para almacenar los resultados
             resultados = []
@@ -791,9 +791,9 @@ class Propietarios:
                         'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
-                    print(f"Fila {index}: Fecha '{fecha_escritura}' es superior a la fecha actual. Agregado a resultados.")
+                    #print(f"Fila {index}: Fecha '{fecha_escritura}' es superior a la fecha actual. Agregado a resultados.")
 
-            print(f"Total de fechas superiores a la fecha actual encontradas: {len(resultados)}")
+            #print(f"Total de fechas superiores a la fecha actual encontradas: {len(resultados)}")
 
             return resultados
         except Exception as e:
@@ -890,7 +890,7 @@ class Propietarios:
             # Combinar las dos hojas por el campo NroFicha
             df_merged = pd.merge(df_propietarios, df_fichas[['NroFicha', 'Npn']], on='NroFicha', how='left')
 
-            print(f"Dimensiones del DataFrame combinado: {df_merged.shape}")
+            #print(f"Dimensiones del DataFrame combinado: {df_merged.shape}")
 
             resultados = []
 
@@ -928,7 +928,7 @@ class Propietarios:
                     }
                     resultados.append(resultado)
 
-            print(f"Entidades vacías: {len(resultados)}")
+            #print(f"Entidades vacías: {len(resultados)}")
 
             return resultados
         except Exception as e:
@@ -1011,7 +1011,7 @@ class Propietarios:
                         'Nombre Hoja': hoja_propietarios
                     }
                     resultados.append(resultado)
-                    print(f"Condición de error encontrada: {resultado}")
+                    #print(f"Condición de error encontrada: {resultado}")
 
             # Generar reporte si hay resultados
             '''
@@ -1149,8 +1149,8 @@ class Propietarios:
                 CalidadPropietarioOficial = str(row['CalidadPropietarioOficial']).strip()
                 RazonSocial=str(row['RazonSocial']).strip()
                 
-                print(f"Fila {index}: NumCedulaCatastral = '{CalidadPropietarioOficial}'")
-                print(f"Fila {index}: NumCedulaCatastral = '{RazonSocial}'")
+                #print(f"Fila {index}: NumCedulaCatastral = '{CalidadPropietarioOficial}'")
+                #print(f"Fila {index}: NumCedulaCatastral = '{RazonSocial}'")
                 
                 if len(RazonSocial) >= 9:
                          
@@ -1192,9 +1192,9 @@ class Propietarios:
                             'Nombre Hoja': nombre_hoja
                         }
                         resultados.append(resultado)
-                        print(f"Fila {index}: Agregado a resultados: {resultado}")
+                        #print(f"Fila {index}: Agregado a resultados: {resultado}")
 
-                print(f"Total de errores encontrados: {len(resultados)}")
+                #print(f"Total de errores encontrados: {len(resultados)}")
             '''
             
             if resultados:
