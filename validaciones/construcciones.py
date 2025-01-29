@@ -64,7 +64,7 @@ class Construcciones:
                         'Radicado':row['Radicado'],  # Desde Construcciones
                         'Nombre Hoja': 'Construcciones'  # Constante
                     }
-                resultados.append(resultado)
+                    resultados.append(resultado)
                 #print(f"Fila {index} cumple las condiciones. Agregado: {resultado}")
 
             # Mostrar resultados

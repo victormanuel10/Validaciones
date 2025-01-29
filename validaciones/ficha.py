@@ -1097,8 +1097,9 @@ class Ficha:
                 #print(f"Fila {index}: NumCedulaCatastral = '{MatriculaInmobiliaria}'")
                 if len(MatriculaInmobiliaria) >= 4 and MatriculaInmobiliaria[3] == '1':
                         DireccionReal = row['DireccionReal']
+                        DireccionNombre= row ['DireccionNombre'] 
                         # Validar si la dirección está vacía
-                        if not DireccionReal or pd.isna(DireccionReal):
+                        if pd.isna(DireccionReal) and pd.isna(DireccionNombre):
                             observacion = 'Predio sin dirección'
                         # Validar si los primeros 8 caracteres contienen palabras no permitidas
                         elif any(palabra in DireccionReal[:8] for palabra in palabras_no_permitidas):

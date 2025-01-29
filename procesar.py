@@ -34,12 +34,9 @@ class Procesar:
             return
         
         ficha = Ficha(self.archivo_entry)
-        self.agregar_resultados(ficha.validar_matricula_repetida())
-        
-        
+        self.agregar_resultados(ficha.validar_matricula_repetida())        
         self.agregar_resultados(ficha.validar_matricula_repetida_mismo_circulo())
         self.agregar_resultados(ficha.validar_modo_adquisicion_caracteristica())
-        
         #self.agregar_resultados(ficha.validar_direccion_referencia_y_nombre())
         self.agregar_resultados(ficha.validar_duplicados_npn())
         self.agregar_resultados(ficha.validar_fichas_en_propietarios())
@@ -88,7 +85,7 @@ class Procesar:
         self.agregar_resultados(propietarios.contar_nph_calidad_propietario())
         self.agregar_resultados(propietarios.validar_matricula_entidad())
         self.agregar_resultados(propietarios.derecho_diferente_cien())
-        self.agregar_resultados(propietarios.validar_documento_inicia_con_cero())
+        #self.agregar_resultados(propietarios.validar_documento_inicia_con_cero())
         self.agregar_resultados(propietarios.validar_documento_sexo_masculino())
         self.agregar_resultados(propietarios.validar_tipo_documento_sexo())
         self.agregar_resultados(propietarios.validar_documento_sexo_femenino())
@@ -140,6 +137,7 @@ class Procesar:
         
         self.generar_reporte_observaciones(archivo_excel)  
         
+        
         errores_por_hoja = {}
 
         if self.resultados_generales:
@@ -156,8 +154,8 @@ class Procesar:
                     #print(f"Errores guardados en la hoja: {hoja}")
                 
                 # Asegúrate de que el reporte se agrega al archivo después de los errores
-                #self.agregar_reporte(writer)
-                #self.agregar_hoja_reportes(writer)
+                self.agregar_reporte(writer)
+                self.agregar_hoja_reportes(writer)
                 
                 
             messagebox.showinfo("Éxito", "Proceso completado. Se ha creado el archivo 'ERRORES_CONSOLIDADOS.xlsx'.")
