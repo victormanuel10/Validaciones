@@ -1170,7 +1170,6 @@ class CalificaionesConstrucciones:
                         }
                     resultados.append(resultado)
 
-                    
             
             return resultados
         except Exception as e:

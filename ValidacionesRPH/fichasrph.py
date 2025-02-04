@@ -19,23 +19,52 @@ class FichasRPH:
     def validar_coeficiente_copropiedad_por_npn(self):
         """ 
         Valida que la suma de CoeficienteCopropiedad para los primeros 22 dígitos de Npn 
-        sea igual a 100 en la hoja 'Fichas Prediales'; si no, genera un error.
+        sea igual a 100 en la hoja 'Fichas Prediales'. Además, verifica que para registros 
+        donde el 22° dígito sea '8' o '9' y los últimos 4 dígitos no sean '0000', 
+        el CoeficienteCopropiedad sea mayor a 0.
         """
         archivo_excel = self.archivo_entry.get()
         nombre_hoja = 'Fichas'
+        xls = pd.ExcelFile(archivo_excel)  # Carga el archivo Excel
+        print(xls.sheet_names)  # Lista todas las hojas disponibles
+
+        if 'Construcciones' not in xls.sheet_names:
+            print("Error", "La hoja 'Construcciones' no existe en el archivo Excel.")
+            return
+
         if not archivo_excel:
             messagebox.showerror("Error", "Por favor, selecciona un archivo válido.")
             return []
 
         try:
             # Leer la hoja específica "Fichas Prediales"
-            df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja)
+            df_fichas = pd.read_excel(archivo_excel, sheet_name=nombre_hoja, dtype={'Npn': str})
 
             # Crear una columna 'Npn_22' con los primeros 22 caracteres de Npn
-            df_fichas['Npn_22'] = df_fichas['Npn'].astype(str).str[:22]
+            df_fichas['Npn_22'] = df_fichas['Npn'].str[:22]
 
-            # Filtrar registros donde el dígito 22 de 'Npn' sea '8' o '9'
+            # Filtrar registros donde el 22° dígito de 'Npn' sea '8' o '9'
             df_filtrado = df_fichas[df_fichas['Npn'].str[21].isin(['8', '9'])]
+
+            # Verificar que los últimos 4 dígitos sean diferentes de '0000'
+            df_filtrado = df_filtrado[df_filtrado['Npn'].str[-4:] != '0000']
+
+            # Validar que el CoeficienteCopropiedad sea mayor a 0, si no, generar error
+            errores_coeficiente_cero = df_filtrado[df_filtrado['CoeficienteCopropiedad'] <= 0]
+
+            resultados = []
+
+            for _, fila in errores_coeficiente_cero.iterrows():
+                resultado = {
+                    'Npn': fila['Npn'],
+                    'Radicado': fila.get('Radicado', ''),  # Usar get para evitar error si la columna no existe
+                    'Suma CoeficienteCopropiedad': fila['CoeficienteCopropiedad'],
+                    'Observacion': 'El CoeficienteCopropiedad debe ser mayor a 0',
+                    'Nombre Hoja': 'FichasPrediales',
+                    'NroFicha': fila['NroFicha']
+                }
+                resultados.append(resultado)
+                print(f"Error agregado: {resultado}")
 
             # Agrupar por 'Npn_22' y sumar 'CoeficienteCopropiedad'
             suma_coeficientes = df_filtrado.groupby('Npn_22')['CoeficienteCopropiedad'].sum().reset_index()
@@ -46,12 +75,9 @@ class FichasRPH:
             )
 
             # Filtrar donde la suma no es 100
-            errores = suma_coeficientes[suma_coeficientes['CoeficienteCopropiedad'] != 100]
-            
-            resultados = []
+            errores_suma = suma_coeficientes[suma_coeficientes['CoeficienteCopropiedad'] != 100]
 
-            # Para cada error, buscar el valor completo de 'Npn' original y agregarlo al resultado
-            for _, row in errores.iterrows():
+            for _, row in errores_suma.iterrows():
                 npn_22 = row['Npn_22']
                 coeficiente_suma = row['CoeficienteCopropiedad']
 
@@ -61,7 +87,7 @@ class FichasRPH:
                 for _, fila in filas_error.iterrows():
                     resultado = {
                         'Npn': fila['Npn'],
-                        'Radicado': fila['Radicado'],  # Extraer el valor de la columna Radicado
+                        'Radicado': fila.get('Radicado', ''),
                         'Suma CoeficienteCopropiedad': coeficiente_suma,
                         'Observacion': 'La suma de CoeficienteCopropiedad no es 100',
                         'Nombre Hoja': 'FichasPrediales',

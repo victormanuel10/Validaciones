@@ -69,8 +69,8 @@ class Procesar:
         self.agregar_resultados(ficha.validar_matricula_no_inicia_cero())
         
         fichasrph=FichasRPH(self.archivo_entry)
-        self.agregar_resultados(fichasrph.ficha_resumen_sin_unidades())
         self.agregar_resultados(fichasrph.validar_coeficiente_copropiedad_por_npn())
+        self.agregar_resultados(fichasrph.ficha_resumen_sin_unidades())
         self.agregar_resultados(fichasrph.validar_unidades_rph())
         self.agregar_resultados(fichasrph.piso_en_cero_rph())
         self.agregar_resultados(fichasrph.edificio_en_cero_rph())
